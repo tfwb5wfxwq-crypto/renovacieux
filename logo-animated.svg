@@ -23,96 +23,157 @@
     <!-- CLEAN LAYER (base - always there) -->
     <path d="M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z" fill="#E8E4DD" stroke="#D5D0C8" stroke-width="1"/>
 
-    <!-- GRAY DIRTY LAYER (appears after rain) -->
-    <path d="M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z" fill="#9A9590" stroke="#8A8580" stroke-width="1">
+    <!-- GRAY DIRTY LAYER -->
+    <path d="M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z" fill="#8A8580" stroke="#7A7570" stroke-width="1" clip-path="url(#tombClip)">
       <animate attributeName="opacity"
-        values="0;0;0;0.3;0.7;1;1;1;0.7;0.3;0;0"
-        keyTimes="0;0.12;0.18;0.22;0.26;0.30;0.45;0.55;0.62;0.68;0.72;1"
+        values="0;0;0.5;1;1;1;1;0;0"
+        keyTimes="0;0.10;0.18;0.24;0.40;0.50;0.68;0.72;1"
         dur="16s" repeatCount="indefinite"/>
     </path>
 
-    <!-- GREEN MOSS LAYER (appears after gray) -->
-    <g>
+    <!-- GREEN MOSS on top of gray -->
+    <g clip-path="url(#tombClip)">
       <animate attributeName="opacity"
-        values="0;0;0;0;0.4;0.8;1;1;0.6;0.2;0;0"
-        keyTimes="0;0.28;0.32;0.36;0.40;0.44;0.48;0.55;0.62;0.68;0.72;1"
+        values="0;0;0;0.5;1;1;1;0;0"
+        keyTimes="0;0.22;0.28;0.34;0.40;0.50;0.68;0.72;1"
         dur="16s" repeatCount="indefinite"/>
-      <ellipse cx="18" cy="24" rx="7" ry="5" fill="#5A7048"/>
-      <ellipse cx="42" cy="38" rx="6" ry="4" fill="#4A6038"/>
-      <ellipse cx="28" cy="48" rx="5" ry="3" fill="#5A7048"/>
-      <ellipse cx="38" cy="18" rx="4" ry="3" fill="#4A6038"/>
-      <ellipse cx="15" cy="42" rx="4" ry="3" fill="#506840"/>
+      <ellipse cx="18" cy="22" rx="8" ry="5" fill="#5A7048"/>
+      <ellipse cx="42" cy="36" rx="7" ry="4" fill="#4A6038"/>
+      <ellipse cx="26" cy="46" rx="6" ry="4" fill="#5A7048"/>
+      <ellipse cx="40" cy="18" rx="5" ry="3" fill="#4A6038"/>
+      <ellipse cx="14" cy="40" rx="5" ry="3" fill="#506840"/>
     </g>
 
     <!-- ====== RAIN DROPS ====== -->
-    <g opacity="0">
+    <g opacity="0" clip-path="url(#tombClip)">
       <animate attributeName="opacity"
         values="0;0;1;1;0;0"
-        keyTimes="0;0.12;0.15;0.24;0.27;1"
+        keyTimes="0;0.10;0.12;0.20;0.22;1"
         dur="16s" repeatCount="indefinite"/>
-
-      <!-- Drop 1 -->
-      <line x1="15" y1="-5" x2="15" y2="0" stroke="#7AC0E0" stroke-width="1.5" stroke-linecap="round">
-        <animate attributeName="y1" values="-5;55" dur="0.6s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="0;60" dur="0.6s" repeatCount="indefinite"/>
+      <line x1="15" y1="-5" x2="15" y2="2" stroke="#7AC0E0" stroke-width="2" stroke-linecap="round">
+        <animate attributeName="y1" values="-5;60" dur="0.5s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="2;67" dur="0.5s" repeatCount="indefinite"/>
       </line>
-      <!-- Drop 2 -->
-      <line x1="30" y1="-10" x2="30" y2="-5" stroke="#7AC0E0" stroke-width="1.5" stroke-linecap="round">
-        <animate attributeName="y1" values="-10;50" dur="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="-5;55" dur="0.5s" repeatCount="indefinite"/>
+      <line x1="30" y1="-12" x2="30" y2="-5" stroke="#7AC0E0" stroke-width="2" stroke-linecap="round">
+        <animate attributeName="y1" values="-12;53" dur="0.45s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="-5;60" dur="0.45s" repeatCount="indefinite"/>
       </line>
-      <!-- Drop 3 -->
-      <line x1="45" y1="-15" x2="45" y2="-10" stroke="#7AC0E0" stroke-width="1.5" stroke-linecap="round">
-        <animate attributeName="y1" values="-15;45" dur="0.55s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="-10;50" dur="0.55s" repeatCount="indefinite"/>
+      <line x1="45" y1="-8" x2="45" y2="-1" stroke="#7AC0E0" stroke-width="2" stroke-linecap="round">
+        <animate attributeName="y1" values="-8;57" dur="0.55s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="-1;64" dur="0.55s" repeatCount="indefinite"/>
       </line>
-      <!-- Drop 4 -->
-      <line x1="22" y1="-8" x2="22" y2="-3" stroke="#7AC0E0" stroke-width="1.5" stroke-linecap="round">
-        <animate attributeName="y1" values="-8;52" dur="0.52s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="-3;57" dur="0.52s" repeatCount="indefinite"/>
+      <line x1="22" y1="-15" x2="22" y2="-8" stroke="#7AC0E0" stroke-width="2" stroke-linecap="round">
+        <animate attributeName="y1" values="-15;50" dur="0.48s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="-8;57" dur="0.48s" repeatCount="indefinite"/>
       </line>
-      <!-- Drop 5 -->
-      <line x1="38" y1="-12" x2="38" y2="-7" stroke="#7AC0E0" stroke-width="1.5" stroke-linecap="round">
-        <animate attributeName="y1" values="-12;48" dur="0.58s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="-7;53" dur="0.58s" repeatCount="indefinite"/>
+      <line x1="38" y1="-3" x2="38" y2="4" stroke="#7AC0E0" stroke-width="2" stroke-linecap="round">
+        <animate attributeName="y1" values="-3;62" dur="0.52s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="4;69" dur="0.52s" repeatCount="indefinite"/>
       </line>
     </g>
 
-    <!-- ====== SPONGE CLEANING ====== -->
+    <!-- ====== CLEANING STROKES (traces left by sponge) ====== -->
+    <g clip-path="url(#tombClip)">
+      <!-- Stroke 1 - top row -->
+      <rect x="8" y="12" width="0" height="10" fill="#E8E4DD" rx="1">
+        <animate attributeName="width"
+          values="0;0;0;44;44;44"
+          keyTimes="0;0.50;0.52;0.56;0.70;1"
+          dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="opacity"
+          values="0;0;1;1;1;0"
+          keyTimes="0;0.50;0.52;0.70;0.72;1"
+          dur="16s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Stroke 2 - middle row -->
+      <rect x="8" y="24" width="0" height="10" fill="#E8E4DD" rx="1">
+        <animate attributeName="width"
+          values="0;0;0;0;44;44;44"
+          keyTimes="0;0.50;0.56;0.58;0.62;0.70;1"
+          dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="opacity"
+          values="0;0;0;1;1;1;0"
+          keyTimes="0;0.50;0.56;0.58;0.70;0.72;1"
+          dur="16s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Stroke 3 - bottom row -->
+      <rect x="8" y="36" width="0" height="10" fill="#E8E4DD" rx="1">
+        <animate attributeName="width"
+          values="0;0;0;0;0;44;44"
+          keyTimes="0;0.50;0.58;0.62;0.64;0.68;1"
+          dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="opacity"
+          values="0;0;0;0;1;1;0"
+          keyTimes="0;0.50;0.58;0.62;0.70;0.72;1"
+          dur="16s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Stroke 4 - very bottom -->
+      <rect x="8" y="48" width="0" height="8" fill="#E8E4DD" rx="1">
+        <animate attributeName="width"
+          values="0;0;0;0;0;0;44;44"
+          keyTimes="0;0.50;0.58;0.64;0.66;0.68;0.70;1"
+          dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="opacity"
+          values="0;0;0;0;0;1;1;0"
+          keyTimes="0;0.50;0.58;0.64;0.66;0.70;0.72;1"
+          dur="16s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+
+    <!-- ====== SPONGE ====== -->
     <g opacity="0">
       <animate attributeName="opacity"
         values="0;0;1;1;0;0"
-        keyTimes="0;0.54;0.56;0.70;0.72;1"
+        keyTimes="0;0.50;0.52;0.70;0.72;1"
         dur="16s" repeatCount="indefinite"/>
 
-      <!-- Sponge -->
-      <rect x="5" y="15" width="18" height="12" rx="3" fill="#F0D060" stroke="#D0B040" stroke-width="1">
-        <!-- Horizontal cleaning motion -->
+      <!-- Sponge body -->
+      <rect x="8" y="10" width="16" height="12" rx="2" fill="#F0D860" stroke="#D0B840" stroke-width="1">
         <animate attributeName="x"
-          values="5;40;5;40;5;40;5"
-          dur="2.4s" repeatCount="indefinite"/>
-        <!-- Vertical movement between passes -->
+          values="8;48;8;48;8;48;8;48"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
         <animate attributeName="y"
-          values="15;15;28;28;41;41;15"
-          dur="2.4s" repeatCount="indefinite"/>
+          values="10;10;22;22;34;34;46;46"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
       </rect>
-      <!-- Sponge dots (texture) -->
-      <g fill="#C8A030">
-        <circle cx="10" cy="19" r="1.5">
-          <animate attributeName="cx" values="10;45;10;45;10;45;10" dur="2.4s" repeatCount="indefinite"/>
-          <animate attributeName="cy" values="19;19;32;32;45;45;19" dur="2.4s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="18" cy="23" r="1.5">
-          <animate attributeName="cx" values="18;53;18;53;18;53;18" dur="2.4s" repeatCount="indefinite"/>
-          <animate attributeName="cy" values="23;23;36;36;49;49;23" dur="2.4s" repeatCount="indefinite"/>
-        </circle>
-      </g>
 
-      <!-- Water/soap bubbles following sponge -->
-      <circle cx="25" cy="20" r="2" fill="#A0D8F0" opacity="0.6">
-        <animate attributeName="cx" values="25;55;25;55;25;55;25" dur="2.4s" repeatCount="indefinite"/>
-        <animate attributeName="cy" values="20;20;33;33;46;46;20" dur="2.4s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.6;0;0.6;0;0.6;0;0.6" dur="0.4s" repeatCount="indefinite"/>
+      <!-- Sponge texture dots -->
+      <circle cx="12" cy="14" r="2" fill="#C0A030">
+        <animate attributeName="cx"
+          values="12;52;12;52;12;52;12;52"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="cy"
+          values="14;14;26;26;38;38;50;50"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="20" cy="18" r="1.5" fill="#C0A030">
+        <animate attributeName="cx"
+          values="20;60;20;60;20;60;20;60"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="cy"
+          values="18;18;30;30;42;42;54;54"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Water droplets behind sponge -->
+      <circle r="2.5" fill="#A0E0F0" opacity="0.7">
+        <animate attributeName="cx"
+          values="26;56;26;56;26;56;26;56"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="cy"
+          values="16;16;28;28;40;40;52;52"
+          keyTimes="0;0.25;0.30;0.55;0.60;0.85;0.90;1"
+          dur="2.8s" repeatCount="indefinite"/>
       </circle>
     </g>
 
@@ -131,43 +192,41 @@
     <!-- Letter R -->
     <text x="30" y="44" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="400">
       <animate attributeName="fill"
-        values="#5A554A;#5A554A;#6A655A;#7A756A;#7A756A;#5A554A;#4A4538;#4A4538;#5A554A"
-        keyTimes="0;0.12;0.25;0.45;0.55;0.68;0.76;0.92;1"
+        values="#5A554A;#5A554A;#7A756A;#7A756A;#5A554A;#4A4538;#4A4538;#5A554A"
+        keyTimes="0;0.10;0.30;0.50;0.68;0.76;0.92;1"
         dur="16s" repeatCount="indefinite"/>
       R
     </text>
 
-    <!-- ====== SPARKLES (after shine) ====== -->
+    <!-- ====== SPARKLES ====== -->
     <g opacity="0">
       <animate attributeName="opacity"
         values="0;0;1;1;0;0"
-        keyTimes="0;0.84;0.86;0.94;0.96;1"
+        keyTimes="0;0.84;0.88;0.95;0.98;1"
         dur="16s" repeatCount="indefinite"/>
-      <circle cx="15" cy="16" r="2.5" fill="#FFD700"/>
-      <circle cx="42" cy="25" r="2" fill="#FFD700"/>
-      <circle cx="25" cy="50" r="1.5" fill="#FFD700"/>
+      <circle cx="15" cy="16" r="3" fill="#FFD700"/>
+      <circle cx="44" cy="26" r="2.5" fill="#FFD700"/>
+      <circle cx="28" cy="50" r="2" fill="#FFD700"/>
     </g>
 
-    <!-- ====== FLOWER (at start, then wilts) ====== -->
-    <g transform="translate(52, 48)">
-      <!-- Stem -->
-      <line x1="0" y1="10" x2="0" y2="0" stroke="#4A8A4A" stroke-width="2" stroke-linecap="round">
+    <!-- ====== FLOWER ====== -->
+    <g transform="translate(54, 46)">
+      <line x1="0" y1="12" x2="0" y2="0" stroke="#4A8A4A" stroke-width="2" stroke-linecap="round">
         <animate attributeName="opacity"
-          values="1;1;0.5;0;0;0;0;1"
-          keyTimes="0;0.08;0.14;0.20;0.50;0.90;0.95;1"
+          values="1;1;0.5;0;0;0;1"
+          keyTimes="0;0.06;0.12;0.18;0.50;0.96;1"
           dur="16s" repeatCount="indefinite"/>
       </line>
-      <!-- Flower head -->
       <g>
         <animate attributeName="opacity"
-          values="1;1;0.6;0;0;0;0;1"
-          keyTimes="0;0.06;0.12;0.18;0.50;0.90;0.95;1"
+          values="1;1;0.5;0;0;0;1"
+          keyTimes="0;0.04;0.10;0.16;0.50;0.96;1"
           dur="16s" repeatCount="indefinite"/>
-        <circle cx="-3" cy="-2" r="3.5" fill="#E8A0A0"/>
-        <circle cx="3" cy="-2" r="3.5" fill="#E8A0A0"/>
-        <circle cx="0" cy="-5" r="3.5" fill="#E8A0A0"/>
-        <circle cx="0" cy="1" r="3" fill="#E8A0A0"/>
-        <circle cx="0" cy="-2" r="2.5" fill="#FFE060"/>
+        <circle cx="-4" cy="-2" r="4" fill="#E89090"/>
+        <circle cx="4" cy="-2" r="4" fill="#E89090"/>
+        <circle cx="0" cy="-6" r="4" fill="#E89090"/>
+        <circle cx="0" cy="2" r="3.5" fill="#E89090"/>
+        <circle cx="0" cy="-2" r="3" fill="#FFE060"/>
       </g>
     </g>
   </g>
@@ -179,11 +238,11 @@
   <rect x="60" y="20" width="50" height="50" fill="url(#shine)" clip-path="url(#textClip)" opacity="0">
     <animate attributeName="opacity"
       values="0;0;1;1;0;0"
-      keyTimes="0;0.82;0.84;0.92;0.94;1"
+      keyTimes="0;0.84;0.86;0.94;0.96;1"
       dur="16s" repeatCount="indefinite"/>
     <animate attributeName="x"
       values="60;60;60;240;240;60"
-      keyTimes="0;0.82;0.84;0.94;0.96;1"
+      keyTimes="0;0.84;0.86;0.96;0.98;1"
       dur="16s" repeatCount="indefinite"/>
   </rect>
 </svg>
