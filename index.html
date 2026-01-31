@@ -614,8 +614,8 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
 
     .pricing-card {
@@ -631,11 +631,20 @@
     .pricing-card.featured {
       background: var(--sage);
       color: white;
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
 
-    .pricing-card:not(.featured):hover {
+    .pricing-card.premium {
+      background: linear-gradient(135deg, #2C2C2C 0%, #3D3D3D 100%);
+      color: white;
+    }
+
+    .pricing-card:not(.featured):not(.premium):hover {
       border-color: var(--sage);
+    }
+
+    .pricing-card.premium:hover {
+      border-color: var(--gold);
     }
 
     .pricing-badge {
@@ -657,15 +666,17 @@
       margin-bottom: 6px;
     }
 
-    .pricing-card:not(.featured) h3 { color: var(--text); }
+    .pricing-card:not(.featured):not(.premium) h3 { color: var(--text); }
+    .pricing-card.premium h3 { color: var(--gold-light); }
 
     .pricing-freq {
       font-size: 14px;
       margin-bottom: 24px;
     }
 
-    .pricing-card:not(.featured) .pricing-freq { color: var(--text-muted); }
+    .pricing-card:not(.featured):not(.premium) .pricing-freq { color: var(--text-muted); }
     .pricing-card.featured .pricing-freq { color: rgba(255,255,255,0.7); }
+    .pricing-card.premium .pricing-freq { color: rgba(255,255,255,0.6); }
 
     .pricing-price {
       font-family: 'Libre Baskerville', serif;
@@ -673,16 +684,18 @@
       margin-bottom: 28px;
     }
 
-    .pricing-card:not(.featured) .pricing-price { color: var(--sage); }
+    .pricing-card:not(.featured):not(.premium) .pricing-price { color: var(--sage); }
     .pricing-card.featured .pricing-price { color: white; }
+    .pricing-card.premium .pricing-price { color: var(--gold); }
 
     .pricing-price span {
       font-size: 16px;
       font-family: 'Source Sans 3', sans-serif;
     }
 
-    .pricing-card:not(.featured) .pricing-price span { color: var(--text-muted); }
+    .pricing-card:not(.featured):not(.premium) .pricing-price span { color: var(--text-muted); }
     .pricing-card.featured .pricing-price span { color: rgba(255,255,255,0.7); }
+    .pricing-card.premium .pricing-price span { color: rgba(255,255,255,0.5); }
 
     .pricing-features {
       list-style: none;
@@ -698,11 +711,12 @@
       gap: 10px;
     }
 
-    .pricing-card:not(.featured) .pricing-features li {
+    .pricing-card:not(.featured):not(.premium) .pricing-features li {
       border-bottom: 1px solid var(--cream-dark);
     }
 
-    .pricing-card.featured .pricing-features li {
+    .pricing-card.featured .pricing-features li,
+    .pricing-card.premium .pricing-features li {
       border-bottom: 1px solid rgba(255,255,255,0.15);
     }
 
@@ -712,8 +726,9 @@
       font-size: 12px;
     }
 
-    .pricing-card:not(.featured) .pricing-features li::before { color: var(--sage); }
+    .pricing-card:not(.featured):not(.premium) .pricing-features li::before { color: var(--sage); }
     .pricing-card.featured .pricing-features li::before { color: var(--gold-light); }
+    .pricing-card.premium .pricing-features li::before { color: var(--gold); }
 
     .pricing-cta {
       display: block;
@@ -726,12 +741,12 @@
       transition: all 0.3s;
     }
 
-    .pricing-card:not(.featured) .pricing-cta {
+    .pricing-card:not(.featured):not(.premium) .pricing-cta {
       background: var(--sage);
       color: white;
     }
 
-    .pricing-card:not(.featured) .pricing-cta:hover {
+    .pricing-card:not(.featured):not(.premium) .pricing-cta:hover {
       background: var(--sage-dark);
     }
 
@@ -742,6 +757,15 @@
 
     .pricing-card.featured .pricing-cta:hover {
       background: var(--cream);
+    }
+
+    .pricing-card.premium .pricing-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #2C2C2C;
+    }
+
+    .pricing-card.premium .pricing-cta:hover {
+      filter: brightness(1.1);
     }
 
     /* ===== TÉMOIGNAGES ===== */
@@ -1224,9 +1248,15 @@
       .hero-image-main { aspect-ratio: 4/3; border-radius: 24px; }
       .hero-float-card { left: 20px; bottom: 20px; }
 
-      .services-grid, .pricing-grid, .testimonials-grid {
+      .services-grid, .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pricing-card.featured, .pricing-card.premium { transform: none; }
 
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
@@ -1456,21 +1486,21 @@
         <div class="pricing-card reveal">
           <h3>Ponctuel</h3>
           <p class="pricing-freq">Intervention unique</p>
-          <p class="pricing-price">Devis</p>
+          <p class="pricing-price">89€<span>à partir de</span></p>
           <ul class="pricing-features">
             <li>Nettoyage complet</li>
             <li>Désherbage</li>
             <li>Photos avant/après</li>
             <li>Rapport d'intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta" data-formule="Ponctuel - Intervention unique">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="Ponctuel - Intervention unique (à partir de 89€)">Demander un devis</a>
         </div>
 
         <div class="pricing-card featured reveal reveal-delay-1">
           <span class="pricing-badge">Populaire</span>
           <h3>Sérénité</h3>
           <p class="pricing-freq">2 passages par an</p>
-          <p class="pricing-price">180€<span>/an</span></p>
+          <p class="pricing-price">180€<span>/an • 15€/mois</span></p>
           <ul class="pricing-features">
             <li>2 nettoyages complets</li>
             <li>Désherbage inclus</li>
@@ -1484,7 +1514,7 @@
         <div class="pricing-card reveal reveal-delay-2">
           <h3>Tranquillité</h3>
           <p class="pricing-freq">4 passages par an</p>
-          <p class="pricing-price">320€<span>/an</span></p>
+          <p class="pricing-price">320€<span>/an • 27€/mois</span></p>
           <ul class="pricing-features">
             <li>4 nettoyages complets</li>
             <li>Entretien trimestriel</li>
@@ -1492,7 +1522,22 @@
             <li>Photos et rapport</li>
             <li>Priorité intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta" data-formule="Tranquillité - 4 passages/an (320€)">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="Tranquillité - 4 passages/an (320€)">Choisir cette formule</a>
+        </div>
+
+        <div class="pricing-card premium reveal reveal-delay-3">
+          <span class="pricing-badge" style="background: linear-gradient(135deg, #C4A962, #D4BE82);">Premium</span>
+          <h3>Prestige</h3>
+          <p class="pricing-freq">Service complet</p>
+          <p class="pricing-price">480€<span>/an • 40€/mois</span></p>
+          <ul class="pricing-features">
+            <li>4 passages + 1 urgence</li>
+            <li>Fleurs premium</li>
+            <li>Ravivage dorures inclus</li>
+            <li>Photos haute qualité</li>
+            <li>Interlocuteur dédié</li>
+          </ul>
+          <a href="#contact" class="pricing-cta" data-formule="Prestige - Service complet (480€)">Choisir cette formule</a>
         </div>
       </div>
     </div>
@@ -1634,9 +1679,10 @@
               <label>Formule souhaitée</label>
               <select name="Formule" id="formuleSelect">
                 <option value="">-- Choisir une formule --</option>
-                <option value="Ponctuel - Intervention unique">Ponctuel - Intervention unique</option>
+                <option value="Ponctuel - Intervention unique (à partir de 89€)">Ponctuel - À partir de 89€</option>
                 <option value="Sérénité - 2 passages/an (180€)">Sérénité - 2 passages/an (180€)</option>
                 <option value="Tranquillité - 4 passages/an (320€)">Tranquillité - 4 passages/an (320€)</option>
+                <option value="Prestige - Service complet (480€)">Prestige - Service complet (480€)</option>
               </select>
             </div>
           </div>
