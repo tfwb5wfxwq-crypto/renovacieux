@@ -3,464 +3,431 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rénovation de Tombes Paris | Renovacieux - Entretien de Sépultures</title>
-  <meta name="description" content="Renovacieux : service professionnel de rénovation et entretien de tombes à Paris et Île-de-France. Nettoyage de sépultures, fleurissement, entretien régulier. Devis gratuit.">
+  <title>Renovacieux | Rénovation de Tombes Paris & Île-de-France</title>
+  <meta name="description" content="Renovacieux : service professionnel de rénovation et entretien de sépultures à Paris et Île-de-France. Redonnez dignité aux tombes de vos proches.">
   <link rel="canonical" href="https://renovation-tombe.com/">
-  <meta property="og:title" content="Rénovation de Tombes Paris | Renovacieux">
-  <meta property="og:url" content="https://renovation-tombe.com/">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --sky-top: #87CEEB;
-      --sky-mid: #B0E0E6;
-      --sky-bottom: #E0F4FF;
-      --gold: #D4AF37;
-      --gold-light: #F4E4BC;
-      --cream: #FFF9F0;
-      --stone: #8B8680;
-      --dark: #2C2825;
-      --text: #3D3935;
+      --cream: #FAF8F5;
+      --cream-dark: #F0EDE8;
+      --white: #FFFFFF;
+      --sage: #7D8B74;
+      --sage-light: #9BA78F;
+      --sage-dark: #5C6B52;
+      --gold: #C4A962;
+      --gold-light: #D4BE82;
+      --text: #2C2C2C;
+      --text-light: #5A5A5A;
+      --text-muted: #8A8A8A;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      color: var(--text);
-      overflow-x: hidden;
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
       background: var(--cream);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      overflow-x: hidden;
     }
 
-    h1, h2, h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
+    h1, h2, h3, h4 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.3;
     }
 
-    /* ============================================
-       CIEL ANIMÉ AVEC VRAIS NUAGES
-       ============================================ */
-    .sky {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: linear-gradient(180deg,
-        #4A90B8 0%,
-        #6FB3D6 25%,
-        #9DCCEA 50%,
-        #C5E4F5 75%,
-        #E8F4FA 100%
-      );
-      z-index: -10;
-      overflow: hidden;
+    /* Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* Nuages réalistes avec plusieurs couches */
-    .cloud {
-      position: absolute;
-      filter: blur(2px);
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .cloud-layer {
-      position: absolute;
-      background: radial-gradient(ellipse at center,
-        rgba(255,255,255,0.95) 0%,
-        rgba(255,255,255,0.8) 40%,
-        rgba(255,255,255,0.4) 60%,
-        transparent 70%
-      );
-      border-radius: 50%;
-    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
 
-    /* Nuage 1 - Grand et majestueux */
-    .cloud-1 {
-      top: 5%;
-      left: -20%;
-      animation: drift-1 120s linear infinite;
-    }
-    .cloud-1 .cl-1 { width: 400px; height: 180px; top: 40px; left: 80px; }
-    .cloud-1 .cl-2 { width: 280px; height: 200px; top: 0; left: 150px; }
-    .cloud-1 .cl-3 { width: 320px; height: 160px; top: 20px; left: 280px; }
-    .cloud-1 .cl-4 { width: 200px; height: 140px; top: 60px; left: 400px; }
-    .cloud-1 .cl-5 { width: 250px; height: 120px; top: 80px; left: 0; }
-
-    /* Nuage 2 */
-    .cloud-2 {
-      top: 15%;
-      left: -15%;
-      animation: drift-2 100s linear infinite;
-      animation-delay: -30s;
-      opacity: 0.9;
-    }
-    .cloud-2 .cl-1 { width: 300px; height: 140px; top: 30px; left: 50px; }
-    .cloud-2 .cl-2 { width: 220px; height: 160px; top: 0; left: 120px; }
-    .cloud-2 .cl-3 { width: 260px; height: 130px; top: 25px; left: 200px; }
-
-    /* Nuage 3 - Plus petit, plus haut */
-    .cloud-3 {
-      top: 8%;
-      left: -10%;
-      animation: drift-3 80s linear infinite;
-      animation-delay: -50s;
-      opacity: 0.7;
-      transform: scale(0.6);
-    }
-    .cloud-3 .cl-1 { width: 280px; height: 120px; top: 20px; left: 40px; }
-    .cloud-3 .cl-2 { width: 200px; height: 150px; top: 0; left: 100px; }
-    .cloud-3 .cl-3 { width: 240px; height: 110px; top: 30px; left: 180px; }
-
-    /* Nuage 4 */
-    .cloud-4 {
-      top: 25%;
-      left: -25%;
-      animation: drift-1 140s linear infinite;
-      animation-delay: -70s;
-      opacity: 0.85;
-      transform: scale(0.8);
-    }
-    .cloud-4 .cl-1 { width: 350px; height: 150px; top: 35px; left: 60px; }
-    .cloud-4 .cl-2 { width: 250px; height: 180px; top: 0; left: 130px; }
-    .cloud-4 .cl-3 { width: 280px; height: 140px; top: 20px; left: 230px; }
-    .cloud-4 .cl-4 { width: 180px; height: 100px; top: 70px; left: 350px; }
-
-    /* Nuage 5 - Arrière plan */
-    .cloud-5 {
-      top: 35%;
-      left: -30%;
-      animation: drift-2 160s linear infinite;
-      animation-delay: -90s;
-      opacity: 0.5;
-      transform: scale(1.2);
-    }
-    .cloud-5 .cl-1 { width: 500px; height: 200px; top: 50px; left: 100px; }
-    .cloud-5 .cl-2 { width: 380px; height: 250px; top: 0; left: 200px; }
-    .cloud-5 .cl-3 { width: 420px; height: 180px; top: 30px; left: 350px; }
-
-    @keyframes drift-1 {
-      from { transform: translateX(0); }
-      to { transform: translateX(calc(100vw + 600px)); }
-    }
-    @keyframes drift-2 {
-      from { transform: translateX(0); }
-      to { transform: translateX(calc(100vw + 500px)); }
-    }
-    @keyframes drift-3 {
-      from { transform: translateX(0) scale(0.6); }
-      to { transform: translateX(calc(100vw + 400px)) scale(0.6); }
-    }
-
-    /* Soleil subtil */
-    .sun {
-      position: absolute;
-      top: 8%;
-      right: 15%;
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle,
-        rgba(255,248,220,1) 0%,
-        rgba(255,223,150,0.8) 30%,
-        rgba(255,200,100,0.3) 60%,
-        transparent 70%
-      );
-      border-radius: 50%;
-      animation: glow 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from { transform: scale(1); opacity: 0.9; }
-      to { transform: scale(1.1); opacity: 1; }
-    }
-
-    /* ============================================
-       NAVIGATION
-       ============================================ */
+    /* ===== NAVIGATION ===== */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: 24px 60px;
+      padding: 20px 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.5s ease;
+      transition: all 0.4s;
     }
 
     nav.scrolled {
-      background: rgba(255,255,255,0.9);
+      background: rgba(250, 248, 245, 0.95);
       backdrop-filter: blur(20px);
-      padding: 16px 60px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 30px rgba(0,0,0,0.06);
+      padding: 14px 60px;
     }
 
-    .logo {
+    .nav-logo {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       text-decoration: none;
     }
 
-    .logo img {
-      height: 55px;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
-      transition: transform 0.3s;
-    }
-
-    .logo:hover img {
-      transform: scale(1.05);
-    }
-
-    .logo-text {
+    .nav-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sage);
+      border-radius: 50%;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
     }
 
-    .logo-main {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--dark);
-      letter-spacing: 0.02em;
+    .nav-logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(10);
     }
 
-    .logo-sub {
-      font-size: 11px;
-      color: var(--stone);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 500;
+    .nav-logo-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      color: var(--text);
     }
 
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: 36px;
       list-style: none;
     }
 
     .nav-links a {
       text-decoration: none;
-      color: var(--dark);
-      font-size: 15px;
+      color: var(--text-light);
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.03em;
-      position: relative;
-      padding-bottom: 4px;
+      transition: color 0.3s;
     }
 
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--gold);
-      transition: width 0.4s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
+    .nav-links a:hover { color: var(--sage-dark); }
 
     .nav-cta {
-      background: linear-gradient(135deg, var(--gold) 0%, #C4983A 100%);
+      background: var(--sage);
       color: white;
-      padding: 14px 32px;
-      border-radius: 50px;
+      padding: 12px 28px;
+      border-radius: 30px;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
-      transition: all 0.4s ease;
+      transition: all 0.3s;
     }
 
     .nav-cta:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+      background: var(--sage-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(125, 139, 116, 0.3);
     }
 
-    /* ============================================
-       HERO SECTION
-       ============================================ */
+    /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 140px 24px 100px;
+      padding: 120px 60px 80px;
       position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-pattern {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      background: var(--cream-dark);
+      clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .hero-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-content {
-      position: relative;
-      z-index: 10;
+      max-width: 560px;
     }
 
-    .hero-logo {
-      width: 160px;
-      margin-bottom: 40px;
-      filter: drop-shadow(0 8px 30px rgba(0,0,0,0.2));
-      animation: float 5s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-15px) rotate(2deg); }
-    }
-
+    /* Logo badge */
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(10px);
-      padding: 10px 24px;
+      gap: 14px;
+      background: var(--white);
+      padding: 12px 20px 12px 12px;
       border-radius: 50px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--stone);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 32px;
     }
 
-    .hero-badge::before {
-      content: '🕊️';
+    .hero-badge-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      position: relative;
+    }
+
+    .hero-badge-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(10);
+    }
+
+    /* Nuages animés autour du badge */
+    .hero-badge-icon::before,
+    .hero-badge-icon::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      filter: blur(4px);
+    }
+
+    .hero-badge-icon::before {
+      width: 16px;
+      height: 10px;
+      top: -4px;
+      right: -6px;
+      animation: cloudMini 4s ease-in-out infinite;
+    }
+
+    .hero-badge-icon::after {
+      width: 12px;
+      height: 8px;
+      bottom: 2px;
+      left: -5px;
+      animation: cloudMini 5s ease-in-out infinite reverse;
+    }
+
+    @keyframes cloudMini {
+      0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+      50% { transform: translate(3px, -3px); opacity: 1; }
+    }
+
+    .hero-badge-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      color: var(--text);
     }
 
     .hero h1 {
-      font-size: clamp(48px, 8vw, 90px);
-      color: var(--dark);
-      line-height: 1.1;
-      margin-bottom: 28px;
-      text-shadow: 0 2px 30px rgba(255,255,255,0.8);
+      font-size: clamp(38px, 5vw, 54px);
+      color: var(--text);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
     }
 
-    .hero h1 span {
-      display: block;
+    .hero h1 em {
       font-style: italic;
-      background: linear-gradient(135deg, var(--gold) 0%, #B8942D 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--sage);
     }
 
-    .hero-subtitle {
-      font-size: clamp(18px, 2.5vw, 24px);
-      color: var(--stone);
-      max-width: 600px;
-      margin: 0 auto 50px;
-      line-height: 1.7;
-      font-weight: 300;
+    .hero-text {
+      font-size: 18px;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      line-height: 1.8;
     }
 
     .hero-buttons {
       display: flex;
-      gap: 20px;
-      justify-content: center;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
-    .btn-gold {
+    .btn {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      background: linear-gradient(135deg, var(--gold) 0%, #C4983A 100%);
-      color: white;
-      padding: 20px 44px;
-      border-radius: 60px;
-      text-decoration: none;
-      font-size: 17px;
+      gap: 10px;
+      padding: 16px 32px;
+      border-radius: 30px;
+      font-size: 15px;
       font-weight: 600;
-      letter-spacing: 0.03em;
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
-      transition: all 0.4s ease;
-    }
-
-    .btn-gold:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 45px rgba(212, 175, 55, 0.5);
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px);
-      color: var(--dark);
-      padding: 20px 44px;
-      border-radius: 60px;
       text-decoration: none;
-      font-size: 17px;
-      font-weight: 500;
-      border: 2px solid rgba(0,0,0,0.1);
-      transition: all 0.4s ease;
+      transition: all 0.3s;
     }
 
-    .btn-outline:hover {
-      background: white;
-      border-color: var(--gold);
+    .btn-primary {
+      background: var(--sage);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--sage-dark);
       transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(125, 139, 116, 0.3);
     }
 
-    .scroll-indicator {
-      position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      animation: bounce 2s ease-in-out infinite;
+    .btn-secondary {
+      background: var(--white);
+      color: var(--text);
+      border: 2px solid var(--cream-dark);
     }
 
-    .scroll-indicator span {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--stone);
+    .btn-secondary:hover {
+      border-color: var(--sage);
+      color: var(--sage-dark);
     }
 
-    .scroll-indicator .arrow {
-      width: 30px;
-      height: 30px;
-      border-right: 2px solid var(--gold);
-      border-bottom: 2px solid var(--gold);
-      transform: rotate(45deg);
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(10px); }
-    }
-
-    /* ============================================
-       SECTIONS
-       ============================================ */
-    section {
-      padding: 120px 24px;
+    /* Hero Image */
+    .hero-visual {
       position: relative;
     }
 
-    .section-bg-cream {
-      background: var(--cream);
+    .hero-image-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--cream-dark);
+      border-radius: 200px 200px 20px 20px;
+      overflow: hidden;
+      position: relative;
     }
 
-    .section-bg-white {
-      background: white;
+    .hero-image-main img {
+      width: 110%;
+      height: 110%;
+      object-fit: cover;
+      object-position: center 20%;
+      margin: -5%;
+    }
+
+    .hero-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+
+    .hero-image-placeholder svg {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    /* Floating card */
+    .hero-float-card {
+      position: absolute;
+      bottom: 40px;
+      left: -40px;
+      background: var(--white);
+      padding: 20px 24px;
+      border-radius: 16px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-float-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .hero-float-text strong {
+      display: block;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    .hero-float-text span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ===== TRUST BAR ===== */
+    .trust-bar {
+      background: var(--white);
+      padding: 50px 60px;
+      border-top: 1px solid var(--cream-dark);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .trust-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .trust-item {
+      text-align: center;
+    }
+
+    .trust-number {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(36px, 4vw, 48px);
+      color: var(--sage);
+      margin-bottom: 4px;
+    }
+
+    .trust-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ===== SERVICES ===== */
+    .services {
+      padding: 120px 60px;
+      background: var(--cream);
     }
 
     .container {
@@ -470,313 +437,471 @@
 
     .section-header {
       text-align: center;
-      max-width: 700px;
-      margin: 0 auto 80px;
+      max-width: 650px;
+      margin: 0 auto 70px;
     }
 
-    .section-label {
+    .section-tag {
       display: inline-block;
-      background: linear-gradient(135deg, var(--gold) 0%, #C4983A 100%);
-      color: white;
-      padding: 8px 20px;
-      border-radius: 50px;
-      font-size: 12px;
+      background: rgba(125, 139, 116, 0.1);
+      color: var(--sage-dark);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-
-    .section-header h2 {
-      font-size: clamp(36px, 5vw, 54px);
-      color: var(--dark);
       margin-bottom: 20px;
-      line-height: 1.2;
     }
 
-    .section-header p {
-      font-size: 19px;
-      color: var(--stone);
-      line-height: 1.7;
+    .section-title {
+      font-size: clamp(30px, 4vw, 42px);
+      color: var(--text);
+      margin-bottom: 16px;
     }
 
-    /* ============================================
-       SERVICES
-       ============================================ */
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-light);
+    }
+
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      gap: 24px;
     }
 
     .service-card {
-      background: white;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-      transition: all 0.5s ease;
-      position: relative;
-    }
-
-    .service-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      opacity: 0;
-      transition: opacity 0.4s;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border: 1px solid transparent;
     }
 
     .service-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-    }
-
-    .service-card:hover::before {
-      opacity: 1;
-    }
-
-    .service-img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-    }
-
-    .service-content {
-      padding: 32px;
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+      border-color: var(--sage-light);
     }
 
     .service-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(125, 139, 116, 0.15) 0%, rgba(125, 139, 116, 0.05) 100%);
       border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 28px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
     }
 
     .service-card h3 {
-      font-size: 24px;
-      color: var(--dark);
-      margin-bottom: 12px;
+      font-size: 20px;
+      color: var(--text);
+      margin-bottom: 10px;
     }
 
     .service-card p {
       font-size: 15px;
-      color: var(--stone);
+      color: var(--text-light);
       line-height: 1.7;
     }
 
-    /* ============================================
-       VALEURS / CONFIANCE
-       ============================================ */
-    .values-section {
-      background: linear-gradient(180deg, var(--cream) 0%, white 100%);
+    /* ===== AVANT/APRÈS ===== */
+    .before-after {
+      padding: 120px 60px;
+      background: var(--white);
     }
 
-    .values-grid {
+    .ba-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+      align-items: center;
     }
 
-    .value-item {
-      text-align: center;
-      padding: 40px 24px;
-      background: white;
+    .ba-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .ba-image {
+      aspect-ratio: 3/4;
       border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-      transition: all 0.4s ease;
+      overflow: hidden;
+      position: relative;
+      background: var(--cream-dark);
     }
 
-    .value-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    .ba-image:first-child {
+      transform: translateY(30px);
     }
 
-    .value-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, #E8F4FA 0%, #D0EBF7 100%);
+    .ba-image img {
+      width: 115%;
+      height: 115%;
+      object-fit: cover;
+      object-position: center 15%;
+      margin: -7.5%;
+    }
+
+    .ba-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .ba-label {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: var(--white);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ba-label.after {
+      background: var(--sage);
+      color: white;
+    }
+
+    .ba-content h2 {
+      font-size: clamp(30px, 4vw, 40px);
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .ba-content > p {
+      font-size: 17px;
+      color: var(--text-light);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .ba-features {
+      list-style: none;
+    }
+
+    .ba-features li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--cream-dark);
+      font-size: 16px;
+    }
+
+    .ba-features li::before {
+      content: '✓';
+      width: 28px;
+      height: 28px;
+      background: rgba(125, 139, 116, 0.1);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 32px;
-    }
-
-    .value-item h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      color: var(--dark);
-      margin-bottom: 10px;
-    }
-
-    .value-item p {
+      color: var(--sage);
       font-size: 14px;
-      color: var(--stone);
-      line-height: 1.6;
+      font-weight: bold;
     }
 
-    /* ============================================
-       FORMULES
-       ============================================ */
-    .formules-grid {
+    /* ===== GALERIE ===== */
+    .gallery {
+      padding: 120px 60px;
+      background: var(--cream);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background: var(--cream-dark);
+    }
+
+    .gallery-item:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+      border-radius: 24px;
+    }
+
+    .gallery-item img {
+      width: 115%;
+      height: 115%;
+      object-fit: cover;
+      object-position: center 20%;
+      margin: -7.5%;
+      transition: transform 0.6s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(44, 44, 44, 0.7) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-overlay span {
+      color: white;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* ===== FORMULES ===== */
+    .pricing {
+      padding: 120px 60px;
+      background: var(--white);
+    }
+
+    .pricing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      align-items: start;
+      gap: 24px;
     }
 
-    .formule-card {
-      background: white;
-      border-radius: 28px;
-      padding: 48px 36px;
+    .pricing-card {
+      background: var(--cream);
+      border-radius: 24px;
+      padding: 40px 32px;
       text-align: center;
       position: relative;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-      transition: all 0.5s ease;
+      transition: all 0.4s;
       border: 2px solid transparent;
     }
 
-    .formule-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-    }
-
-    .formule-card.popular {
-      background: linear-gradient(180deg, var(--dark) 0%, #1A1715 100%);
+    .pricing-card.featured {
+      background: var(--sage);
       color: white;
       transform: scale(1.05);
-      border-color: var(--gold);
     }
 
-    .formule-card.popular:hover {
-      transform: scale(1.05) translateY(-8px);
+    .pricing-card:not(.featured):hover {
+      border-color: var(--sage);
     }
 
-    .formule-badge {
+    .pricing-badge {
       position: absolute;
       top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--gold) 0%, #DAB84A 100%);
-      color: var(--dark);
-      padding: 10px 28px;
-      border-radius: 50px;
+      background: var(--gold);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      white-space: nowrap;
+      font-weight: 600;
+      letter-spacing: 0.03em;
     }
 
-    .formule-card h3 {
-      font-size: 32px;
-      margin-bottom: 8px;
+    .pricing-card h3 {
+      font-size: 26px;
+      margin-bottom: 6px;
     }
 
-    .formule-card:not(.popular) h3 {
-      color: var(--dark);
-    }
+    .pricing-card:not(.featured) h3 { color: var(--text); }
 
-    .formule-freq {
+    .pricing-freq {
       font-size: 14px;
-      opacity: 0.6;
       margin-bottom: 24px;
     }
 
-    .formule-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 56px;
-      font-weight: 700;
-      margin-bottom: 32px;
+    .pricing-card:not(.featured) .pricing-freq { color: var(--text-muted); }
+    .pricing-card.featured .pricing-freq { color: rgba(255,255,255,0.7); }
+
+    .pricing-price {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 48px;
+      margin-bottom: 28px;
     }
 
-    .formule-card:not(.popular) .formule-price {
-      color: var(--gold);
+    .pricing-card:not(.featured) .pricing-price { color: var(--sage); }
+    .pricing-card.featured .pricing-price { color: white; }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-family: 'Source Sans 3', sans-serif;
     }
 
-    .formule-card.popular .formule-price {
-      color: var(--gold-light);
-    }
+    .pricing-card:not(.featured) .pricing-price span { color: var(--text-muted); }
+    .pricing-card.featured .pricing-price span { color: rgba(255,255,255,0.7); }
 
-    .formule-price span {
-      font-size: 18px;
-      font-weight: 400;
-      font-family: 'Outfit', sans-serif;
-    }
-
-    .formule-features {
+    .pricing-features {
       list-style: none;
       text-align: left;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
     }
 
-    .formule-features li {
+    .pricing-features li {
+      padding: 12px 0;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-card:not(.featured) .pricing-features li {
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .pricing-card.featured .pricing-features li {
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .pricing-card:not(.featured) .pricing-features li::before { color: var(--sage); }
+    .pricing-card.featured .pricing-features li::before { color: var(--gold-light); }
+
+    .pricing-cta {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .pricing-card:not(.featured) .pricing-cta {
+      background: var(--sage);
+      color: white;
+    }
+
+    .pricing-card:not(.featured) .pricing-cta:hover {
+      background: var(--sage-dark);
+    }
+
+    .pricing-card.featured .pricing-cta {
+      background: white;
+      color: var(--sage-dark);
+    }
+
+    .pricing-card.featured .pricing-cta:hover {
+      background: var(--cream);
+    }
+
+    /* ===== TÉMOIGNAGES ===== */
+    .testimonials {
+      padding: 120px 60px;
+      background: var(--cream);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .testimonial-card:hover {
+      box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-text {
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      font-size: 15px;
     }
 
-    .formule-card.popular .formule-features li {
-      border-color: rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.85);
-    }
-
-    .formule-features li::before {
-      content: '✓';
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .formule-cta {
-      display: block;
-      width: 100%;
-      padding: 18px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      transition: all 0.4s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .formule-card:not(.popular) .formule-cta {
-      background: linear-gradient(135deg, var(--gold) 0%, #C4983A 100%);
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
     }
 
-    .formule-card:not(.popular) .formule-cta:hover {
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
-      transform: translateY(-2px);
+    .testimonial-name {
+      font-weight: 600;
+      color: var(--text);
     }
 
-    .formule-card.popular .formule-cta {
-      background: var(--gold);
-      color: var(--dark);
+    .testimonial-location {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
-    .formule-card.popular .formule-cta:hover {
-      background: var(--gold-light);
+    /* ===== ZONE ===== */
+    .zone {
+      padding: 120px 60px;
+      background: var(--white);
     }
 
-    /* ============================================
-       ZONE
-       ============================================ */
     .zone-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -784,218 +909,228 @@
       align-items: center;
     }
 
-    .zone-text h2 {
-      font-size: clamp(36px, 4vw, 48px);
-      color: var(--dark);
-      margin-bottom: 24px;
+    .zone-map {
+      aspect-ratio: 4/3;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--cream-dark);
     }
 
-    .zone-text > p {
-      font-size: 18px;
-      color: var(--stone);
-      margin-bottom: 36px;
-      line-height: 1.8;
+    .zone-map img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .zone-map-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
     }
 
     .zone-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      margin-top: 32px;
     }
 
     .zone-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       padding: 16px 20px;
-      background: white;
+      background: var(--cream);
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
       font-size: 15px;
-      color: var(--text);
-      transition: all 0.3s ease;
-      border-left: 3px solid transparent;
+      font-weight: 500;
+      transition: all 0.3s;
+      border: 1px solid transparent;
     }
 
     .zone-item:hover {
-      border-left-color: var(--gold);
-      transform: translateX(5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      border-color: var(--sage);
+      background: rgba(125, 139, 116, 0.08);
     }
 
-    .zone-item::before {
-      content: '📍';
+    /* ===== CONTACT ===== */
+    .contact {
+      padding: 120px 60px;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
     }
 
-    .zone-visual {
-      background: linear-gradient(135deg, #E8F4FA 0%, #D0EBF7 100%);
-      border-radius: 30px;
-      height: 500px;
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+    }
+
+    .contact-info h2 {
+      font-size: clamp(30px, 4vw, 40px);
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .contact-info > p {
+      font-size: 17px;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+
+    .contact-details {
+      list-style: none;
+    }
+
+    .contact-details li {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 16px;
+    }
+
+    .contact-details li span {
+      width: 44px;
+      height: 44px;
+      background: var(--sage);
+      border-radius: 12px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      overflow: hidden;
+      font-size: 18px;
     }
 
-    .zone-visual::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 50%);
-    }
-
-    .zone-visual .map-icon {
-      font-size: 80px;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .zone-visual p {
-      color: var(--stone);
-      font-size: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ============================================
-       CONTACT
-       ============================================ */
-    .contact-section {
-      background: linear-gradient(180deg, white 0%, var(--cream) 100%);
-    }
-
-    .contact-card {
-      background: white;
-      border-radius: 32px;
-      padding: 60px 50px;
-      max-width: 700px;
-      margin: 0 auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    .contact-form {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 48px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.06);
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
     .form-group {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
       font-size: 14px;
       font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 10px;
+      color: var(--text);
+      margin-bottom: 8px;
     }
 
     .form-group input,
-    .form-group textarea,
-    .form-group select {
+    .form-group textarea {
       width: 100%;
-      padding: 18px 22px;
-      border: 2px solid #EEE;
-      border-radius: 14px;
-      font-size: 16px;
+      padding: 14px 18px;
+      background: var(--cream);
+      border: 2px solid var(--cream);
+      border-radius: 12px;
+      font-size: 15px;
       font-family: inherit;
       transition: all 0.3s;
-      background: #FAFAFA;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
+    .form-group textarea:focus {
       outline: none;
-      border-color: var(--gold);
-      background: white;
-      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+      border-color: var(--sage);
+      background: var(--white);
     }
 
     .form-group textarea {
-      min-height: 140px;
+      min-height: 120px;
       resize: vertical;
     }
 
     .form-submit {
       width: 100%;
-      background: linear-gradient(135deg, var(--gold) 0%, #C4983A 100%);
+      padding: 16px;
+      background: var(--sage);
       color: white;
-      padding: 20px;
       border: none;
-      border-radius: 50px;
-      font-size: 18px;
+      border-radius: 30px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.35);
-      margin-top: 16px;
+      transition: all 0.3s;
     }
 
     .form-submit:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.5);
+      background: var(--sage-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(125, 139, 116, 0.3);
     }
 
-    .form-note {
-      text-align: center;
-      font-size: 13px;
-      color: var(--stone);
-      margin-top: 24px;
-    }
-
-    /* ============================================
-       FOOTER
-       ============================================ */
+    /* ===== FOOTER ===== */
     footer {
-      background: var(--dark);
+      background: var(--text);
       color: white;
-      padding: 80px 24px 40px;
+      padding: 80px 60px 40px;
     }
 
     .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 60px;
-      max-width: 1100px;
-      margin: 0 auto 50px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .footer-brand h3 {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .footer-brand .tagline {
-      color: var(--gold);
-      font-size: 13px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 20px;
     }
 
-    .footer-brand p {
+    .footer-brand-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--sage);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+    }
+
+    .footer-brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(10);
+    }
+
+    .footer-brand span {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+    }
+
+    .footer-col p {
       color: rgba(255,255,255,0.6);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.8;
-      max-width: 300px;
     }
 
     .footer-col h4 {
-      font-family: 'Outfit', sans-serif;
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
+      color: var(--sage-light);
+      margin-bottom: 20px;
+      font-family: 'Source Sans 3', sans-serif;
     }
 
     .footer-col ul {
@@ -1003,13 +1138,13 @@
     }
 
     .footer-col li {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .footer-col a {
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.6);
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       transition: color 0.3s;
     }
 
@@ -1017,390 +1152,428 @@
       color: white;
     }
 
-    .footer-contact-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: rgba(255,255,255,0.7);
-      font-size: 15px;
-      margin-bottom: 14px;
-    }
-
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 30px;
+      max-width: 1200px;
+      margin: 30px auto 0;
       display: flex;
       justify-content: space-between;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .footer-bottom p, .footer-bottom a {
+      font-size: 13px;
       color: rgba(255,255,255,0.4);
-      font-size: 14px;
-      text-decoration: none;
     }
 
-    .footer-bottom a:hover {
-      color: white;
-    }
-
-    /* ============================================
-       RESPONSIVE
-       ============================================ */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
-      .services-grid, .formules-grid { grid-template-columns: repeat(2, 1fr); }
-      .values-grid { grid-template-columns: repeat(2, 1fr); }
-      .formule-card.popular { transform: none; }
-      .formule-card.popular:hover { transform: translateY(-8px); }
-    }
-
-    @media (max-width: 900px) {
-      nav { padding: 16px 24px; }
+      nav { padding: 15px 24px; }
+      nav.scrolled { padding: 12px 24px; }
       .nav-links { display: none; }
-      .zone-grid { grid-template-columns: 1fr; gap: 50px; }
-      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      .hero, .services, .before-after, .gallery, .pricing, .testimonials, .zone, .contact {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero-container, .ba-grid, .zone-grid, .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .hero-bg-pattern { display: none; }
+      .hero-visual { order: -1; }
+      .hero-image-main { aspect-ratio: 4/3; border-radius: 24px; }
+      .hero-float-card { left: 20px; bottom: 20px; }
+
+      .services-grid, .pricing-grid, .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
+
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .pricing-card.featured { transform: none; }
     }
 
-    @media (max-width: 768px) {
-      .services-grid, .formules-grid, .values-grid { grid-template-columns: 1fr; }
-      .hero-buttons { flex-direction: column; align-items: center; }
-      .form-row { grid-template-columns: 1fr; }
-      .zone-list { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
-      .contact-card { padding: 40px 28px; }
-    }
+    @media (max-width: 600px) {
+      .services-grid, .pricing-grid, .testimonials-grid, .footer-grid {
+        grid-template-columns: 1fr;
+      }
 
-    /* ============================================
-       ANIMATIONS
-       ============================================ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:first-child { grid-column: span 1; }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+      .form-row, .zone-list, .ba-images { grid-template-columns: 1fr; }
+      .ba-image:first-child { transform: none; }
+
+      .hero-buttons { flex-direction: column; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .trust-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
     }
   </style>
 </head>
 <body>
-  <!-- Ciel avec nuages animés -->
-  <div class="sky">
-    <div class="sun"></div>
-
-    <div class="cloud cloud-1">
-      <div class="cloud-layer cl-1"></div>
-      <div class="cloud-layer cl-2"></div>
-      <div class="cloud-layer cl-3"></div>
-      <div class="cloud-layer cl-4"></div>
-      <div class="cloud-layer cl-5"></div>
-    </div>
-
-    <div class="cloud cloud-2">
-      <div class="cloud-layer cl-1"></div>
-      <div class="cloud-layer cl-2"></div>
-      <div class="cloud-layer cl-3"></div>
-    </div>
-
-    <div class="cloud cloud-3">
-      <div class="cloud-layer cl-1"></div>
-      <div class="cloud-layer cl-2"></div>
-      <div class="cloud-layer cl-3"></div>
-    </div>
-
-    <div class="cloud cloud-4">
-      <div class="cloud-layer cl-1"></div>
-      <div class="cloud-layer cl-2"></div>
-      <div class="cloud-layer cl-3"></div>
-      <div class="cloud-layer cl-4"></div>
-    </div>
-
-    <div class="cloud cloud-5">
-      <div class="cloud-layer cl-1"></div>
-      <div class="cloud-layer cl-2"></div>
-      <div class="cloud-layer cl-3"></div>
-    </div>
-  </div>
 
   <!-- Navigation -->
   <nav id="navbar">
-    <a href="#" class="logo">
-      <img src="logo.png" alt="Renovacieux" onerror="this.style.display='none'">
-      <div class="logo-text">
-        <span class="logo-main">Renovacieux</span>
-        <span class="logo-sub">Rénovation de tombes</span>
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <img src="logo.png" alt="">
       </div>
+      <span class="nav-logo-text">Renovacieux</span>
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#realisations">Réalisations</a></li>
       <li><a href="#formules">Formules</a></li>
       <li><a href="#zone">Zone</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="#contact" class="nav-cta">Devis gratuit</a>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-content">
-      <img src="logo.png" alt="Renovacieux" class="hero-logo" onerror="this.style.display='none'">
-      <div class="hero-badge">Paris & Île-de-France</div>
-      <h1>Prenons soin de<span>leur mémoire</span></h1>
-      <p class="hero-subtitle">
-        Nous entretenons et rénovons les sépultures de vos proches avec respect, délicatesse et professionnalisme.
-      </p>
-      <div class="hero-buttons">
-        <a href="#contact" class="btn-gold">
-          Demander un devis gratuit
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-        <a href="#services" class="btn-outline">Découvrir nos services</a>
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <div class="hero-badge-icon">
+            <img src="logo.png" alt="Renovacieux">
+          </div>
+          <span class="hero-badge-text">Renovacieux</span>
+        </div>
+
+        <h1 class="reveal reveal-delay-1">Préservons la mémoire <em>de ceux qui comptent</em></h1>
+        <p class="hero-text reveal reveal-delay-2">
+          Service professionnel de rénovation et d'entretien de sépultures à Paris et en Île-de-France. Avec soin, respect et dignité.
+        </p>
+        <div class="hero-buttons reveal reveal-delay-3">
+          <a href="#contact" class="btn btn-primary">
+            Demander un devis
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
+        </div>
       </div>
-    </div>
-    <div class="scroll-indicator">
-      <span>Défiler</span>
-      <div class="arrow"></div>
+
+      <div class="hero-visual reveal">
+        <div class="hero-image-main">
+          <img src="img-hero.png" alt="Tombe rénovée avec fleurs fraîches">
+        </div>
+        <div class="hero-float-card">
+          <div class="hero-float-icon">📸</div>
+          <div class="hero-float-text">
+            <strong>Avant / Après</strong>
+            <span>Photos à chaque intervention</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Valeurs -->
-  <section class="values-section section-bg-cream">
-    <div class="container">
-      <div class="values-grid">
-        <div class="value-item reveal">
-          <div class="value-icon">🛡️</div>
-          <h4>Confiance</h4>
-          <p>Un service fiable et transparent</p>
-        </div>
-        <div class="value-item reveal">
-          <div class="value-icon">📸</div>
-          <h4>Photos avant/après</h4>
-          <p>Constatez notre travail</p>
-        </div>
-        <div class="value-item reveal">
-          <div class="value-icon">📅</div>
-          <h4>Interventions planifiées</h4>
-          <p>Suivi régulier garanti</p>
-        </div>
-        <div class="value-item reveal">
-          <div class="value-icon">✅</div>
-          <h4>Satisfaction garantie</h4>
-          <p>Votre sérénité, notre priorité</p>
-        </div>
+  <!-- Trust Bar -->
+  <section class="trust-bar">
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <div class="trust-number" data-target="500">0+</div>
+        <div class="trust-label">Tombes rénovées</div>
+      </div>
+      <div class="trust-item reveal reveal-delay-1">
+        <div class="trust-number">100%</div>
+        <div class="trust-label">Clients satisfaits</div>
+      </div>
+      <div class="trust-item reveal reveal-delay-2">
+        <div class="trust-number">8</div>
+        <div class="trust-label">Départements couverts</div>
+      </div>
+      <div class="trust-item reveal reveal-delay-3">
+        <div class="trust-number">24h</div>
+        <div class="trust-label">Délai de réponse</div>
       </div>
     </div>
   </section>
 
   <!-- Services -->
-  <section id="services" class="section-bg-white">
+  <section id="services" class="services">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">Nos services</span>
-        <h2>Un soin attentif pour chaque sépulture</h2>
-        <p>Nous intervenons avec le plus grand respect pour redonner à la tombe de vos proches toute sa dignité.</p>
+        <span class="section-tag reveal">Nos Services</span>
+        <h2 class="section-title reveal reveal-delay-1">Un soin attentif pour chaque sépulture</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Nous redonnons dignité et éclat aux tombes de vos proches avec professionnalisme.</p>
       </div>
 
       <div class="services-grid">
         <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=440&fit=crop" alt="Nettoyage" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">🧹</div>
-            <h3>Nettoyage complet</h3>
-            <p>Nettoyage minutieux de la pierre tombale, stèle et entourage avec des produits professionnels.</p>
+          <div class="service-icon">🧹</div>
+          <h3>Nettoyage complet</h3>
+          <p>Nettoyage en profondeur de la pierre tombale et de l'entourage avec des produits adaptés.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon">🌿</div>
+          <h3>Entretien végétal</h3>
+          <p>Désherbage minutieux, taille des plantes et entretien de la jardinière.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon">💐</div>
+          <h3>Fleurissement</h3>
+          <p>Compositions florales naturelles ou artificielles adaptées aux saisons.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon">✨</div>
+          <h3>Dorures & Gravures</h3>
+          <p>Ravivage des dorures ternies et restauration des inscriptions.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon">📸</div>
+          <h3>Photos & Rapports</h3>
+          <p>Photos avant/après et rapport détaillé envoyés systématiquement.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-icon">🕯️</div>
+          <h3>Dates importantes</h3>
+          <p>Bougies et fleurs pour les anniversaires, Toussaint et dates qui comptent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avant/Après -->
+  <section id="realisations" class="before-after">
+    <div class="container">
+      <div class="ba-grid">
+        <div class="ba-images reveal">
+          <div class="ba-image">
+            <img src="img-avant.png" alt="Tombe avant rénovation">
+            <span class="ba-label">Avant</span>
+          </div>
+          <div class="ba-image">
+            <img src="img-apres.png" alt="Tombe après rénovation">
+            <span class="ba-label after">Après</span>
           </div>
         </div>
 
-        <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=440&fit=crop" alt="Végétal" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">🌿</div>
-            <h3>Entretien végétal</h3>
-            <p>Désherbage soigné, taille des plantes et entretien de la jardinière.</p>
-          </div>
+        <div class="ba-content">
+          <span class="section-tag reveal">Résultats</span>
+          <h2 class="reveal reveal-delay-1">Des résultats qui parlent d'eux-mêmes</h2>
+          <p class="reveal reveal-delay-2">Nous vous envoyons systématiquement des photos avant et après chaque intervention. Gardez un lien avec le lieu de mémoire de vos proches, même à distance.</p>
+          <ul class="ba-features">
+            <li class="reveal reveal-delay-2">Photos haute qualité envoyées par email</li>
+            <li class="reveal reveal-delay-3">Rapport détaillé de chaque intervention</li>
+            <li class="reveal reveal-delay-3">Signalement proactif des dégradations</li>
+          </ul>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&h=440&fit=crop" alt="Fleurs" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">💐</div>
-            <h3>Dépôt de fleurs</h3>
-            <p>Compositions florales fraîches ou artificielles adaptées aux saisons.</p>
-          </div>
+  <!-- Galerie -->
+  <section class="gallery">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">Galerie</span>
+        <h2 class="section-title reveal reveal-delay-1">Nos interventions en images</h2>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item reveal">
+          <img src="img-galerie-2.png" alt="Caveau rénové">
+          <div class="gallery-overlay"><span>Rénovation complète</span></div>
         </div>
-
-        <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1531746790095-e6e6a356e7fb?w=600&h=440&fit=crop" alt="Gravures" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">✨</div>
-            <h3>Rénovation des gravures</h3>
-            <p>Ravivage des dorures, nettoyage et restauration des inscriptions.</p>
-          </div>
+        <div class="gallery-item reveal reveal-delay-1">
+          <img src="img-galerie-1.png" alt="Tombe entretenue">
+          <div class="gallery-overlay"><span>Entretien régulier</span></div>
         </div>
-
-        <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&h=440&fit=crop" alt="Photos" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">📸</div>
-            <h3>Photos avant/après</h3>
-            <p>Envoi systématique de photos pour votre tranquillité d'esprit.</p>
-          </div>
+        <div class="gallery-item reveal reveal-delay-2">
+          <img src="img-galerie-4.png" alt="Fleurissement">
+          <div class="gallery-overlay"><span>Fleurissement</span></div>
         </div>
-
-        <div class="service-card reveal">
-          <img src="https://images.unsplash.com/photo-1603905179580-ee8380103a63?w=600&h=440&fit=crop" alt="Recueillement" class="service-img">
-          <div class="service-content">
-            <div class="service-icon">🕯️</div>
-            <h3>Recueillement</h3>
-            <p>Dépôt de bougies pour les dates importantes que vous nous confiez.</p>
-          </div>
+        <div class="gallery-item reveal reveal-delay-2">
+          <img src="img-galerie-3.png" alt="Nettoyage">
+          <div class="gallery-overlay"><span>Nettoyage pierre</span></div>
+        </div>
+        <div class="gallery-item reveal reveal-delay-3">
+          <img src="img-galerie-5.png" alt="Tombe entretenue">
+          <div class="gallery-overlay"><span>Sépulture entretenue</span></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Formules -->
-  <section id="formules" class="section-bg-cream">
+  <section id="formules" class="pricing">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">Nos formules</span>
-        <h2>Choisissez votre tranquillité</h2>
-        <p>Des formules adaptées à vos besoins, pour un entretien ponctuel ou régulier.</p>
+        <span class="section-tag reveal">Nos Formules</span>
+        <h2 class="section-title reveal reveal-delay-1">Choisissez votre tranquillité</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Des formules adaptées à vos besoins et votre budget.</p>
       </div>
 
-      <div class="formules-grid">
-        <div class="formule-card reveal">
+      <div class="pricing-grid">
+        <div class="pricing-card reveal">
           <h3>Ponctuel</h3>
-          <p class="formule-freq">Intervention unique</p>
-          <p class="formule-price">Sur devis</p>
-          <ul class="formule-features">
+          <p class="pricing-freq">Intervention unique</p>
+          <p class="pricing-price">Devis</p>
+          <ul class="pricing-features">
             <li>Nettoyage complet</li>
             <li>Désherbage</li>
             <li>Photos avant/après</li>
             <li>Rapport d'intervention</li>
           </ul>
-          <a href="#contact" class="formule-cta">Demander un devis</a>
+          <a href="#contact" class="pricing-cta">Demander un devis</a>
         </div>
 
-        <div class="formule-card popular reveal">
-          <span class="formule-badge">Le plus populaire</span>
+        <div class="pricing-card featured reveal reveal-delay-1">
+          <span class="pricing-badge">Populaire</span>
           <h3>Sérénité</h3>
-          <p class="formule-freq">2 passages par an</p>
-          <p class="formule-price">180€<span>/an</span></p>
-          <ul class="formule-features">
+          <p class="pricing-freq">2 passages par an</p>
+          <p class="pricing-price">180€<span>/an</span></p>
+          <ul class="pricing-features">
             <li>2 nettoyages complets</li>
             <li>Désherbage inclus</li>
             <li>Fleurs de saison</li>
             <li>Photos avant/après</li>
             <li>Rappel anniversaires</li>
           </ul>
-          <a href="#contact" class="formule-cta">Choisir Sérénité</a>
+          <a href="#contact" class="pricing-cta">Choisir cette formule</a>
         </div>
 
-        <div class="formule-card reveal">
+        <div class="pricing-card reveal reveal-delay-2">
           <h3>Tranquillité</h3>
-          <p class="formule-freq">4 passages par an</p>
-          <p class="formule-price">320€<span>/an</span></p>
-          <ul class="formule-features">
+          <p class="pricing-freq">4 passages par an</p>
+          <p class="pricing-price">320€<span>/an</span></p>
+          <ul class="pricing-features">
             <li>4 nettoyages complets</li>
             <li>Entretien trimestriel</li>
             <li>Fleurs chaque saison</li>
             <li>Photos et rapport</li>
             <li>Priorité intervention</li>
           </ul>
-          <a href="#contact" class="formule-cta">Demander un devis</a>
+          <a href="#contact" class="pricing-cta">Demander un devis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Témoignages -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">Témoignages</span>
+        <h2 class="section-title reveal reveal-delay-1">Ce que disent nos clients</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Habitant loin de Paris, je ne pouvais plus entretenir la tombe de mes parents. Renovacieux s'en occupe avec un soin remarquable."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Marie D.</div>
+              <div class="testimonial-location">Lyon</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Service impeccable et très respectueux. La tombe de ma mère au Père Lachaise n'a jamais été aussi belle."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">P</div>
+            <div>
+              <div class="testimonial-name">Philippe R.</div>
+              <div class="testimonial-location">Bordeaux</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Expatriée depuis 10 ans, je culpabilisais de ne pas pouvoir entretenir la sépulture familiale. Merci pour ce service humain."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">C</div>
+            <div>
+              <div class="testimonial-name">Claire M.</div>
+              <div class="testimonial-location">Londres</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Zone -->
-  <section id="zone" class="section-bg-white">
+  <section id="zone" class="zone">
     <div class="container">
       <div class="zone-grid">
-        <div class="zone-text reveal">
-          <h2>Zone d'intervention</h2>
-          <p>Nous intervenons dans Paris et tous les départements d'Île-de-France. Contactez-nous pour vérifier que nous couvrons votre cimetière.</p>
+        <div>
+          <span class="section-tag reveal">Zone d'intervention</span>
+          <h2 class="section-title reveal reveal-delay-1">Paris & Île-de-France</h2>
+          <p class="section-subtitle reveal reveal-delay-2">Nous intervenons dans tous les cimetières de Paris et des départements franciliens.</p>
           <div class="zone-list">
-            <div class="zone-item">Paris (75)</div>
-            <div class="zone-item">Hauts-de-Seine (92)</div>
-            <div class="zone-item">Seine-Saint-Denis (93)</div>
-            <div class="zone-item">Val-de-Marne (94)</div>
-            <div class="zone-item">Yvelines (78)</div>
-            <div class="zone-item">Essonne (91)</div>
-            <div class="zone-item">Val-d'Oise (95)</div>
-            <div class="zone-item">Seine-et-Marne (77)</div>
+            <div class="zone-item reveal">Paris (75)</div>
+            <div class="zone-item reveal reveal-delay-1">Hauts-de-Seine (92)</div>
+            <div class="zone-item reveal reveal-delay-1">Seine-Saint-Denis (93)</div>
+            <div class="zone-item reveal reveal-delay-2">Val-de-Marne (94)</div>
+            <div class="zone-item reveal reveal-delay-2">Yvelines (78)</div>
+            <div class="zone-item reveal reveal-delay-3">Essonne (91)</div>
+            <div class="zone-item reveal reveal-delay-3">Val-d'Oise (95)</div>
+            <div class="zone-item reveal reveal-delay-3">Seine-et-Marne (77)</div>
           </div>
         </div>
-        <div class="zone-visual reveal">
-          <div class="map-icon">🗺️</div>
-          <p>Carte interactive à venir</p>
+        <div class="zone-map reveal">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80" alt="Paris" style="width:100%;height:100%;object-fit:cover;filter:grayscale(30%);">
         </div>
       </div>
     </div>
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="contact-section">
+  <section id="contact" class="contact">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Contact</span>
-        <h2>Demandez votre devis gratuit</h2>
-        <p>Remplissez le formulaire et nous vous recontacterons sous 24h.</p>
-      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <span class="section-tag reveal">Contact</span>
+          <h2 class="reveal reveal-delay-1">Demandez votre devis gratuit</h2>
+          <p class="reveal reveal-delay-2">Décrivez-nous votre besoin et nous vous recontacterons sous 24h pour vous proposer une solution adaptée.</p>
+          <ul class="contact-details">
+            <li class="reveal reveal-delay-3"><span>📞</span> 06 XX XX XX XX</li>
+            <li class="reveal reveal-delay-3"><span>✉️</span> contact@renovation-tombe.com</li>
+            <li class="reveal reveal-delay-3"><span>📍</span> Paris & Île-de-France</li>
+          </ul>
+        </div>
 
-      <div class="contact-card reveal">
-        <form id="contact-form">
+        <form class="contact-form reveal" id="contactForm">
           <div class="form-row">
             <div class="form-group">
-              <label>Nom *</label>
-              <input type="text" name="nom" required placeholder="Votre nom">
+              <label>Nom</label>
+              <input type="text" name="nom" required>
             </div>
             <div class="form-group">
-              <label>Prénom *</label>
-              <input type="text" name="prenom" required placeholder="Votre prénom">
+              <label>Prénom</label>
+              <input type="text" name="prenom" required>
             </div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
-              <label>Email *</label>
-              <input type="email" name="email" required placeholder="votre@email.com">
+              <label>Email</label>
+              <input type="email" name="email" required>
             </div>
             <div class="form-group">
               <label>Téléphone</label>
-              <input type="tel" name="telephone" placeholder="06 00 00 00 00">
+              <input type="tel" name="telephone">
             </div>
           </div>
-
           <div class="form-group">
             <label>Cimetière concerné</label>
             <input type="text" name="cimetiere" placeholder="Nom et ville du cimetière">
           </div>
-
-          <div class="form-group">
-            <label>Formule souhaitée</label>
-            <select name="formule">
-              <option value="">Sélectionnez une formule</option>
-              <option value="ponctuel">Intervention ponctuelle</option>
-              <option value="serenite">Formule Sérénité</option>
-              <option value="tranquillite">Formule Tranquillité</option>
-              <option value="autre">Je ne sais pas encore</option>
-            </select>
-          </div>
-
           <div class="form-group">
             <label>Votre message</label>
             <textarea name="message" placeholder="Décrivez votre besoin..."></textarea>
           </div>
-
           <button type="submit" class="form-submit">Envoyer ma demande</button>
         </form>
-        <p class="form-note">🔒 Vos données sont confidentielles.</p>
       </div>
     </div>
   </section>
@@ -1408,57 +1581,89 @@
   <!-- Footer -->
   <footer>
     <div class="footer-grid">
-      <div class="footer-brand">
-        <h3>Renovacieux</h3>
-        <p class="tagline">Rénovation de tombes</p>
-        <p>Prenons soin de la mémoire de vos proches avec respect et professionnalisme.</p>
+      <div class="footer-col">
+        <div class="footer-brand">
+          <div class="footer-brand-icon">
+            <img src="logo.png" alt="">
+          </div>
+          <span>Renovacieux</span>
+        </div>
+        <p>Service professionnel de rénovation et d'entretien de sépultures. Nous prenons soin de la mémoire de vos proches avec respect et dignité.</p>
       </div>
       <div class="footer-col">
         <h4>Navigation</h4>
         <ul>
-          <li><a href="#services">Nos services</a></li>
-          <li><a href="#formules">Nos formules</a></li>
-          <li><a href="#zone">Zone d'intervention</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#realisations">Réalisations</a></li>
+          <li><a href="#formules">Formules</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
+        <h4>Zone</h4>
+        <ul>
+          <li><a href="#zone">Paris (75)</a></li>
+          <li><a href="#zone">Hauts-de-Seine (92)</a></li>
+          <li><a href="#zone">Seine-Saint-Denis (93)</a></li>
+          <li><a href="#zone">Val-de-Marne (94)</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
         <h4>Contact</h4>
-        <div class="footer-contact-item">📞 06 XX XX XX XX</div>
-        <div class="footer-contact-item">✉️ contact@renovation-tombe.com</div>
-        <div class="footer-contact-item">📍 Paris & Île-de-France</div>
+        <p>06 XX XX XX XX</p>
+        <p>contact@renovation-tombe.com</p>
+        <p style="margin-top: 12px;">Paris & Île-de-France</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Renovacieux. Tous droits réservés.</p>
-      <a href="#">Mentions légales</a>
+      <span>© 2026 Renovacieux. Tous droits réservés.</span>
+      <a href="#" style="color: inherit; text-decoration: none;">Mentions légales</a>
     </div>
   </footer>
 
   <script>
-    // Navbar
+    // Navbar scroll
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.pageYOffset > 50);
     });
 
-    // Reveal animations
+    // Reveal on scroll
     const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    // Form
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Merci ! Nous vous recontacterons sous 24h.');
-      this.reset();
-    });
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // Counter animation
+    const counters = document.querySelectorAll('.trust-number');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target.dataset.target) {
+          const target = parseInt(entry.target.dataset.target);
+          let count = 0;
+          const increment = target / 60;
+          const updateCount = () => {
+            count += increment;
+            if (count < target) {
+              entry.target.textContent = Math.ceil(count) + '+';
+              requestAnimationFrame(updateCount);
+            } else {
+              entry.target.textContent = target + '+';
+            }
+          };
+          updateCount();
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => counterObserver.observe(c));
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -1467,6 +1672,14 @@
         document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // Form
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Merci ! Nous vous recontacterons sous 24h.');
+      this.reset();
+    });
   </script>
+
 </body>
 </html>
