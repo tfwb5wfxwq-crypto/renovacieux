@@ -1038,6 +1038,50 @@
       box-shadow: 0 10px 30px rgba(125, 139, 116, 0.3);
     }
 
+    /* Form validation */
+    .form-group input:invalid:not(:placeholder-shown),
+    .form-group textarea:invalid:not(:placeholder-shown) {
+      border-color: #e07a7a;
+    }
+
+    .form-group.error input,
+    .form-group.error textarea,
+    .form-group.error select {
+      border-color: #e07a7a;
+      background: #fff8f8;
+    }
+
+    .form-error {
+      color: #c45a5a;
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .form-group.error .form-error {
+      display: block;
+    }
+
+    .form-success {
+      background: var(--sage);
+      color: white;
+      padding: 20px 24px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+      margin-top: 20px;
+    }
+
+    .form-success.show {
+      display: block;
+      animation: fadeInUp 0.4s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background: var(--text);
@@ -1561,25 +1605,28 @@
           </ul>
         </div>
 
-        <form class="contact-form reveal" id="contactForm">
+        <form class="contact-form reveal" id="contactForm" novalidate>
           <div class="form-row">
             <div class="form-group">
-              <label>Nom</label>
-              <input type="text" name="nom" required>
+              <label>Nom *</label>
+              <input type="text" name="nom" required placeholder=" ">
+              <span class="form-error">Veuillez entrer votre nom</span>
             </div>
             <div class="form-group">
-              <label>Prénom</label>
-              <input type="text" name="prenom" required>
+              <label>Prénom *</label>
+              <input type="text" name="prenom" required placeholder=" ">
+              <span class="form-error">Veuillez entrer votre prénom</span>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Email</label>
-              <input type="email" name="email" required>
+              <label>Email *</label>
+              <input type="email" name="email" required placeholder=" ">
+              <span class="form-error">Veuillez entrer un email valide</span>
             </div>
             <div class="form-group">
               <label>Téléphone</label>
-              <input type="tel" name="telephone">
+              <input type="tel" name="telephone" placeholder=" ">
             </div>
           </div>
           <div class="form-row">
@@ -1602,6 +1649,9 @@
             <textarea name="message" placeholder="Décrivez votre besoin..."></textarea>
           </div>
           <button type="submit" class="form-submit">Envoyer ma demande</button>
+          <div class="form-success" id="formSuccess">
+            ✓ Merci pour votre demande ! Nous vous recontacterons sous 24h.
+          </div>
         </form>
       </div>
     </div>
@@ -1699,11 +1749,55 @@
       });
     });
 
-    // Form
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    // Form validation
+    const form = document.getElementById('contactForm');
+    const formSuccess = document.getElementById('formSuccess');
+
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('Merci ! Nous vous recontacterons sous 24h.');
-      this.reset();
+
+      // Reset errors
+      form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+
+      // Validate required fields
+      let isValid = true;
+      const required = form.querySelectorAll('[required]');
+
+      required.forEach(input => {
+        const group = input.closest('.form-group');
+        if (!input.value.trim()) {
+          group.classList.add('error');
+          isValid = false;
+        }
+        // Email validation
+        if (input.type === 'email' && input.value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(input.value)) {
+            group.classList.add('error');
+            isValid = false;
+          }
+        }
+      });
+
+      if (isValid) {
+        // Success
+        form.querySelector('.form-submit').style.display = 'none';
+        formSuccess.classList.add('show');
+
+        // Reset after 3s
+        setTimeout(() => {
+          form.reset();
+          form.querySelector('.form-submit').style.display = 'block';
+          formSuccess.classList.remove('show');
+        }, 5000);
+      }
+    });
+
+    // Remove error on input
+    form.querySelectorAll('input, textarea, select').forEach(input => {
+      input.addEventListener('input', function() {
+        this.closest('.form-group').classList.remove('error');
+      });
     });
 
     // Pricing CTA → Pre-fill form
