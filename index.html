@@ -1395,7 +1395,7 @@
             <li>Photos avant/après</li>
             <li>Rapport d'intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta" data-formule="ponctuel">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="Ponctuel - Intervention unique">Demander un devis</a>
         </div>
 
         <div class="pricing-card featured reveal reveal-delay-1">
@@ -1410,7 +1410,7 @@
             <li>Photos avant/après</li>
             <li>Rappel anniversaires</li>
           </ul>
-          <a href="#contact" class="pricing-cta" data-formule="serenite">Choisir cette formule</a>
+          <a href="#contact" class="pricing-cta" data-formule="Sérénité - 2 passages/an (180€)">Choisir cette formule</a>
         </div>
 
         <div class="pricing-card reveal reveal-delay-2">
@@ -1424,7 +1424,7 @@
             <li>Photos et rapport</li>
             <li>Priorité intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta" data-formule="tranquillite">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="Tranquillité - 4 passages/an (320€)">Demander un devis</a>
         </div>
       </div>
     </div>
@@ -1527,48 +1527,54 @@
           </ul>
         </div>
 
-        <form class="contact-form reveal" id="contactForm" novalidate>
+        <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/ldvk@me.com" method="POST" novalidate>
+          <!-- Formsubmit config -->
+          <input type="hidden" name="_subject" value="🪦 Nouvelle demande Renovacieux">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://renovation-tombe.com/?success=1">
+
           <div class="form-row">
             <div class="form-group">
               <label>Nom *</label>
-              <input type="text" name="nom" required placeholder=" ">
+              <input type="text" name="Nom" required placeholder=" ">
               <span class="form-error">Veuillez entrer votre nom</span>
             </div>
             <div class="form-group">
               <label>Prénom *</label>
-              <input type="text" name="prenom" required placeholder=" ">
+              <input type="text" name="Prénom" required placeholder=" ">
               <span class="form-error">Veuillez entrer votre prénom</span>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Email *</label>
-              <input type="email" name="email" required placeholder=" ">
+              <input type="email" name="Email" required placeholder=" ">
               <span class="form-error">Veuillez entrer un email valide</span>
             </div>
             <div class="form-group">
               <label>Téléphone</label>
-              <input type="tel" name="telephone" placeholder=" ">
+              <input type="tel" name="Téléphone" placeholder=" ">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Cimetière concerné</label>
-              <input type="text" name="cimetiere" placeholder="Nom et ville du cimetière">
+              <input type="text" name="Cimetière" placeholder="Nom et ville du cimetière">
             </div>
             <div class="form-group">
               <label>Formule souhaitée</label>
-              <select name="formule" id="formuleSelect">
+              <select name="Formule" id="formuleSelect">
                 <option value="">-- Choisir une formule --</option>
-                <option value="ponctuel">Ponctuel - Intervention unique</option>
-                <option value="serenite">Sérénité - 2 passages/an (180€)</option>
-                <option value="tranquillite">Tranquillité - 4 passages/an (320€)</option>
+                <option value="Ponctuel - Intervention unique">Ponctuel - Intervention unique</option>
+                <option value="Sérénité - 2 passages/an (180€)">Sérénité - 2 passages/an (180€)</option>
+                <option value="Tranquillité - 4 passages/an (320€)">Tranquillité - 4 passages/an (320€)</option>
               </select>
             </div>
           </div>
           <div class="form-group">
             <label>Votre message</label>
-            <textarea name="message" placeholder="Décrivez votre besoin..."></textarea>
+            <textarea name="Message" placeholder="Décrivez votre besoin..."></textarea>
           </div>
           <button type="submit" class="form-submit">Envoyer ma demande</button>
           <div class="form-success" id="formSuccess">
@@ -1671,13 +1677,24 @@
       });
     });
 
+    // Check for success return
+    if (window.location.search.includes('success=1')) {
+      const formSuccess = document.getElementById('formSuccess');
+      const form = document.getElementById('contactForm');
+      form.querySelector('.form-submit').style.display = 'none';
+      formSuccess.classList.add('show');
+
+      // Scroll to form
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+
+      // Clean URL
+      history.replaceState(null, '', window.location.pathname);
+    }
+
     // Form validation
     const form = document.getElementById('contactForm');
-    const formSuccess = document.getElementById('formSuccess');
 
     form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
       // Reset errors
       form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
 
@@ -1701,18 +1718,10 @@
         }
       });
 
-      if (isValid) {
-        // Success
-        form.querySelector('.form-submit').style.display = 'none';
-        formSuccess.classList.add('show');
-
-        // Reset after 3s
-        setTimeout(() => {
-          form.reset();
-          form.querySelector('.form-submit').style.display = 'block';
-          formSuccess.classList.remove('show');
-        }, 5000);
+      if (!isValid) {
+        e.preventDefault(); // Stop submission only if invalid
       }
+      // If valid, form submits naturally to Formsubmit
     });
 
     // Remove error on input
