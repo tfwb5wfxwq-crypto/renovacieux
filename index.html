@@ -839,21 +839,63 @@
       border-radius: 24px;
       overflow: hidden;
       background: var(--cream-dark);
+      position: relative;
     }
 
-    .zone-map img {
+    .map-svg {
       width: 100%;
       height: 100%;
-      object-fit: cover;
     }
 
-    .zone-map-placeholder {
-      width: 100%;
-      height: 100%;
+    .map-svg .dept {
+      stroke: #fff;
+      stroke-width: 2;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .map-svg .dept:hover {
+      fill: var(--sage-light);
+      transform: translateY(-2px);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+
+    .map-svg .dept.paris {
+      fill: var(--sage);
+    }
+
+    .map-svg .dept.paris:hover {
+      fill: var(--sage-dark);
+    }
+
+    .map-svg .cemetery {
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .map-svg .cemetery:hover {
+      transform: scale(1.3);
+    }
+
+    .map-legend {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(255,255,255,0.95);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: inline-block;
     }
 
     .zone-list {
@@ -953,7 +995,8 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 14px 18px;
       background: var(--cream);
@@ -962,13 +1005,23 @@
       font-size: 15px;
       font-family: inherit;
       transition: all 0.3s;
+      color: var(--text);
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235A5A5A' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       outline: none;
       border-color: var(--sage);
-      background: var(--white);
+      background-color: var(--white);
     }
 
     .form-group textarea {
@@ -1330,7 +1383,7 @@
             <li>Photos avant/après</li>
             <li>Rapport d'intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="ponctuel">Demander un devis</a>
         </div>
 
         <div class="pricing-card featured reveal reveal-delay-1">
@@ -1345,7 +1398,7 @@
             <li>Photos avant/après</li>
             <li>Rappel anniversaires</li>
           </ul>
-          <a href="#contact" class="pricing-cta">Choisir cette formule</a>
+          <a href="#contact" class="pricing-cta" data-formule="serenite">Choisir cette formule</a>
         </div>
 
         <div class="pricing-card reveal reveal-delay-2">
@@ -1359,7 +1412,7 @@
             <li>Photos et rapport</li>
             <li>Priorité intervention</li>
           </ul>
-          <a href="#contact" class="pricing-cta">Demander un devis</a>
+          <a href="#contact" class="pricing-cta" data-formule="tranquillite">Demander un devis</a>
         </div>
       </div>
     </div>
@@ -1433,7 +1486,75 @@
           </div>
         </div>
         <div class="zone-map reveal">
-          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80" alt="Paris" style="width:100%;height:100%;object-fit:cover;filter:grayscale(30%);">
+          <svg viewBox="0 0 400 350" class="map-svg">
+            <!-- Fond -->
+            <rect width="400" height="350" fill="#F0EDE8"/>
+
+            <!-- Départements Île-de-France -->
+            <!-- Seine-et-Marne 77 -->
+            <path class="dept" data-dept="Seine-et-Marne (77)" d="M250,50 L380,80 L390,200 L350,300 L250,320 L200,250 L220,150 Z" fill="#D8D4CD"/>
+
+            <!-- Val-d'Oise 95 -->
+            <path class="dept" data-dept="Val-d'Oise (95)" d="M80,30 L200,20 L220,80 L180,120 L100,110 L60,70 Z" fill="#C9C4BB"/>
+
+            <!-- Yvelines 78 -->
+            <path class="dept" data-dept="Yvelines (78)" d="M10,100 L80,90 L100,150 L90,220 L20,240 L5,180 Z" fill="#D8D4CD"/>
+
+            <!-- Essonne 91 -->
+            <path class="dept" data-dept="Essonne (91)" d="M90,220 L150,200 L200,250 L180,320 L100,330 L70,280 Z" fill="#C9C4BB"/>
+
+            <!-- Hauts-de-Seine 92 -->
+            <path class="dept" data-dept="Hauts-de-Seine (92)" d="M100,130 L130,120 L140,160 L120,180 L95,170 Z" fill="#B8B3AA"/>
+
+            <!-- Seine-Saint-Denis 93 -->
+            <path class="dept" data-dept="Seine-Saint-Denis (93)" d="M150,110 L190,100 L200,140 L170,160 L145,145 Z" fill="#B8B3AA"/>
+
+            <!-- Val-de-Marne 94 -->
+            <path class="dept" data-dept="Val-de-Marne (94)" d="M145,170 L180,160 L200,200 L170,220 L140,200 Z" fill="#B8B3AA"/>
+
+            <!-- Paris 75 -->
+            <path class="dept paris" data-dept="Paris (75)" d="M130,135 L160,130 L170,155 L155,175 L130,170 L125,150 Z" fill="#7D8B74"/>
+
+            <!-- Cimetières - marqueurs -->
+            <g class="cemetery-markers">
+              <!-- Père Lachaise -->
+              <g class="cemetery" data-name="Père Lachaise">
+                <circle cx="165" cy="145" r="6" fill="#C4A962"/>
+                <circle cx="165" cy="145" r="3" fill="#fff"/>
+              </g>
+              <!-- Montmartre -->
+              <g class="cemetery" data-name="Montmartre">
+                <circle cx="145" cy="135" r="6" fill="#C4A962"/>
+                <circle cx="145" cy="135" r="3" fill="#fff"/>
+              </g>
+              <!-- Montparnasse -->
+              <g class="cemetery" data-name="Montparnasse">
+                <circle cx="140" cy="165" r="6" fill="#C4A962"/>
+                <circle cx="140" cy="165" r="3" fill="#fff"/>
+              </g>
+              <!-- Thiais -->
+              <g class="cemetery" data-name="Thiais">
+                <circle cx="165" cy="210" r="5" fill="#C4A962"/>
+                <circle cx="165" cy="210" r="2.5" fill="#fff"/>
+              </g>
+              <!-- Pantin -->
+              <g class="cemetery" data-name="Pantin">
+                <circle cx="175" cy="140" r="5" fill="#C4A962"/>
+                <circle cx="175" cy="140" r="2.5" fill="#fff"/>
+              </g>
+            </g>
+
+            <!-- Tooltip -->
+            <g class="map-tooltip" style="display:none;">
+              <rect x="0" y="0" width="120" height="30" rx="4" fill="#2C2C2C"/>
+              <text x="60" y="20" text-anchor="middle" fill="#fff" font-size="12" font-family="Source Sans 3, sans-serif"></text>
+            </g>
+          </svg>
+
+          <!-- Légende -->
+          <div class="map-legend">
+            <div class="legend-item"><span class="legend-dot"></span> Cimetières principaux</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1475,9 +1596,20 @@
               <input type="tel" name="telephone">
             </div>
           </div>
-          <div class="form-group">
-            <label>Cimetière concerné</label>
-            <input type="text" name="cimetiere" placeholder="Nom et ville du cimetière">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cimetière concerné</label>
+              <input type="text" name="cimetiere" placeholder="Nom et ville du cimetière">
+            </div>
+            <div class="form-group">
+              <label>Formule souhaitée</label>
+              <select name="formule" id="formuleSelect">
+                <option value="">-- Choisir une formule --</option>
+                <option value="ponctuel">Ponctuel - Intervention unique</option>
+                <option value="serenite">Sérénité - 2 passages/an (180€)</option>
+                <option value="tranquillite">Tranquillité - 4 passages/an (320€)</option>
+              </select>
+            </div>
           </div>
           <div class="form-group">
             <label>Votre message</label>
@@ -1586,6 +1718,53 @@
       e.preventDefault();
       alert('Merci ! Nous vous recontacterons sous 24h.');
       this.reset();
+    });
+
+    // Pricing CTA → Pre-fill form
+    document.querySelectorAll('.pricing-cta').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const formule = this.dataset.formule;
+        if (formule) {
+          document.getElementById('formuleSelect').value = formule;
+        }
+      });
+    });
+
+    // Map interactions
+    const mapTooltip = document.querySelector('.map-tooltip');
+    const tooltipText = mapTooltip?.querySelector('text');
+    const tooltipRect = mapTooltip?.querySelector('rect');
+
+    document.querySelectorAll('.dept').forEach(dept => {
+      dept.addEventListener('mouseenter', function(e) {
+        const name = this.dataset.dept;
+        if (tooltipText && mapTooltip) {
+          tooltipText.textContent = name;
+          const bbox = this.getBBox();
+          mapTooltip.style.display = 'block';
+          mapTooltip.setAttribute('transform', `translate(${bbox.x + bbox.width/2 - 60}, ${bbox.y - 40})`);
+        }
+      });
+      dept.addEventListener('mouseleave', function() {
+        if (mapTooltip) mapTooltip.style.display = 'none';
+      });
+    });
+
+    document.querySelectorAll('.cemetery').forEach(cem => {
+      cem.addEventListener('mouseenter', function(e) {
+        const name = this.dataset.name;
+        if (tooltipText && mapTooltip) {
+          tooltipText.textContent = name;
+          const circle = this.querySelector('circle');
+          const cx = parseFloat(circle.getAttribute('cx'));
+          const cy = parseFloat(circle.getAttribute('cy'));
+          mapTooltip.style.display = 'block';
+          mapTooltip.setAttribute('transform', `translate(${cx - 60}, ${cy - 45})`);
+        }
+      });
+      cem.addEventListener('mouseleave', function() {
+        if (mapTooltip) mapTooltip.style.display = 'none';
+      });
     });
   </script>
 
