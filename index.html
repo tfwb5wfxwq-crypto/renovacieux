@@ -84,32 +84,12 @@
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
       text-decoration: none;
     }
 
-    .nav-logo-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--sage);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-    }
-
-    .nav-logo-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: brightness(10);
-    }
-
-    .nav-logo-text {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 22px;
-      color: var(--text);
+    .nav-logo img {
+      height: 40px;
+      width: auto;
     }
 
     .nav-links {
@@ -181,72 +161,14 @@
       max-width: 560px;
     }
 
-    /* Logo badge */
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--white);
-      padding: 12px 20px 12px 12px;
-      border-radius: 50px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    /* Logo hero */
+    .hero-logo {
       margin-bottom: 32px;
     }
 
-    .hero-badge-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px;
-      position: relative;
-    }
-
-    .hero-badge-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: brightness(10);
-    }
-
-    /* Nuages animés autour du badge */
-    .hero-badge-icon::before,
-    .hero-badge-icon::after {
-      content: '';
-      position: absolute;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      filter: blur(4px);
-    }
-
-    .hero-badge-icon::before {
-      width: 16px;
-      height: 10px;
-      top: -4px;
-      right: -6px;
-      animation: cloudMini 4s ease-in-out infinite;
-    }
-
-    .hero-badge-icon::after {
-      width: 12px;
-      height: 8px;
-      bottom: 2px;
-      left: -5px;
-      animation: cloudMini 5s ease-in-out infinite reverse;
-    }
-
-    @keyframes cloudMini {
-      0%, 100% { transform: translate(0, 0); opacity: 0.7; }
-      50% { transform: translate(3px, -3px); opacity: 1; }
-    }
-
-    .hero-badge-text {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 18px;
-      color: var(--text);
+    .hero-logo img {
+      height: 60px;
+      width: auto;
     }
 
     .hero h1 {
@@ -486,15 +408,18 @@
     }
 
     .service-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, rgba(125, 139, 116, 0.15) 0%, rgba(125, 139, 116, 0.05) 100%);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
+      width: 52px;
+      height: 52px;
       margin-bottom: 20px;
+      color: var(--sage);
+    }
+
+    .service-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
     }
 
     .service-card h3 {
@@ -1088,33 +1013,13 @@
     }
 
     .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       margin-bottom: 20px;
     }
 
-    .footer-brand-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--sage);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-    }
-
-    .footer-brand-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: brightness(10);
-    }
-
-    .footer-brand span {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 20px;
+    .footer-brand img {
+      height: 36px;
+      width: auto;
+      filter: brightness(1.5);
     }
 
     .footer-col p {
@@ -1217,10 +1122,7 @@
   <!-- Navigation -->
   <nav id="navbar">
     <a href="#" class="nav-logo">
-      <div class="nav-logo-icon">
-        <img src="logo.png" alt="">
-      </div>
-      <span class="nav-logo-text">Renovacieux</span>
+      <img src="logo.svg" alt="Renovacieux">
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
@@ -1236,11 +1138,8 @@
     <div class="hero-bg-pattern"></div>
     <div class="hero-container">
       <div class="hero-content">
-        <div class="hero-badge reveal">
-          <div class="hero-badge-icon">
-            <img src="logo.png" alt="Renovacieux">
-          </div>
-          <span class="hero-badge-text">Renovacieux</span>
+        <div class="hero-logo reveal">
+          <img src="logo.svg" alt="Renovacieux">
         </div>
 
         <h1 class="reveal reveal-delay-1">Préservons la mémoire <em>de ceux qui comptent</em></h1>
@@ -1304,32 +1203,44 @@
 
       <div class="services-grid">
         <div class="service-card reveal">
-          <div class="service-icon">🧹</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+          </div>
           <h3>Nettoyage complet</h3>
           <p>Nettoyage en profondeur de la pierre tombale et de l'entourage avec des produits adaptés.</p>
         </div>
         <div class="service-card reveal reveal-delay-1">
-          <div class="service-icon">🌿</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22V8M12 8c-2-3-6-4-6 0s4 4 6 0M12 8c2-3 6-4 6 0s-4 4-6 0M7 22h10"/></svg>
+          </div>
           <h3>Entretien végétal</h3>
           <p>Désherbage minutieux, taille des plantes et entretien de la jardinière.</p>
         </div>
         <div class="service-card reveal reveal-delay-2">
-          <div class="service-icon">💐</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3c-3 0-5 2-5 5 0 4 5 7 5 7s5-3 5-7c0-3-2-5-5-5z"/><path d="M12 22v-7M8 22h8"/><circle cx="12" cy="7" r="1.5" fill="currentColor"/></svg>
+          </div>
           <h3>Fleurissement</h3>
           <p>Compositions florales naturelles ou artificielles adaptées aux saisons.</p>
         </div>
         <div class="service-card reveal reveal-delay-1">
-          <div class="service-icon">✨</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l2-10h8l2 10M9 6V4h6v2"/><path d="M10 12h4" stroke-linecap="round"/></svg>
+          </div>
           <h3>Dorures & Gravures</h3>
           <p>Ravivage des dorures ternies et restauration des inscriptions.</p>
         </div>
         <div class="service-card reveal reveal-delay-2">
-          <div class="service-icon">📸</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 9h3M18 9h3"/></svg>
+          </div>
           <h3>Photos & Rapports</h3>
           <p>Photos avant/après et rapport détaillé envoyés systématiquement.</p>
         </div>
         <div class="service-card reveal reveal-delay-3">
-          <div class="service-icon">🕯️</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22c-1 0-2-1-2-3h4c0 2-1 3-2 3zM12 2v1M12 3c0 2-1 3-1 5 0 1.5 1 2 1 4v5c0 1 .5 2 2 2M12 3c0 2 1 3 1 5 0 1.5-1 2-1 4"/><path d="M9 19h6"/></svg>
+          </div>
           <h3>Dates importantes</h3>
           <p>Bougies et fleurs pour les anniversaires, Toussaint et dates qui comptent.</p>
         </div>
@@ -1583,10 +1494,7 @@
     <div class="footer-grid">
       <div class="footer-col">
         <div class="footer-brand">
-          <div class="footer-brand-icon">
-            <img src="logo.png" alt="">
-          </div>
-          <span>Renovacieux</span>
+          <img src="logo.svg" alt="Renovacieux">
         </div>
         <p>Service professionnel de rénovation et d'entretien de sépultures. Nous prenons soin de la mémoire de vos proches avec respect et dignité.</p>
       </div>
