@@ -1044,23 +1044,91 @@
       display: block;
     }
 
-    .form-success {
-      background: var(--sage);
-      color: white;
-      padding: 20px 24px;
-      border-radius: 12px;
-      text-align: center;
+    /* Success overlay - bien visible */
+    .form-success-overlay {
       display: none;
-      margin-top: 20px;
+      position: fixed;
+      inset: 0;
+      background: rgba(125, 139, 116, 0.97);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px;
     }
 
-    .form-success.show {
-      display: block;
-      animation: fadeInUp 0.4s ease;
+    .form-success-overlay.show {
+      display: flex;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .form-success-overlay .success-icon {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      animation: scaleIn 0.5s ease 0.2s both;
+    }
+
+    .form-success-overlay .success-icon svg {
+      width: 50px;
+      height: 50px;
+      stroke: var(--sage);
+      stroke-width: 3;
+      fill: none;
+    }
+
+    .form-success-overlay h3 {
+      color: white;
+      font-size: clamp(28px, 5vw, 42px);
+      margin-bottom: 16px;
+      animation: fadeInUp 0.5s ease 0.3s both;
+    }
+
+    .form-success-overlay p {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 2.5vw, 20px);
+      max-width: 500px;
+      line-height: 1.7;
+      animation: fadeInUp 0.5s ease 0.4s both;
+    }
+
+    .form-success-overlay .success-close {
+      margin-top: 40px;
+      background: white;
+      color: var(--sage-dark);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      animation: fadeInUp 0.5s ease 0.5s both;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .form-success-overlay .success-close:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -1577,13 +1645,20 @@
             <textarea name="Message" placeholder="Décrivez votre besoin..."></textarea>
           </div>
           <button type="submit" class="form-submit">Envoyer ma demande</button>
-          <div class="form-success" id="formSuccess">
-            ✓ Merci pour votre demande ! Nous vous recontacterons sous 24h.
-          </div>
         </form>
       </div>
     </div>
   </section>
+
+  <!-- Success Overlay -->
+  <div class="form-success-overlay" id="successOverlay">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3>Demande envoyée !</h3>
+    <p>Merci pour votre confiance. Nous vous recontacterons sous 24 heures pour discuter de votre projet.</p>
+    <button class="success-close" onclick="closeSuccessOverlay()">Fermer</button>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -1677,19 +1752,22 @@
       });
     });
 
-    // Check for success return
+    // Check for success return - Show full-screen overlay
     if (window.location.search.includes('success=1')) {
-      const formSuccess = document.getElementById('formSuccess');
-      const form = document.getElementById('contactForm');
-      form.querySelector('.form-submit').style.display = 'none';
-      formSuccess.classList.add('show');
-
-      // Scroll to form
-      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('successOverlay').classList.add('show');
+      document.body.style.overflow = 'hidden'; // Prevent scroll
 
       // Clean URL
       history.replaceState(null, '', window.location.pathname);
     }
+
+    // Close success overlay (global function for onclick)
+    window.closeSuccessOverlay = function() {
+      document.getElementById('successOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // Form validation
     const form = document.getElementById('contactForm');
