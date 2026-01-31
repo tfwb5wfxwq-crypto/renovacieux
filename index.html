@@ -14,17 +14,17 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --cream: #F8F9FA;
-      --cream-dark: #E9ECEF;
+      --cream: #F7F9FA;
+      --cream-dark: #E8EDEF;
       --white: #FFFFFF;
-      --primary: #4A5568;
-      --primary-light: #718096;
-      --primary-dark: #2D3748;
-      --gold: #B7945C;
-      --gold-light: #D4B078;
-      --text: #1A202C;
-      --text-light: #4A5568;
-      --text-muted: #718096;
+      --primary: #2C5364;
+      --primary-light: #4A7A8C;
+      --primary-dark: #1A3A4A;
+      --gold: #C9A55C;
+      --gold-light: #DEBB78;
+      --text: #1A2632;
+      --text-light: #3D5A6A;
+      --text-muted: #6B8A9A;
     }
 
     html { scroll-behavior: smooth; }
@@ -135,7 +135,7 @@
     .nav-cta:hover {
       background: var(--primary-dark);
       transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 8px 25px rgba(74, 85, 104, 0.35);
+      box-shadow: 0 8px 25px rgba(44, 83, 100, 0.35);
     }
 
     /* ===== HERO ===== */
@@ -232,7 +232,7 @@
     .btn-primary:hover {
       background: var(--primary-dark);
       transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(74, 85, 104, 0.35);
+      box-shadow: 0 12px 35px rgba(44, 83, 100, 0.35);
     }
 
     .btn-primary:hover::before {
@@ -427,7 +427,7 @@
 
     .service-card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 25px 60px rgba(74, 85, 104, 0.15);
+      box-shadow: 0 25px 60px rgba(44, 83, 100, 0.15);
       border-color: var(--primary-light);
     }
 
@@ -480,57 +480,96 @@
       align-items: center;
     }
 
-    .ba-images {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .ba-image {
-      aspect-ratio: 3/4;
-      border-radius: 20px;
-      overflow: hidden;
+    /* Before/After Slider */
+    .ba-slider {
       position: relative;
-      background: var(--cream-dark);
+      width: 100%;
+      aspect-ratio: 3/4;
+      max-width: 500px;
+      border-radius: 24px;
+      overflow: hidden;
+      cursor: ew-resize;
+      box-shadow: 0 25px 60px rgba(44, 83, 100, 0.2);
     }
 
-    .ba-image:first-child {
-      transform: translateY(30px);
-    }
-
-    .ba-image img {
-      width: 115%;
-      height: 115%;
-      object-fit: cover;
-      object-position: center 15%;
-      margin: -7.5%;
-    }
-
-    .ba-image-placeholder {
+    .ba-slider img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 14px;
+      object-fit: cover;
+      object-position: center 15%;
+      pointer-events: none;
     }
 
-    .ba-label {
+    .ba-slider .ba-before {
+      z-index: 1;
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .ba-slider .ba-after {
+      z-index: 0;
+    }
+
+    .ba-slider-handle {
       position: absolute;
-      bottom: 16px;
-      left: 16px;
-      background: var(--white);
-      padding: 8px 16px;
-      border-radius: 20px;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: white;
+      z-index: 10;
+      transform: translateX(-50%);
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .ba-slider-handle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    .ba-slider-handle::after {
+      content: '◀ ▶';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-size: 12px;
+      color: var(--primary);
+      font-weight: bold;
+      letter-spacing: -2px;
+      z-index: 1;
+    }
+
+    .ba-slider-label {
+      position: absolute;
+      bottom: 20px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 13px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      z-index: 5;
     }
 
-    .ba-label.after {
+    .ba-slider-label.before {
+      left: 20px;
+      background: rgba(255,255,255,0.95);
+      color: var(--text);
+    }
+
+    .ba-slider-label.after {
+      right: 20px;
       background: var(--primary);
       color: white;
     }
@@ -685,7 +724,7 @@
     .pricing-card:not(.featured):not(.premium):hover {
       border-color: var(--primary);
       transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(74, 85, 104, 0.12);
+      box-shadow: 0 20px 50px rgba(44, 83, 100, 0.12);
     }
 
     .pricing-card.premium:hover {
@@ -796,7 +835,7 @@
     .pricing-card:not(.featured):not(.premium) .pricing-cta:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(74, 85, 104, 0.3);
+      box-shadow: 0 8px 20px rgba(44, 83, 100, 0.3);
     }
 
     .pricing-card.featured .pricing-cta {
@@ -840,7 +879,7 @@
 
     .testimonial-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(74, 85, 104, 0.12);
+      box-shadow: 0 20px 50px rgba(44, 83, 100, 0.12);
     }
 
     .testimonial-stars {
@@ -918,7 +957,7 @@
     .zone-map-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(125, 139, 116, 0.85) 0%, rgba(92, 107, 82, 0.9) 100%);
+      background: linear-gradient(135deg, rgba(44, 83, 100, 0.88) 0%, rgba(26, 58, 74, 0.92) 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -965,7 +1004,7 @@
 
     .zone-item:hover {
       border-color: var(--primary);
-      background: rgba(74, 85, 104, 0.08);
+      background: rgba(44, 83, 100, 0.08);
       transform: translateX(5px);
     }
 
@@ -1094,7 +1133,7 @@
     .form-submit:hover {
       background: var(--primary-dark);
       transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(74, 85, 104, 0.35);
+      box-shadow: 0 12px 35px rgba(44, 83, 100, 0.35);
     }
 
     .form-submit:active {
@@ -1130,7 +1169,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(74, 85, 104, 0.97);
+      background: rgba(44, 83, 100, 0.97);
       z-index: 9999;
       justify-content: center;
       align-items: center;
@@ -1332,8 +1371,8 @@
       .gallery-grid { grid-template-columns: 1fr; }
       .gallery-item:first-child { grid-column: span 1; }
 
-      .form-row, .zone-list, .ba-images { grid-template-columns: 1fr; }
-      .ba-image:first-child { transform: none; }
+      .form-row, .zone-list { grid-template-columns: 1fr; }
+      .ba-slider { max-width: 100%; }
 
       .hero-buttons { flex-direction: column; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
@@ -1472,15 +1511,12 @@
   <section id="realisations" class="before-after">
     <div class="container">
       <div class="ba-grid">
-        <div class="ba-images reveal">
-          <div class="ba-image">
-            <img src="img-avant.png" alt="Tombe avant rénovation">
-            <span class="ba-label">Avant</span>
-          </div>
-          <div class="ba-image">
-            <img src="img-apres.png" alt="Tombe après rénovation">
-            <span class="ba-label after">Après</span>
-          </div>
+        <div class="ba-slider reveal" id="baSlider">
+          <img src="img-avant.png" alt="Avant rénovation" class="ba-before">
+          <img src="img-apres.png" alt="Après rénovation" class="ba-after">
+          <div class="ba-slider-handle" id="baHandle"></div>
+          <span class="ba-slider-label before">Avant</span>
+          <span class="ba-slider-label after">Après</span>
         </div>
 
         <div class="ba-content">
@@ -1906,6 +1942,49 @@
         }
       });
     });
+
+    // Before/After Slider
+    const slider = document.getElementById('baSlider');
+    const handle = document.getElementById('baHandle');
+    const beforeImg = slider?.querySelector('.ba-before');
+
+    if (slider && handle && beforeImg) {
+      let isDragging = false;
+
+      const updateSlider = (x) => {
+        const rect = slider.getBoundingClientRect();
+        let pos = (x - rect.left) / rect.width * 100;
+        pos = Math.max(5, Math.min(95, pos));
+        handle.style.left = pos + '%';
+        beforeImg.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+      };
+
+      slider.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        updateSlider(e.clientX);
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) updateSlider(e.clientX);
+      });
+
+      window.addEventListener('mouseup', () => isDragging = false);
+
+      // Touch support
+      slider.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        updateSlider(e.touches[0].clientX);
+      });
+
+      slider.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+          e.preventDefault();
+          updateSlider(e.touches[0].clientX);
+        }
+      });
+
+      slider.addEventListener('touchend', () => isDragging = false);
+    }
 
       </script>
 
