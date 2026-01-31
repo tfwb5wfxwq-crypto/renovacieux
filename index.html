@@ -490,6 +490,9 @@
       overflow: hidden;
       cursor: ew-resize;
       box-shadow: 0 25px 60px rgba(44, 83, 100, 0.2);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
     }
 
     .ba-slider img {
@@ -499,8 +502,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 15%;
+      object-position: center center;
       pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .ba-slider .ba-before {
