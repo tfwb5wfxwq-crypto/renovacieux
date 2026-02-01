@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement Sécurisé | Renovacieux</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 70'%3E%3Crect x='4' y='54' width='52' height='8' rx='1' fill='%23C5C0B8'/%3E%3Cpath d='M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z' fill='%23D8D4CD' stroke='%23C5C0B8' stroke-width='1'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%237D8B74'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #F8F9F6;
+      --cream-dark: #ECEEE8;
+      --white: #FFFFFF;
+      --primary: #7D8B74;
+      --primary-light: #96A58D;
+      --primary-dark: #5F6B57;
+      --gold: #C4A962;
+      --text: #2C3029;
+      --text-light: #5A6356;
+      --text-muted: #8A9184;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: var(--white);
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .payment-container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .payment-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .payment-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .payment-header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .payment-header p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .order-summary {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .order-row:last-child {
+      border-bottom: none;
+      padding-top: 16px;
+      margin-top: 8px;
+      border-top: 2px solid var(--primary);
+    }
+
+    .order-label {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .order-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .order-total {
+      font-size: 24px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    #checkout {
+      min-height: 300px;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--cream-dark);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Success state */
+    .success-container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .success-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    .success-container h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .success-container p {
+      color: var(--text-light);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .success-details {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+      text-align: left;
+    }
+
+    .success-details p {
+      margin-bottom: 12px;
+    }
+
+    .success-details strong {
+      color: var(--text);
+    }
+
+    .btn-home {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(125, 139, 116, 0.9) 0%, rgba(95, 107, 87, 0.95) 100%);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(125, 139, 116, 0.4);
+    }
+
+    /* Error state */
+    .error-container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .error-icon {
+      width: 80px;
+      height: 80px;
+      background: #fee2e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .error-icon svg {
+      width: 40px;
+      height: 40px;
+      color: #dc2626;
+    }
+
+    .error-container h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .error-container p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 20px;
+    }
+
+    .secure-badge svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="https://renovation-tombe.com" class="logo">Renovacieux</a>
+  </header>
+
+  <main class="main">
+    <div class="payment-container">
+      <div class="payment-card" id="payment-card">
+        <!-- Loading state -->
+        <div id="loading-state" class="loading">
+          <div class="spinner"></div>
+          <p>Chargement du paiement sécurisé...</p>
+        </div>
+
+        <!-- Payment form (hidden initially) -->
+        <div id="payment-form" style="display: none;">
+          <div class="payment-header">
+            <h1>Finaliser votre paiement</h1>
+            <p>Paiement 100% sécurisé par Stripe</p>
+          </div>
+
+          <div class="order-summary">
+            <div class="order-row">
+              <span class="order-label">Prestation</span>
+              <span class="order-value" id="formule-name">-</span>
+            </div>
+            <div class="order-row">
+              <span class="order-label">Devis N°</span>
+              <span class="order-value" id="devis-number">-</span>
+            </div>
+            <div class="order-row">
+              <span class="order-label">Total à payer</span>
+              <span class="order-value order-total" id="total-price">-</span>
+            </div>
+          </div>
+
+          <div id="checkout"></div>
+
+          <div class="secure-badge">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            Paiement sécurisé par Stripe
+          </div>
+        </div>
+
+        <!-- Success state (hidden initially) -->
+        <div id="success-state" style="display: none;">
+          <div class="success-container">
+            <div class="success-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h1>Paiement confirmé !</h1>
+            <p>Merci pour votre confiance.</p>
+
+            <div class="success-details">
+              <p><strong>Prochaines étapes :</strong></p>
+              <p>1. Vous allez recevoir un email de confirmation</p>
+              <p>2. Nous vous contacterons pour planifier l'intervention</p>
+              <p>3. Vous recevrez des photos avant/après l'intervention</p>
+            </div>
+
+            <a href="https://renovation-tombe.com" class="btn-home">Retour à l'accueil</a>
+          </div>
+        </div>
+
+        <!-- Error state (hidden initially) -->
+        <div id="error-state" style="display: none;">
+          <div class="error-container">
+            <div class="error-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <h1>Une erreur est survenue</h1>
+            <p id="error-message">Impossible de charger le formulaire de paiement.</p>
+            <a href="https://renovation-tombe.com" class="btn-home">Retour à l'accueil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Renovacieux - Rénovation et entretien de sépultures</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://ujfyvlkmsabinrfylzdr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnl2bGttc2FiaW5yZnlsemRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NDY0NzcsImV4cCI6MjA4NTUyMjQ3N30.SeDhwjsdOisDO-OTLTbtsvjbXLAc8QT-T8cvfs0tZSQ';
+    const STRIPE_PUBLIC_KEY = 'pk_test_51Sw3cPC4qJlgWUEapfaA6am96Of5MYpZTmGaqedfv6aBf0pVZj3rOEIzdgXsPW6acpwAhopd4P7rbW7CvEqtGSSR00zxqKDysI';
+
+    const stripe = Stripe(STRIPE_PUBLIC_KEY);
+    let checkout;
+
+    // Get URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('success');
+    const sessionId = params.get('session_id');
+    const clientId = params.get('client_id');
+    const formule = params.get('formule');
+    const price = params.get('price');
+    const devis = params.get('devis');
+    const email = params.get('email');
+    const name = params.get('name');
+
+    async function init() {
+      // Check if returning from successful payment
+      if (success === 'true') {
+        showSuccess();
+        return;
+      }
+
+      // Check if we have required params for checkout
+      if (!clientId || !formule || !price) {
+        showError('Paramètres manquants. Veuillez utiliser le lien fourni dans votre email de devis.');
+        return;
+      }
+
+      try {
+        // Update order summary
+        document.getElementById('formule-name').textContent = decodeURIComponent(formule);
+        document.getElementById('devis-number').textContent = devis || `DEV-${new Date().getFullYear()}-${clientId}`;
+        document.getElementById('total-price').textContent = price + ' €';
+
+        // Create checkout session
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: clientId,
+            clientEmail: email ? decodeURIComponent(email) : '',
+            clientName: name ? decodeURIComponent(name) : '',
+            formuleName: decodeURIComponent(formule),
+            formulePrice: parseFloat(price),
+            devisNumber: devis || `DEV-${new Date().getFullYear()}-${clientId}`,
+            returnUrl: window.location.origin + window.location.pathname + '?success=true&session_id={CHECKOUT_SESSION_ID}'
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.clientSecret) {
+          throw new Error(data.error || 'Erreur lors de la création du paiement');
+        }
+
+        // Initialize embedded checkout
+        checkout = await stripe.initEmbeddedCheckout({
+          clientSecret: data.clientSecret
+        });
+
+        // Hide loading, show form
+        document.getElementById('loading-state').style.display = 'none';
+        document.getElementById('payment-form').style.display = 'block';
+
+        // Mount checkout
+        checkout.mount('#checkout');
+
+      } catch (error) {
+        console.error('Error:', error);
+        showError(error.message);
+      }
+    }
+
+    function showSuccess() {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('payment-form').style.display = 'none';
+      document.getElementById('error-state').style.display = 'none';
+      document.getElementById('success-state').style.display = 'block';
+    }
+
+    function showError(message) {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('payment-form').style.display = 'none';
+      document.getElementById('success-state').style.display = 'none';
+      document.getElementById('error-state').style.display = 'block';
+      document.getElementById('error-message').textContent = message;
+    }
+
+    // Initialize on page load
+    init();
+  </script>
+</body>
+</html>
