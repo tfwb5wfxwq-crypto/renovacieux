@@ -1771,9 +1771,10 @@
     <div class="login-box">
       <h2>Espace gestion</h2>
       <p>Connecte-toi pour gérer tes clients</p>
-      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="off">
+      <input type="email" id="loginEmail" placeholder="Email" autocomplete="email" style="margin-bottom: 12px;">
+      <input type="password" id="loginPassword" placeholder="Mot de passe" autocomplete="current-password">
       <button onclick="tryLogin()">Se connecter</button>
-      <p class="login-error" id="loginError">Mot de passe incorrect</p>
+      <p class="login-error" id="loginError">Email ou mot de passe incorrect</p>
     </div>
   </div>
 
@@ -2661,7 +2662,8 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnl2bGttc2FiaW5yZnlsemRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NDY0NzcsImV4cCI6MjA4NTUyMjQ3N30.SeDhwjsdOisDO-OTLTbtsvjbXLAc8QT-T8cvfs0tZSQ';
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const PASSWORD = 'kikinou75';
+    // Auth state
+    let currentUser = null;
 
     let clients = [];
     let currentClientId = null;
@@ -2845,35 +2847,79 @@
       return true;
     }
 
-    // ===== LOGIN =====
-    function tryLogin() {
-      const pwd = document.getElementById('loginPassword').value;
-      if (pwd === PASSWORD) {
-        document.getElementById('loginScreen').classList.remove('active');
-        document.getElementById('appScreen').classList.add('active');
-        localStorage.setItem('renovacieux_logged', 'true');
-        loadClients();
-      } else {
+    // ===== LOGIN WITH SUPABASE AUTH =====
+    async function tryLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        document.getElementById('loginError').textContent = 'Remplis tous les champs';
+        document.getElementById('loginError').style.display = 'block';
+        return;
+      }
+
+      // Show loading
+      const btn = document.querySelector('.login-box button');
+      btn.disabled = true;
+      btn.textContent = 'Connexion...';
+
+      const { data, error } = await db.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        console.error('Login error:', error);
+        document.getElementById('loginError').textContent = 'Email ou mot de passe incorrect';
         document.getElementById('loginError').style.display = 'block';
         document.getElementById('loginPassword').style.borderColor = '#DC3545';
+        btn.disabled = false;
+        btn.textContent = 'Se connecter';
+        return;
       }
-    }
 
-    function logout() {
-      localStorage.removeItem('renovacieux_logged');
-      location.reload();
-    }
-
-    if (localStorage.getItem('renovacieux_logged') === 'true') {
+      currentUser = data.user;
       document.getElementById('loginScreen').classList.remove('active');
       document.getElementById('appScreen').classList.add('active');
       loadClients();
     }
 
+    async function logout() {
+      await db.auth.signOut();
+      currentUser = null;
+      location.reload();
+    }
+
+    // Check if already logged in
+    async function checkAuth() {
+      const { data: { session } } = await db.auth.getSession();
+      if (session) {
+        currentUser = session.user;
+        document.getElementById('loginScreen').classList.remove('active');
+        document.getElementById('appScreen').classList.add('active');
+        loadClients();
+      }
+    }
+    checkAuth();
+
+    // Listen for auth changes
+    db.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        document.getElementById('appScreen').classList.remove('active');
+        document.getElementById('loginScreen').classList.add('active');
+      }
+    });
+
     document.getElementById('loginPassword').addEventListener('keyup', (e) => {
       if (e.key === 'Enter') tryLogin();
       document.getElementById('loginError').style.display = 'none';
       document.getElementById('loginPassword').style.borderColor = '';
+    });
+
+    document.getElementById('loginEmail').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+      document.getElementById('loginError').style.display = 'none';
     });
 
     // ===== TABS =====
