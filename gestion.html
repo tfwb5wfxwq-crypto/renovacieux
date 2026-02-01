@@ -1870,6 +1870,20 @@
               <!-- Rendered by JS -->
             </div>
           </div>
+
+          <!-- Renewals Section -->
+          <div class="action-section renewals-section" id="renewalsSection" style="display: none;">
+            <div class="section-header" style="background: linear-gradient(135deg, #D4A853 0%, #B8944D 100%); color: white;">
+              <span class="section-icon">🔄</span>
+              <h3>Renouvellements ce mois</h3>
+            </div>
+            <div class="section-content" id="renewalsList">
+              <!-- Rendered by JS -->
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; padding: 0 12px;">
+              📧 Mails de renouvellement envoyés automatiquement 30j avant
+            </p>
+          </div>
         </div>
 
         <button class="btn btn-primary" onclick="openNewClient()" style="margin-bottom: 20px;">
@@ -2664,7 +2678,7 @@
     const TRAVAUX_PRIX = {
       nettoyage: 40,      // Nettoyage manuel doux
       karcher: 60,        // Haute pression
-      lettres: 80,        // Redorure / peinture lettres
+      lettres: 150,       // Redorure / peinture lettres (par jour de travail)
       joints: 50,         // Réfection joints
       fleurs: 50          // Fleurissement
     };
@@ -2727,8 +2741,9 @@
     };
 
     // Frais de déplacement
-    const FRAIS_KM = 0.60; // 0.60€/km (essence + usure)
-    const SEUIL_GRATUIT = 10; // km gratuits
+    const FORFAIT_DEPLACEMENT = 29; // Forfait de base (temps de trajet A/R, ~10km)
+    const FRAIS_KM = 0.80; // 0.80€/km au-delà du seuil
+    const SEUIL_GRATUIT = 10; // km inclus dans le forfait
 
     // Zones - Paris/IDF et Côte d'Azur
     const ZONES_LONGUE_DISTANCE = {
@@ -3023,6 +3038,7 @@
       renderTodaySection();
       renderWeekSection();
       renderMissingPhotosSection();
+      renderRenewalsSection();
     }
 
     function renderQuickAlerts() {
@@ -3145,6 +3161,80 @@
 
       section.style.display = 'block';
       container.innerHTML = missingPhotos.map(item => renderActionCard(item, false, true)).join('');
+    }
+
+    // Calcule la prochaine date de renouvellement (anniversaire)
+    function getNextRenewalDate(startDate) {
+      const start = new Date(startDate);
+      const now = new Date();
+      let next = new Date(start);
+      while (next <= now) {
+        next.setFullYear(next.getFullYear() + 1);
+      }
+      return next;
+    }
+
+    function renderRenewalsSection() {
+      const section = document.getElementById('renewalsSection');
+      const container = document.getElementById('renewalsList');
+      if (!section || !container) return;
+
+      const now = new Date();
+      const in45Days = new Date();
+      in45Days.setDate(in45Days.getDate() + 45);
+
+      // Trouver les clients actifs avec abonnement dont le renouvellement approche
+      const upcomingRenewals = clients
+        .filter(c => c.statut === 'actif' && c.stripe_subscription_id)
+        .map(c => {
+          const subscriptionStart = c.updated_at || c.created_at;
+          if (!subscriptionStart) return null;
+          const renewalDate = getNextRenewalDate(subscriptionStart);
+          const daysUntil = Math.ceil((renewalDate - now) / (1000 * 60 * 60 * 24));
+          // Vérifier si photos existent (pour le mail auto)
+          let hasRecentPhoto = false;
+          if (c.photos) {
+            try {
+              const photos = JSON.parse(c.photos);
+              hasRecentPhoto = photos.some(p => p.apres);
+            } catch(e) {}
+          }
+          return { client: c, renewalDate, daysUntil, hasRecentPhoto };
+        })
+        .filter(r => r && r.daysUntil > 0 && r.daysUntil <= 45)
+        .sort((a, b) => a.daysUntil - b.daysUntil);
+
+      if (upcomingRenewals.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      container.innerHTML = upcomingRenewals.map(r => {
+        const formule = FORMULES[r.client.formule_choisie];
+        const formuleText = formule ? formule.name : 'Formule';
+        const dateStr = r.renewalDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        const photoStatus = r.hasRecentPhoto
+          ? '<span style="color: var(--primary);">📷 Photo OK</span>'
+          : '<span style="color: var(--orange);">⚠️ Pas de photo</span>';
+
+        return `
+          <div class="action-card" style="cursor: pointer;" onclick="openClient(${r.client.id})">
+            <div class="date-badge" style="background: linear-gradient(135deg, #D4A853 0%, #B8944D 100%); color: white;">
+              <div class="day">${r.renewalDate.getDate()}</div>
+              <div class="label">${r.renewalDate.toLocaleDateString('fr-FR', { month: 'short' })}</div>
+            </div>
+            <div class="card-info">
+              <h4>${r.client.prenom || ''} ${r.client.nom || ''}</h4>
+              <p>${formuleText} • dans ${r.daysUntil}j</p>
+              <p style="font-size: 11px; margin-top: 2px;">${photoStatus}</p>
+            </div>
+            <div class="card-actions">
+              <span style="font-size: 11px; color: var(--text-muted);">→</span>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderActionCard(item, isUrgent, isMissing = false) {
@@ -3478,15 +3568,23 @@
 
       // Get selected travaux
       const travaux = [];
-      let basePrix = 0;
+      let basePrix = 0;    // Travaux avec coefficients (nettoyage, karcher, joints)
+      let prixLettres = 0; // Lettres = pas de coef taille/état, mais × nbJours
+      let prixFleurs = 0;  // Fleurs = prix fixe total (pas de coef, pas × nbJours)
       const lignesDetail = [];
       for (const [key, prix] of Object.entries(TRAVAUX_PRIX)) {
         const checkbox = document.getElementById('travail-' + key);
         if (checkbox && checkbox.checked) {
           travaux.push(key);
-          basePrix += prix;
           const labels = { nettoyage: 'Nettoyage', karcher: 'Karcher', lettres: 'Lettres', joints: 'Joints', fleurs: 'Fleurs' };
           lignesDetail.push(`${labels[key]} ${prix}€`);
+          if (key === 'fleurs') {
+            prixFleurs = prix; // Bouquet = prix fixe
+          } else if (key === 'lettres') {
+            prixLettres = prix; // Lettres = × nbJours seulement
+          } else {
+            basePrix += prix; // Nettoyage/karcher/joints = coef + nbJours
+          }
         }
       }
 
@@ -3532,13 +3630,18 @@
       const nbJours = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
 
       // Calculate total travaux
-      let totalTravaux = basePrix * coefTotal;
-      if (nbJours > 1) {
-        totalTravaux = totalTravaux * nbJours * 0.85; // 15% discount for multi-day
-      } else if (nbJours === 0.5) {
-        totalTravaux = totalTravaux * 0.65;
-      }
-      totalTravaux = Math.round(totalTravaux);
+      // 1. Nettoyage/karcher/joints : coefficients seulement (PAS × nbJours)
+      //    Ces travaux sont rapides, le nbJours c'est pour les lettres
+      let totalBase = Math.round(basePrix * coefTotal);
+
+      // 2. Lettres : × nbJours (c'est le gros du travail si multi-jour)
+      //    Pas de coefficient taille/état/matériau
+      let totalLettres = prixLettres * nbJours;
+
+      // 3. Fleurs : prix fixe (pas de coef, pas × nbJours)
+      const totalFleurs = prixFleurs;
+
+      let totalTravaux = Math.round(totalBase + totalLettres + totalFleurs);
 
       // Calculate travel costs
       let fraisDeplacement = 0;
@@ -3559,13 +3662,15 @@
           }
         }
 
+        // Forfait de base + km supplémentaires
+        fraisDeplacement = FORFAIT_DEPLACEMENT * nbJours;
         if (distanceKm > SEUIL_GRATUIT) {
-          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJours);
+          fraisDeplacement += Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJours);
         }
         fraisDeplacement += parking * nbJours;
 
-        let detailParts = [];
-        if (distanceKm > SEUIL_GRATUIT) detailParts.push(`${distanceKm}km`);
+        let detailParts = ['forfait ' + (FORFAIT_DEPLACEMENT * nbJours) + '€'];
+        if (distanceKm > SEUIL_GRATUIT) detailParts.push(`+${distanceKm - SEUIL_GRATUIT}km`);
         if (parking > 0) detailParts.push(`parking ${parking}€`);
         fraisDetailText = detailParts.join(' + ');
       } else if (zone === 'cote-azur') {
@@ -5221,8 +5326,10 @@
           const detected = detectDistanceFromCimetiere();
           if (detected) { distanceKm = detected.km; parking = detected.parking; }
         }
+        // Forfait de base + km supplémentaires
+        fraisDeplacement = FORFAIT_DEPLACEMENT * nbJoursDevis;
         if (distanceKm > SEUIL_GRATUIT) {
-          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJoursDevis);
+          fraisDeplacement += Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJoursDevis);
         }
         fraisDeplacement += parking * nbJoursDevis;
       } else if (zone === 'cote-azur') {
