@@ -1934,8 +1934,8 @@
       navbar.classList.toggle('scrolled', window.pageYOffset > 50);
     });
 
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
+    // Reveal on scroll - all animation types
+    const reveals = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale, .reveal-left, .reveal-right, .stagger-children');
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
