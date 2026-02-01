@@ -2156,9 +2156,9 @@
               </select>
             </div>
           </div>
-          <div id="zone-idf-options" style="margin-bottom: 12px;">
+          <div id="zone-distance-options" style="margin-bottom: 12px;">
             <div class="form-group">
-              <label>Distance (km depuis La Celle-St-Cloud)</label>
+              <label id="distance-label">Distance (km depuis La Celle-St-Cloud)</label>
               <div style="display: flex; gap: 8px;">
                 <input type="number" id="detail-distance-km" placeholder="Auto" min="0" style="flex: 1;" onchange="updatePriceFromTravaux()">
                 <button type="button" class="btn btn-outline" onclick="autoDetectDistance()" style="padding: 8px 12px;" title="Détecter depuis cimetière">📍</button>
@@ -2667,9 +2667,29 @@
     const FRAIS_KM = 0.60; // 0.60€/km (essence + usure)
     const SEUIL_GRATUIT = 10; // km gratuits
 
-    // Zones - Paris/IDF et Côte d'Azur uniquement
+    // Zones - Paris/IDF et Côte d'Azur
     const ZONES_LONGUE_DISTANCE = {
-      'cote-azur': { label: 'Côte d\'Azur', frais: 150, desc: 'Déplacements locaux inclus' }
+      'cote-azur': { label: 'Côte d\'Azur', fraisTransport: 150, desc: 'Train/avion A/R' }
+    };
+
+    // Cimetières Côte d'Azur - distances depuis Nice (base)
+    const CIMETIERES_COTE_AZUR = {
+      'nice': { km: 5, parking: 5 },
+      'nice caucade': { km: 8, parking: 5 },
+      'nice cimiez': { km: 6, parking: 5 },
+      'cannes': { km: 35, parking: 10 },
+      'antibes': { km: 25, parking: 8 },
+      'grasse': { km: 40, parking: 5 },
+      'menton': { km: 30, parking: 8 },
+      'monaco': { km: 20, parking: 20 },
+      'cagnes-sur-mer': { km: 15, parking: 5 },
+      'saint-laurent-du-var': { km: 10, parking: 5 },
+      'vence': { km: 25, parking: 5 },
+      'mougins': { km: 30, parking: 5 },
+      'frejus': { km: 65, parking: 5 },
+      'saint-tropez': { km: 100, parking: 15 },
+      'toulon': { km: 150, parking: 10 },
+      'default': { km: 40, parking: 10 }
     };
 
     const STATUS_LABELS = {
@@ -3414,7 +3434,7 @@
       const zone = document.getElementById('detail-zone').value;
 
       if (zone === 'idf') {
-        // IDF - calcul par km
+        // IDF - calcul par km depuis La Celle-Saint-Cloud
         let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
         let parking = 0;
 
@@ -3436,13 +3456,30 @@
         if (distanceKm > SEUIL_GRATUIT) detailParts.push(`${distanceKm}km`);
         if (parking > 0) detailParts.push(`parking ${parking}€`);
         fraisDetailText = detailParts.join(' + ');
-      } else {
-        // Hors IDF - frais fixes
-        const zoneData = ZONES_LONGUE_DISTANCE[zone];
-        if (zoneData) {
-          fraisDeplacement = zoneData.frais;
-          fraisDetailText = zoneData.desc;
+      } else if (zone === 'cote-azur') {
+        // Côte d'Azur : frais transport + déplacements locaux
+        const zoneData = ZONES_LONGUE_DISTANCE['cote-azur'];
+        let fraisTransport = zoneData.fraisTransport; // Train/avion
+
+        // Déplacements locaux (voiture de location + essence)
+        let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
+        let parking = 0;
+
+        if (distanceKm === 0) {
+          const detected = detectDistanceCoteAzur();
+          if (detected) {
+            distanceKm = detected.km;
+            parking = detected.parking;
+          }
         }
+
+        // Location voiture ~40€/jour + essence
+        const locationVoiture = 40 * nbJours;
+        const fraisEssence = Math.round(distanceKm * 0.15 * nbJours); // 0.15€/km essence
+        const fraisLocaux = locationVoiture + fraisEssence + (parking * nbJours);
+
+        fraisDeplacement = fraisTransport + fraisLocaux;
+        fraisDetailText = `Train ${fraisTransport}€ + voiture ${fraisLocaux}€`;
       }
 
       // Show frais déplacement
@@ -3490,11 +3527,20 @@
     }
 
     function autoDetectDistance() {
-      const detected = detectDistanceFromCimetiere();
+      const zone = document.getElementById('detail-zone').value;
+      let detected = null;
+
+      if (zone === 'idf') {
+        detected = detectDistanceFromCimetiere();
+      } else if (zone === 'cote-azur') {
+        detected = detectDistanceCoteAzur();
+      }
+
       if (detected) {
         document.getElementById('detail-distance-km').value = detected.km;
         updatePriceFromTravaux();
-        showToast(`Distance détectée: ${detected.km}km`, 'success');
+        const base = zone === 'idf' ? 'La Celle-St-Cloud' : 'Nice';
+        showToast(`Distance détectée: ${detected.km}km depuis ${base}`, 'success');
       } else {
         showToast('Cimetière non reconnu, entre la distance manuellement', 'error');
       }
@@ -3502,15 +3548,32 @@
 
     function toggleZoneOptions() {
       const zone = document.getElementById('detail-zone').value;
-      const idfOptions = document.getElementById('zone-idf-options');
+      const distanceLabel = document.getElementById('distance-label');
+
+      // Clear distance when changing zone
+      document.getElementById('detail-distance-km').value = '';
 
       if (zone === 'idf') {
-        idfOptions.style.display = 'block';
-      } else {
-        idfOptions.style.display = 'none';
-        document.getElementById('detail-distance-km').value = '';
+        distanceLabel.textContent = 'Distance (km depuis La Celle-St-Cloud)';
+      } else if (zone === 'cote-azur') {
+        distanceLabel.textContent = 'Distance (km depuis Nice)';
       }
       updatePriceFromTravaux();
+    }
+
+    function detectDistanceCoteAzur() {
+      const client = clients.find(c => c.id === currentClientId);
+      const cimetiere = client?.cimetiere || document.getElementById('edit-cimetiere')?.value || '';
+      if (!cimetiere) return null;
+
+      const cimLower = cimetiere.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      for (const [key, data] of Object.entries(CIMETIERES_COTE_AZUR)) {
+        if (key !== 'default' && cimLower.includes(key)) {
+          return data;
+        }
+      }
+      return CIMETIERES_COTE_AZUR['default'];
     }
 
     function applyTravauxToPrice() {
@@ -4909,28 +4972,34 @@
         selectedTravaux.forEach(t => { t.prix = Math.round(t.prix * coef); });
       }
 
-      // Get zone and frais
+      // Get zone and frais (same calculation as updatePriceFromTravaux)
       const zone = document.getElementById('detail-zone').value;
+      const nbJoursDevis = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
       let fraisDeplacement = 0;
-      if (zone !== 'idf') {
-        const zoneData = ZONES_LONGUE_DISTANCE[zone];
-        if (zoneData) fraisDeplacement = zoneData.frais;
-      } else {
-        // IDF km calculation
+
+      if (zone === 'idf') {
         let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
         let parking = 0;
         if (distanceKm === 0) {
           const detected = detectDistanceFromCimetiere();
-          if (detected) {
-            distanceKm = detected.km;
-            parking = detected.parking;
-          }
+          if (detected) { distanceKm = detected.km; parking = detected.parking; }
         }
-        const nbJours = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
         if (distanceKm > SEUIL_GRATUIT) {
-          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJours);
+          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJoursDevis);
         }
-        fraisDeplacement += parking * nbJours;
+        fraisDeplacement += parking * nbJoursDevis;
+      } else if (zone === 'cote-azur') {
+        const zoneData = ZONES_LONGUE_DISTANCE['cote-azur'];
+        let fraisTransport = zoneData.fraisTransport;
+        let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
+        let parking = 0;
+        if (distanceKm === 0) {
+          const detected = detectDistanceCoteAzur();
+          if (detected) { distanceKm = detected.km; parking = detected.parking; }
+        }
+        const locationVoiture = 40 * nbJoursDevis;
+        const fraisEssence = Math.round(distanceKm * 0.15 * nbJoursDevis);
+        fraisDeplacement = fraisTransport + locationVoiture + fraisEssence + (parking * nbJoursDevis);
       }
 
       try {
