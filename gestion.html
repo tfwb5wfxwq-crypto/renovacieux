@@ -3469,10 +3469,13 @@
       }
 
       if (travaux.length === 0) {
-        prixRealtimeDiv.style.display = 'none';
-        fraisDiv.style.display = 'none';
-        formuleEntretienDiv.style.display = 'none';
-        document.getElementById('travaux-total').style.display = 'none';
+        if (prixRealtimeDiv) prixRealtimeDiv.style.display = 'none';
+        if (fraisDiv) fraisDiv.style.display = 'none';
+        if (formuleEntretienDiv) formuleEntretienDiv.style.display = 'none';
+        const travauxTotal = document.getElementById('travaux-total');
+        if (travauxTotal) travauxTotal.style.display = 'none';
+        const upsellTotal = document.getElementById('upsell-total');
+        if (upsellTotal) upsellTotal.style.display = 'none';
         return;
       }
 
