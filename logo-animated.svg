@@ -11,7 +11,7 @@
     </linearGradient>
 
     <clipPath id="textClip">
-      <text x="80" y="52" font-family="'Libre Baskerville', Georgia, serif" font-size="26" font-weight="400" font-style="italic" letter-spacing="1">Renovacieux</text>
+      <text x="80" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="400" letter-spacing="1">Renovacieux</text>
     </clipPath>
   </defs>
 
@@ -238,8 +238,8 @@
     </g>
   </g>
 
-  <!-- ====== TEXT RENOVACIEUX - Elegant serif, bronze/gold ====== -->
-  <text x="80" y="52" font-family="'Libre Baskerville', Georgia, serif" font-size="26" font-weight="400" font-style="italic" fill="#9A8062" letter-spacing="1">Renovacieux</text>
+  <!-- ====== TEXT RENOVACIEUX - Sobre, gris pierre ====== -->
+  <text x="80" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="400" fill="#6A6560" letter-spacing="1">Renovacieux</text>
 
   <!-- Shine on text -->
   <rect x="60" y="20" width="50" height="50" fill="url(#shine)" clip-path="url(#textClip)" opacity="0">
