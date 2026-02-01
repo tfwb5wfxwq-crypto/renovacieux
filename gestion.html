@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 70'%3E%3Crect x='4' y='54' width='52' height='8' rx='1' fill='%23C5C0B8'/%3E%3Cpath d='M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z' fill='%23D8D4CD' stroke='%23C5C0B8' stroke-width='1'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%233D6B7C'%3ER%3C/text%3E%3C/svg%3E">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -25,6 +26,8 @@
       --orange-light: #FEF3E0;
       --red: #DC3545;
       --red-light: #FCE8E8;
+      --blue: #4285F4;
+      --blue-light: #E8F0FE;
       --text: #1A2632;
       --text-light: #5A6A7A;
       --text-muted: #8A9AAA;
@@ -135,10 +138,6 @@
       box-shadow: 0 6px 20px rgba(61, 107, 124, 0.4);
     }
 
-    .login-box button:active {
-      transform: scale(0.98);
-    }
-
     .login-error {
       color: var(--red);
       text-align: center;
@@ -211,10 +210,12 @@
       background: var(--white);
       border-bottom: 1px solid var(--border);
       padding: 0 16px;
+      overflow-x: auto;
     }
 
     .tab {
       flex: 1;
+      min-width: fit-content;
       padding: 16px 12px;
       font-size: 14px;
       font-weight: 600;
@@ -229,6 +230,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      white-space: nowrap;
     }
 
     .tab:hover {
@@ -257,7 +259,7 @@
     /* Content */
     .content {
       padding: 24px;
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -280,19 +282,6 @@
       transition: all 0.2s;
       border-left: 4px solid var(--border);
       position: relative;
-      overflow: hidden;
-    }
-
-    .client-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, transparent 0%, rgba(61, 107, 124, 0.02) 100%);
-      opacity: 0;
-      transition: opacity 0.2s;
     }
 
     .client-card:hover {
@@ -300,25 +289,21 @@
       box-shadow: var(--shadow-lg);
     }
 
-    .client-card:hover::before {
-      opacity: 1;
-    }
-
     .client-card:active {
       transform: scale(0.99);
     }
 
-    .client-card.new {
+    .client-card.nouveau {
       border-left-color: var(--red);
       background: linear-gradient(135deg, var(--white) 0%, var(--red-light) 100%);
     }
 
-    .client-card.pending {
+    .client-card.a_rappeler, .client-card.en_discussion, .client-card.devis_envoye, .client-card.attente_paiement {
       border-left-color: var(--orange);
       background: linear-gradient(135deg, var(--white) 0%, var(--orange-light) 100%);
     }
 
-    .client-card.active-client {
+    .client-card.actif {
       border-left-color: var(--green);
       background: linear-gradient(135deg, var(--white) 0%, var(--green-light) 100%);
     }
@@ -337,41 +322,52 @@
     }
 
     .client-status {
-      font-size: 12px;
-      padding: 5px 12px;
+      font-size: 11px;
+      padding: 5px 10px;
       border-radius: 20px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
-    .client-status.new {
-      background: var(--red);
-      color: white;
-    }
-
-    .client-status.pending {
-      background: var(--orange);
-      color: white;
-    }
-
-    .client-status.active-client {
-      background: var(--green);
-      color: white;
-    }
+    .client-status.nouveau { background: var(--red); color: white; }
+    .client-status.a_rappeler, .client-status.en_discussion, .client-status.devis_envoye, .client-status.attente_paiement { background: var(--orange); color: white; }
+    .client-status.actif { background: var(--green); color: white; }
+    .client-status.perdu { background: var(--text-muted); color: white; }
 
     .client-info {
       font-size: 14px;
       color: var(--text-light);
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
-    .client-info span {
+    .client-info-row {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .client-phone-big {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--blue-light);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    .client-formule {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .client-date {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
     /* Empty state */
@@ -385,10 +381,6 @@
       font-size: 64px;
       margin-bottom: 20px;
       opacity: 0.5;
-    }
-
-    .empty-state p {
-      font-size: 16px;
     }
 
     /* ===== DETAIL PAGE ===== */
@@ -413,7 +405,7 @@
     .detail-card {
       background: var(--white);
       border-radius: 20px;
-      padding: 28px;
+      padding: 24px;
       margin-bottom: 16px;
       box-shadow: var(--shadow);
     }
@@ -428,6 +420,57 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    /* Phone highlight */
+    .phone-highlight {
+      background: linear-gradient(135deg, var(--blue-light) 0%, #D4E5F7 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 2px solid var(--blue);
+    }
+
+    .phone-highlight-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .phone-highlight-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--blue);
+      font-family: 'SF Mono', Monaco, monospace;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .phone-highlight-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .phone-highlight-copy:hover {
+      background: #3367D6;
+      transform: scale(1.02);
+    }
+
+    .phone-highlight-copy.copied {
+      background: var(--green);
     }
 
     .form-group {
@@ -556,13 +599,19 @@
       transform: scale(0.98);
     }
 
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: white;
       box-shadow: 0 4px 15px rgba(61, 107, 124, 0.3);
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       box-shadow: 0 6px 20px rgba(61, 107, 124, 0.4);
       transform: translateY(-1px);
     }
@@ -573,8 +622,18 @@
       box-shadow: 0 4px 15px rgba(52, 168, 83, 0.3);
     }
 
-    .btn-success:hover {
+    .btn-success:hover:not(:disabled) {
       box-shadow: 0 6px 20px rgba(52, 168, 83, 0.4);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #B8954C 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(201, 165, 92, 0.3);
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      box-shadow: 0 6px 20px rgba(201, 165, 92, 0.4);
     }
 
     .btn-outline {
@@ -583,7 +642,7 @@
       border: 2px solid var(--border);
     }
 
-    .btn-outline:hover {
+    .btn-outline:hover:not(:disabled) {
       border-color: var(--primary);
       background: rgba(61, 107, 124, 0.03);
     }
@@ -594,14 +653,20 @@
       border: 2px solid var(--red);
     }
 
-    .btn-danger:hover {
+    .btn-danger:hover:not(:disabled) {
       background: var(--red-light);
     }
 
-    .btn-call {
-      background: linear-gradient(135deg, var(--accent) 0%, #B8954C 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(201, 165, 92, 0.3);
+    .btn-small {
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    /* Buttons grid */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     /* Divider */
@@ -620,10 +685,299 @@
       display: block;
     }
 
-    /* Logo SVG */
-    .logo-svg {
+    /* ===== DEVIS PREVIEW MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--bg);
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-footer .btn {
+      margin: 0;
+      flex: 1;
+    }
+
+    /* Devis preview */
+    .devis-preview {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 14px;
+    }
+
+    .devis-preview-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .devis-preview-header h1 {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .devis-preview-header p {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .devis-preview-section {
+      margin-bottom: 20px;
+    }
+
+    .devis-preview-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .devis-preview-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .devis-preview-total {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: right;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid var(--primary);
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--green);
+    }
+
+    .toast.error {
+      background: var(--red);
+    }
+
+    /* Dates section */
+    .dates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .date-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-radius: 10px;
+    }
+
+    .date-item-icon {
       width: 40px;
       height: 40px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .date-item-info {
+      flex: 1;
+    }
+
+    .date-item-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .date-item-value {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .date-item-delete {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--red-light);
+      color: var(--red);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Add date input */
+    .add-date-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .add-date-row input {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+    }
+
+    .add-date-row button {
+      padding: 12px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* History */
+    .history-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .history-content {
+      flex: 1;
+    }
+
+    .history-text {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .history-date {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Info row */
+    .info-row {
+      display: flex;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      width: 120px;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .info-value {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text);
     }
   </style>
 </head>
@@ -644,7 +998,7 @@
       <p>Connecte-toi pour gérer tes clients</p>
       <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="off">
       <button onclick="tryLogin()">Se connecter</button>
-      <p class="login-error" id="loginError">❌ Mot de passe incorrect</p>
+      <p class="login-error" id="loginError">Mot de passe incorrect</p>
     </div>
   </div>
 
@@ -661,20 +1015,24 @@
         </svg>
         Gestion
       </div>
-      <button class="header-logout" onclick="logout()">Déconnexion</button>
+      <button class="header-logout" onclick="logout()">Quitter</button>
     </header>
 
     <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="nouveaux" onclick="switchTab('nouveaux')">
-        🆕 Nouveaux
+        Nouveaux
         <span class="tab-badge" id="newCount">0</span>
       </button>
-      <button class="tab" data-tab="clients" onclick="switchTab('clients')">
-        👥 Tous les clients
+      <button class="tab" data-tab="en_cours" onclick="switchTab('en_cours')">
+        En cours
+        <span class="tab-badge" id="enCoursCount" style="background: var(--orange);">0</span>
       </button>
-      <button class="tab" data-tab="calendrier" onclick="switchTab('calendrier')">
-        📅 Calendrier
+      <button class="tab" data-tab="actifs" onclick="switchTab('actifs')">
+        Actifs
+      </button>
+      <button class="tab" data-tab="tous" onclick="switchTab('tous')">
+        Tous
       </button>
     </div>
 
@@ -684,148 +1042,241 @@
       <!-- Page: Nouveaux -->
       <div class="page active" id="page-nouveaux">
         <button class="btn btn-primary" onclick="openNewClient()" style="margin-bottom: 20px;">
-          ➕ Ajouter un client
+          + Ajouter un client
         </button>
         <div id="newClientsList"></div>
         <div class="empty-state" id="emptyNew" style="display:none;">
-          <div class="empty-state-icon">✅</div>
-          <p>Aucun nouveau contact à traiter</p>
+          <div class="empty-state-icon">✓</div>
+          <p>Aucun nouveau contact</p>
         </div>
       </div>
 
-      <!-- Page: Clients -->
-      <div class="page" id="page-clients">
-        <div id="clientsList"></div>
-        <div class="empty-state" id="emptyClients" style="display:none;">
+      <!-- Page: En cours -->
+      <div class="page" id="page-en_cours">
+        <div id="enCoursList"></div>
+        <div class="empty-state" id="emptyEnCours" style="display:none;">
+          <div class="empty-state-icon">📋</div>
+          <p>Aucun client en cours</p>
+        </div>
+      </div>
+
+      <!-- Page: Actifs -->
+      <div class="page" id="page-actifs">
+        <div id="actifsList"></div>
+        <div class="empty-state" id="emptyActifs" style="display:none;">
+          <div class="empty-state-icon">⭐</div>
+          <p>Aucun client actif</p>
+        </div>
+      </div>
+
+      <!-- Page: Tous -->
+      <div class="page" id="page-tous">
+        <div id="tousList"></div>
+        <div class="empty-state" id="emptyTous" style="display:none;">
           <div class="empty-state-icon">👥</div>
-          <p>Aucun client pour l'instant</p>
-        </div>
-      </div>
-
-      <!-- Page: Calendrier -->
-      <div class="page" id="page-calendrier">
-        <div class="empty-state">
-          <div class="empty-state-icon">📅</div>
-          <p>Synchronisation Google Calendar</p>
-          <p style="margin-top:8px; font-size:14px; opacity:0.7;">(Bientôt disponible)</p>
+          <p>Aucun client</p>
         </div>
       </div>
 
       <!-- Page: Detail client -->
       <div class="page" id="page-detail">
         <button class="detail-back" onclick="goBack()">
-          ← Retour à la liste
+          ← Retour
         </button>
 
-        <!-- Infos du formulaire -->
-        <div class="detail-card">
-          <h3 id="info-section-title">📋 Infos reçues du site</h3>
+        <!-- Phone highlight -->
+        <div class="phone-highlight" id="phoneHighlight">
+          <div class="phone-highlight-label">Numéro à appeler</div>
+          <div class="phone-highlight-number" id="phoneNumber">-</div>
+          <button class="phone-highlight-copy" onclick="copyPhone()">
+            <span id="copyBtnText">Copier</span>
+          </button>
+        </div>
+
+        <!-- Infos client - Version lecture (client du site) -->
+        <div class="detail-card" id="clientInfoReadonly">
+          <h3>Informations client <span style="font-size: 11px; background: var(--blue-light); color: var(--blue); padding: 3px 8px; border-radius: 10px; margin-left: 8px;">Via le site</span></h3>
+          <div class="info-row">
+            <div class="info-label">Nom</div>
+            <div class="info-value" id="detail-fullname">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Email</div>
+            <div class="info-value" id="detail-email">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Téléphone</div>
+            <div class="info-value" id="detail-tel-readonly">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Cimetière</div>
+            <div class="info-value" id="detail-cimetiere">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Formule</div>
+            <div class="info-value" id="detail-formule-demandee">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Message</div>
+            <div class="info-value" id="detail-message">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Reçu le</div>
+            <div class="info-value" id="detail-created">-</div>
+          </div>
+        </div>
+
+        <!-- Infos client - Version éditable (client manuel/téléphone) -->
+        <div class="detail-card" id="clientInfoEditable" style="display: none;">
+          <h3>Informations client <span style="font-size: 11px; background: var(--orange-light); color: var(--orange); padding: 3px 8px; border-radius: 10px; margin-left: 8px;">Ajout manuel</span></h3>
           <div class="form-row">
-            <div class="form-group readonly">
-              <label>Nom</label>
-              <input type="text" id="detail-nom" readonly>
-            </div>
-            <div class="form-group readonly">
+            <div class="form-group">
               <label>Prénom</label>
-              <input type="text" id="detail-prenom" readonly>
+              <input type="text" id="edit-prenom" placeholder="Prénom">
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" id="edit-nom" placeholder="Nom">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group readonly">
+            <div class="form-group">
               <label>Téléphone</label>
-              <input type="text" id="detail-tel" readonly>
+              <input type="tel" id="edit-tel" placeholder="06 XX XX XX XX">
             </div>
-            <div class="form-group readonly">
+            <div class="form-group">
               <label>Email</label>
-              <input type="text" id="detail-email" readonly>
+              <input type="email" id="edit-email" placeholder="email@exemple.com">
             </div>
           </div>
-          <div class="form-group readonly">
+          <div class="form-group">
             <label>Cimetière</label>
-            <input type="text" id="detail-cimetiere" readonly>
+            <input type="text" id="edit-cimetiere" placeholder="Nom du cimetière et ville">
           </div>
-          <div class="form-group readonly">
-            <label>Formule demandée</label>
-            <input type="text" id="detail-formule-init" readonly>
-          </div>
-          <div class="form-group readonly">
-            <label>Message</label>
-            <textarea id="detail-message" readonly></textarea>
+          <div class="form-group">
+            <label>Message / Contexte</label>
+            <textarea id="edit-message" placeholder="Comment il vous a contacté, ce qu'il veut..."></textarea>
           </div>
         </div>
 
         <!-- À compléter -->
         <div class="detail-card">
-          <h3>✏️ À compléter (appel)</h3>
+          <h3>Notes et suivi</h3>
           <div class="form-group">
-            <label>Où se trouve la tombe ?</label>
+            <label>Position de la tombe</label>
             <input type="text" id="detail-position" placeholder="Ex: Allée 4, Rang 12, numéro 8">
           </div>
           <div class="form-group">
             <label>Facile à trouver ?</label>
             <div class="toggle-buttons">
-              <button class="toggle-btn" data-value="oui" onclick="selectOption(this, 'facile')">✅ Oui</button>
-              <button class="toggle-btn" data-value="non" onclick="selectOption(this, 'facile')">❌ Non, difficile</button>
+              <button class="toggle-btn" data-value="oui" onclick="selectOption(this, 'facile')">Oui</button>
+              <button class="toggle-btn" data-value="non" onclick="selectOption(this, 'facile')">Difficile</button>
             </div>
           </div>
           <div class="form-group">
-            <label>Notes importantes</label>
-            <textarea id="detail-notes" placeholder="Ce qu'il faut retenir de l'appel..."></textarea>
+            <label>Notes (appel, remarques...)</label>
+            <textarea id="detail-notes" placeholder="Ce qu'il faut retenir..."></textarea>
           </div>
 
           <div class="divider"></div>
 
-          <div class="form-group">
-            <label>Formule choisie</label>
-            <select id="detail-formule">
-              <option value="">Pas encore décidé</option>
-              <option value="ponctuel">🔹 Ponctuel — 89€</option>
-              <option value="serenite">🔷 Sérénité — 180€/an (2 passages)</option>
-              <option value="prestige">⭐ Prestige — 420€/an (4 passages)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Statut du client</label>
-            <select id="detail-statut">
-              <option value="nouveau">🆕 Nouveau</option>
-              <option value="a_rappeler">📞 À rappeler</option>
-              <option value="en_discussion">💬 En discussion</option>
-              <option value="devis_envoye">📄 Devis envoyé</option>
-              <option value="attente_paiement">💳 Attente paiement</option>
-              <option value="actif">✅ Client actif</option>
-              <option value="perdu">❌ Perdu</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Formule choisie</label>
+              <select id="detail-formule">
+                <option value="">Pas encore décidé</option>
+                <option value="ponctuel">Ponctuel — 89€</option>
+                <option value="serenite">Sérénité — 180€/an</option>
+                <option value="prestige">Prestige — 420€/an</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Statut</label>
+              <select id="detail-statut">
+                <option value="nouveau">Nouveau</option>
+                <option value="a_rappeler">À rappeler</option>
+                <option value="en_discussion">En discussion</option>
+                <option value="devis_envoye">Devis envoyé</option>
+                <option value="attente_paiement">Attente paiement</option>
+                <option value="actif">Client actif</option>
+                <option value="perdu">Perdu</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <button class="btn btn-primary" onclick="saveClient()">
-          💾 Enregistrer les modifications
+          Enregistrer
         </button>
 
-        <!-- Actions -->
+        <!-- Devis & Paiement -->
         <div class="detail-card">
-          <h3>📤 Actions rapides</h3>
-          <button class="btn btn-call" onclick="callClient()">
-            📞 Appeler ce client
-          </button>
-          <button class="btn btn-outline" onclick="generateDevis()">
-            📄 Générer un devis PDF
-          </button>
-          <button class="btn btn-success" onclick="sendPaymentLink()">
-            💳 Envoyer un lien de paiement
-          </button>
+          <h3>Devis & Paiement</h3>
+          <div class="btn-grid">
+            <button class="btn btn-accent btn-small" onclick="previewDevis()">
+              Générer devis
+            </button>
+            <button class="btn btn-success btn-small" onclick="sendDevisEmail()" id="btnSendDevis">
+              Envoyer par email
+            </button>
+          </div>
+          <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 8px;">
+            L'email contient le devis PDF + lien de paiement Stripe
+          </p>
+        </div>
+
+        <!-- Dates d'intervention -->
+        <div class="detail-card">
+          <h3>Dates d'intervention</h3>
+          <div class="dates-list" id="datesList">
+            <!-- Dates will be rendered here -->
+          </div>
+          <div class="add-date-row">
+            <input type="date" id="newDateInput">
+            <button onclick="addDate()">Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Historique -->
+        <div class="detail-card">
+          <h3>Historique</h3>
+          <div id="historyList">
+            <!-- History will be rendered here -->
+          </div>
         </div>
 
         <div class="divider"></div>
 
         <button class="btn btn-danger" onclick="deleteClient()">
-          🗑️ Supprimer ce contact
+          Supprimer ce client
         </button>
 
       </div>
 
     </div>
   </div>
+
+  <!-- DEVIS MODAL -->
+  <div class="modal-overlay" id="devisModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Aperçu du devis</h2>
+        <button class="modal-close" onclick="closeDevisModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="devis-preview" id="devisPreview">
+          <!-- Devis content will be rendered here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeDevisModal()">Fermer</button>
+        <button class="btn btn-accent" onclick="downloadDevis()">Télécharger PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -840,6 +1291,23 @@
     let currentClientId = null;
     let currentTab = 'nouveaux';
 
+    // Formules config
+    const FORMULES = {
+      ponctuel: { name: 'Ponctuel', price: 89, desc: 'Intervention unique' },
+      serenite: { name: 'Sérénité', price: 180, desc: '2 passages par an' },
+      prestige: { name: 'Prestige', price: 420, desc: '4 passages par an' }
+    };
+
+    const STATUS_LABELS = {
+      nouveau: 'Nouveau',
+      a_rappeler: 'À rappeler',
+      en_discussion: 'En discussion',
+      devis_envoye: 'Devis envoyé',
+      attente_paiement: 'Attente paiement',
+      actif: 'Actif',
+      perdu: 'Perdu'
+    };
+
     // ===== SUPABASE FUNCTIONS =====
     async function loadClients() {
       const { data, error } = await db
@@ -849,6 +1317,7 @@
 
       if (error) {
         console.error('Erreur chargement:', error);
+        showToast('Erreur de chargement', 'error');
         return;
       }
       clients = data || [];
@@ -863,10 +1332,24 @@
 
       if (error) {
         console.error('Erreur update:', error);
-        alert('Erreur lors de la sauvegarde');
+        showToast('Erreur de sauvegarde', 'error');
         return false;
       }
       return true;
+    }
+
+    async function createClient(clientData) {
+      const { data, error } = await db
+        .from('clients')
+        .insert([clientData])
+        .select();
+
+      if (error) {
+        console.error('Erreur création:', error);
+        showToast('Erreur de création', 'error');
+        return null;
+      }
+      return data[0];
     }
 
     async function removeClient(id) {
@@ -877,7 +1360,7 @@
 
       if (error) {
         console.error('Erreur delete:', error);
-        alert('Erreur lors de la suppression');
+        showToast('Erreur de suppression', 'error');
         return false;
       }
       return true;
@@ -929,56 +1412,68 @@
 
     // ===== RENDER =====
     function renderLists() {
-      const newClients = clients.filter(c => c.statut === 'nouveau');
-      const otherClients = clients.filter(c => c.statut !== 'nouveau');
+      const nouveaux = clients.filter(c => c.statut === 'nouveau');
+      const enCours = clients.filter(c => ['a_rappeler', 'en_discussion', 'devis_envoye', 'attente_paiement'].includes(c.statut));
+      const actifs = clients.filter(c => c.statut === 'actif');
 
-      document.getElementById('newCount').textContent = newClients.length;
-      document.getElementById('newCount').style.display = newClients.length > 0 ? 'inline-flex' : 'none';
+      // Update badges
+      document.getElementById('newCount').textContent = nouveaux.length;
+      document.getElementById('newCount').style.display = nouveaux.length > 0 ? 'inline-flex' : 'none';
+      document.getElementById('enCoursCount').textContent = enCours.length;
+      document.getElementById('enCoursCount').style.display = enCours.length > 0 ? 'inline-flex' : 'none';
 
-      const newList = document.getElementById('newClientsList');
-      if (newClients.length === 0) {
-        newList.innerHTML = '';
-        document.getElementById('emptyNew').style.display = 'block';
+      // Render lists
+      renderList('newClientsList', nouveaux, 'emptyNew');
+      renderList('enCoursList', enCours, 'emptyEnCours');
+      renderList('actifsList', actifs, 'emptyActifs');
+      renderList('tousList', clients, 'emptyTous');
+    }
+
+    function renderList(containerId, items, emptyId) {
+      const container = document.getElementById(containerId);
+      const empty = document.getElementById(emptyId);
+
+      if (items.length === 0) {
+        container.innerHTML = '';
+        empty.style.display = 'block';
       } else {
-        document.getElementById('emptyNew').style.display = 'none';
-        newList.innerHTML = newClients.map(c => renderClientCard(c)).join('');
-      }
-
-      const clientList = document.getElementById('clientsList');
-      if (otherClients.length === 0) {
-        clientList.innerHTML = '';
-        document.getElementById('emptyClients').style.display = 'block';
-      } else {
-        document.getElementById('emptyClients').style.display = 'none';
-        clientList.innerHTML = otherClients.map(c => renderClientCard(c)).join('');
+        empty.style.display = 'none';
+        container.innerHTML = items.map(c => renderClientCard(c)).join('');
       }
     }
 
     function renderClientCard(client) {
-      const statusLabels = {
-        nouveau: ['new', 'Nouveau'],
-        a_rappeler: ['pending', 'À rappeler'],
-        en_discussion: ['pending', 'En discussion'],
-        devis_envoye: ['pending', 'Devis envoyé'],
-        attente_paiement: ['pending', 'Attente paiement'],
-        actif: ['active-client', 'Client actif'],
-        perdu: ['', 'Perdu']
-      };
-
-      const [statusClass, statusLabel] = statusLabels[client.statut] || ['', client.statut];
+      const statusLabel = STATUS_LABELS[client.statut] || client.statut;
+      const formule = FORMULES[client.formule_choisie];
+      const formuleText = formule ? `${formule.name} — ${formule.price}€` : (client.formule_demandee || '');
+      const dateStr = client.created_at ? new Date(client.created_at).toLocaleDateString('fr-FR') : '';
 
       return `
-        <div class="client-card ${statusClass}" onclick="openClient(${client.id})">
+        <div class="client-card ${client.statut}" onclick="openClient(${client.id})">
           <div class="client-card-header">
-            <div class="client-name">${client.prenom} ${client.nom}</div>
-            <div class="client-status ${statusClass}">${statusLabel}</div>
+            <div class="client-name">${client.prenom || ''} ${client.nom || ''}</div>
+            <div class="client-status ${client.statut}">${statusLabel}</div>
           </div>
           <div class="client-info">
-            <span>📍 ${client.cimetiere || 'Cimetière non renseigné'}</span>
-            <span>📞 ${client.tel || 'Pas de téléphone'}</span>
+            ${client.tel ? `<div class="client-info-row"><span class="client-phone-big">${formatPhone(client.tel)}</span></div>` : ''}
+            <div class="client-info-row">
+              <span>${client.cimetiere || 'Cimetière non renseigné'}</span>
+            </div>
+            ${formuleText ? `<div class="client-info-row"><span class="client-formule">${formuleText}</span></div>` : ''}
+            <div class="client-info-row"><span class="client-date">${dateStr}</span></div>
           </div>
         </div>
       `;
+    }
+
+    function formatPhone(phone) {
+      if (!phone) return '-';
+      // Clean and format French phone
+      const cleaned = phone.replace(/\D/g, '');
+      if (cleaned.length === 10) {
+        return cleaned.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5');
+      }
+      return phone;
     }
 
     // ===== CLIENT DETAIL =====
@@ -987,32 +1482,88 @@
       const client = clients.find(c => c.id === id);
       if (!client) return;
 
-      // Restore section title
-      document.getElementById('info-section-title').textContent = '📋 Infos reçues du site';
+      // Determine if client is from website or manual
+      const isFromWebsite = client.email && client.email.includes('@');
 
-      // Restore readonly for website fields
-      document.querySelectorAll('.detail-card .form-group.readonly input, .detail-card .form-group.readonly textarea').forEach(el => {
-        el.setAttribute('readonly', true);
-        el.style.background = 'var(--bg)';
-        el.style.color = 'var(--text-light)';
-        el.style.borderColor = 'transparent';
-      });
+      // Show appropriate form
+      document.getElementById('clientInfoReadonly').style.display = isFromWebsite ? 'block' : 'none';
+      document.getElementById('clientInfoEditable').style.display = isFromWebsite ? 'none' : 'block';
 
-      document.getElementById('detail-nom').value = client.nom || '';
-      document.getElementById('detail-prenom').value = client.prenom || '';
-      document.getElementById('detail-tel').value = client.tel || '';
-      document.getElementById('detail-email').value = client.email || '';
-      document.getElementById('detail-cimetiere').value = client.cimetiere || '';
-      document.getElementById('detail-formule-init').value = client.formule_demandee || '';
-      document.getElementById('detail-message').value = client.message || '';
+      // Phone highlight
+      const phone = formatPhone(client.tel);
+      document.getElementById('phoneNumber').textContent = phone || 'Pas de numéro';
+      document.getElementById('phoneHighlight').style.display = client.tel ? 'block' : 'none';
+
+      if (isFromWebsite) {
+        // Client info - readonly version
+        document.getElementById('detail-fullname').textContent = `${client.prenom || ''} ${client.nom || ''}`.trim() || '-';
+        document.getElementById('detail-email').textContent = client.email || '-';
+        document.getElementById('detail-tel-readonly').textContent = formatPhone(client.tel) || '-';
+        document.getElementById('detail-cimetiere').textContent = client.cimetiere || '-';
+        document.getElementById('detail-formule-demandee').textContent = client.formule_demandee || '-';
+        document.getElementById('detail-message').textContent = client.message || '-';
+        document.getElementById('detail-created').textContent = client.created_at ? new Date(client.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+      } else {
+        // Client info - editable version (manual client)
+        document.getElementById('edit-prenom').value = client.prenom || '';
+        document.getElementById('edit-nom').value = client.nom || '';
+        document.getElementById('edit-tel').value = client.tel || '';
+        document.getElementById('edit-email').value = client.email || '';
+        document.getElementById('edit-cimetiere').value = client.cimetiere || '';
+        document.getElementById('edit-message').value = client.message || '';
+      }
+
+      // Editable fields (common to both)
       document.getElementById('detail-position').value = client.position_tombe || '';
       document.getElementById('detail-notes').value = client.notes || '';
       document.getElementById('detail-formule').value = client.formule_choisie || '';
       document.getElementById('detail-statut').value = client.statut || 'nouveau';
 
+      // Facile toggle
       document.querySelectorAll('[onclick*="facile"]').forEach(el => {
         el.classList.toggle('selected', el.dataset.value === client.facile_trouver);
       });
+
+      // Dates
+      renderDates(client);
+
+      // History
+      renderHistory(client);
+
+      // Show detail page
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-detail').classList.add('active');
+    }
+
+    function openNewClient() {
+      currentClientId = null;
+
+      // Hide phone highlight for new client
+      document.getElementById('phoneHighlight').style.display = 'none';
+
+      // Show editable form, hide readonly
+      document.getElementById('clientInfoReadonly').style.display = 'none';
+      document.getElementById('clientInfoEditable').style.display = 'block';
+
+      // Clear editable client info fields
+      document.getElementById('edit-prenom').value = '';
+      document.getElementById('edit-nom').value = '';
+      document.getElementById('edit-tel').value = '';
+      document.getElementById('edit-email').value = '';
+      document.getElementById('edit-cimetiere').value = '';
+      document.getElementById('edit-message').value = '';
+
+      // Clear other editable fields
+      document.getElementById('detail-position').value = '';
+      document.getElementById('detail-notes').value = '';
+      document.getElementById('detail-formule').value = '';
+      document.getElementById('detail-statut').value = 'nouveau';
+
+      document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
+
+      // Clear dates & history
+      document.getElementById('datesList').innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Aucune date prévue</p>';
+      document.getElementById('historyList').innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Nouveau client</p>';
 
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-detail').classList.add('active');
@@ -1023,119 +1574,11 @@
       el.classList.add('selected');
     }
 
-    async function deleteClient() {
-      if (!confirm('Supprimer définitivement ce contact ?')) return;
-
-      const success = await removeClient(currentClientId);
-      if (success) {
-        await loadClients();
-        goBack();
-      }
-    }
-
-    // ===== ACTIONS =====
-    function generateDevis() {
-      const client = clients.find(c => c.id === currentClientId);
-      alert(`📄 Génération du devis pour ${client.prenom} ${client.nom}\n\n(Fonctionnalité bientôt disponible)`);
-    }
-
-    function sendPaymentLink() {
-      const client = clients.find(c => c.id === currentClientId);
-      alert(`💳 Envoi du lien de paiement à ${client.email}\n\n(Fonctionnalité bientôt disponible)`);
-    }
-
-    function callClient() {
-      const client = clients.find(c => c.id === currentClientId);
-      if (client && client.tel) {
-        window.location.href = 'tel:' + client.tel.replace(/\s/g, '');
-      }
-    }
-
-    // ===== ADD NEW CLIENT =====
-    function openNewClient() {
-      currentClientId = null;
-
-      // Change section title
-      document.getElementById('info-section-title').textContent = '📞 Nouveau client (appel)';
-
-      // Clear all fields
-      document.getElementById('detail-nom').value = '';
-      document.getElementById('detail-prenom').value = '';
-      document.getElementById('detail-tel').value = '';
-      document.getElementById('detail-email').value = '';
-      document.getElementById('detail-cimetiere').value = '';
-      document.getElementById('detail-formule-init').value = '';
-      document.getElementById('detail-message').value = '';
-      document.getElementById('detail-position').value = '';
-      document.getElementById('detail-notes').value = '';
-      document.getElementById('detail-formule').value = '';
-      document.getElementById('detail-statut').value = 'nouveau';
-
-      // Make ALL fields editable for new client
-      document.querySelectorAll('.detail-card .form-group.readonly input, .detail-card .form-group.readonly textarea').forEach(el => {
-        el.removeAttribute('readonly');
-        el.style.background = 'var(--white)';
-        el.style.color = 'var(--text)';
-        el.style.borderColor = 'var(--border)';
-      });
-
-      document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
-
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-detail').classList.add('active');
-    }
-
     async function saveClient() {
       const facileEl = document.querySelector('[onclick*="facile"].selected');
+      const isEditableMode = document.getElementById('clientInfoEditable').style.display !== 'none';
 
-      // If new client (no currentClientId), create it
-      if (!currentClientId) {
-        const newClient = {
-          nom: document.getElementById('detail-nom').value,
-          prenom: document.getElementById('detail-prenom').value,
-          tel: document.getElementById('detail-tel').value,
-          email: document.getElementById('detail-email').value,
-          cimetiere: document.getElementById('detail-cimetiere').value,
-          formule_demandee: document.getElementById('detail-formule-init').value,
-          message: document.getElementById('detail-message').value,
-          position_tombe: document.getElementById('detail-position').value,
-          notes: document.getElementById('detail-notes').value,
-          formule_choisie: document.getElementById('detail-formule').value,
-          statut: document.getElementById('detail-statut').value,
-          facile_trouver: facileEl ? facileEl.dataset.value : ''
-        };
-
-        const btn = event.target;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '⏳ Création...';
-        btn.disabled = true;
-
-        const { data, error } = await db
-          .from('clients')
-          .insert([newClient])
-          .select();
-
-        if (error) {
-          console.error('Erreur création:', error);
-          btn.innerHTML = '❌ Erreur';
-          btn.style.background = 'var(--red)';
-        } else {
-          btn.innerHTML = '✅ Client créé !';
-          btn.style.background = 'var(--green)';
-          currentClientId = data[0].id;
-          await loadClients();
-        }
-
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 1500);
-
-        return;
-      }
-
-      // Existing client - update
+      // Base updates (common to all)
       const updates = {
         position_tombe: document.getElementById('detail-position').value,
         notes: document.getElementById('detail-notes').value,
@@ -1144,27 +1587,408 @@
         facile_trouver: facileEl ? facileEl.dataset.value : ''
       };
 
-      const btn = event.target;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '⏳ Sauvegarde...';
-      btn.disabled = true;
-
-      const success = await updateClient(currentClientId, updates);
-
-      if (success) {
-        btn.innerHTML = '✅ Enregistré !';
-        btn.style.background = 'var(--green)';
-        await loadClients();
-      } else {
-        btn.innerHTML = '❌ Erreur';
-        btn.style.background = 'var(--red)';
+      // If in editable mode (manual client), add those fields
+      if (isEditableMode) {
+        updates.prenom = document.getElementById('edit-prenom').value.trim();
+        updates.nom = document.getElementById('edit-nom').value.trim();
+        updates.tel = document.getElementById('edit-tel').value.trim();
+        updates.email = document.getElementById('edit-email').value.trim();
+        updates.cimetiere = document.getElementById('edit-cimetiere').value.trim();
+        updates.message = document.getElementById('edit-message').value.trim();
       }
 
+      let success;
+
+      if (!currentClientId) {
+        // New manual client
+        if (!updates.prenom && !updates.nom && !updates.tel) {
+          showToast('Remplis au moins le nom ou téléphone', 'error');
+          return;
+        }
+        const newClient = await createClient({
+          ...updates,
+          created_at: new Date().toISOString()
+        });
+        if (newClient) {
+          currentClientId = newClient.id;
+          success = true;
+        }
+      } else {
+        success = await updateClient(currentClientId, updates);
+      }
+
+      if (success) {
+        showToast('Enregistré !', 'success');
+        await loadClients();
+
+        // Update phone display if changed
+        const client = clients.find(c => c.id === currentClientId);
+        if (client && client.tel) {
+          document.getElementById('phoneNumber').textContent = formatPhone(client.tel);
+          document.getElementById('phoneHighlight').style.display = 'block';
+        }
+      }
+    }
+
+    async function deleteClient() {
+      if (!confirm('Supprimer définitivement ce contact ?')) return;
+
+      const success = await removeClient(currentClientId);
+      if (success) {
+        showToast('Client supprimé', 'success');
+        await loadClients();
+        goBack();
+      }
+    }
+
+    // ===== PHONE =====
+    function copyPhone() {
+      const phone = document.getElementById('phoneNumber').textContent.replace(/\s/g, '');
+      navigator.clipboard.writeText(phone).then(() => {
+        const btn = document.querySelector('.phone-highlight-copy');
+        btn.classList.add('copied');
+        document.getElementById('copyBtnText').textContent = 'Copié !';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          document.getElementById('copyBtnText').textContent = 'Copier';
+        }, 2000);
+      });
+    }
+
+    // ===== DATES =====
+    function renderDates(client) {
+      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+      const container = document.getElementById('datesList');
+
+      if (dates.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Aucune date prévue</p>';
+        return;
+      }
+
+      container.innerHTML = dates.map((d, i) => {
+        const date = new Date(d);
+        const day = date.getDate();
+        const month = date.toLocaleDateString('fr-FR', { month: 'short' });
+        const year = date.getFullYear();
+        const isPast = date < new Date();
+
+        return `
+          <div class="date-item" style="${isPast ? 'opacity: 0.5;' : ''}">
+            <div class="date-item-icon">${day}</div>
+            <div class="date-item-info">
+              <div class="date-item-label">${month} ${year}</div>
+              <div class="date-item-value">${isPast ? 'Passée' : 'À venir'}</div>
+            </div>
+            <button class="date-item-delete" onclick="removeDate(${i})">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function addDate() {
+      const input = document.getElementById('newDateInput');
+      const dateValue = input.value;
+      if (!dateValue) {
+        showToast('Sélectionne une date', 'error');
+        return;
+      }
+
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+      dates.push(dateValue);
+      dates.sort();
+
+      const success = await updateClient(currentClientId, { dates_intervention: JSON.stringify(dates) });
+      if (success) {
+        input.value = '';
+        await loadClients();
+        const updatedClient = clients.find(c => c.id === currentClientId);
+        renderDates(updatedClient);
+        showToast('Date ajoutée', 'success');
+      }
+    }
+
+    async function removeDate(index) {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+      dates.splice(index, 1);
+
+      const success = await updateClient(currentClientId, { dates_intervention: JSON.stringify(dates) });
+      if (success) {
+        await loadClients();
+        const updatedClient = clients.find(c => c.id === currentClientId);
+        renderDates(updatedClient);
+        showToast('Date supprimée', 'success');
+      }
+    }
+
+    // ===== HISTORY =====
+    function renderHistory(client) {
+      const history = client.historique ? JSON.parse(client.historique) : [];
+      const container = document.getElementById('historyList');
+
+      // Add creation event
+      const events = [
+        { text: 'Client créé', date: client.created_at },
+        ...history
+      ];
+
+      if (client.updated_at && client.updated_at !== client.created_at) {
+        events.push({ text: 'Dernière modification', date: client.updated_at });
+      }
+
+      // Sort by date desc
+      events.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      container.innerHTML = events.map(e => `
+        <div class="history-item">
+          <div class="history-dot"></div>
+          <div class="history-content">
+            <div class="history-text">${e.text}</div>
+            <div class="history-date">${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function addHistoryEvent(clientId, text) {
+      const client = clients.find(c => c.id === clientId);
+      if (!client) return;
+
+      const history = client.historique ? JSON.parse(client.historique) : [];
+      history.push({ text, date: new Date().toISOString() });
+
+      await updateClient(clientId, { historique: JSON.stringify(history) });
+    }
+
+    // ===== DEVIS =====
+    function previewDevis() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const formule = FORMULES[client.formule_choisie || document.getElementById('detail-formule').value];
+      if (!formule) {
+        showToast('Sélectionne une formule d\'abord', 'error');
+        return;
+      }
+
+      const devisNum = `DEV-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
+      const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      document.getElementById('devisPreview').innerHTML = `
+        <div class="devis-preview-header">
+          <h1>RENOVACIEUX</h1>
+          <p>Rénovation et entretien de sépultures</p>
+        </div>
+
+        <div class="devis-preview-section">
+          <h4>Devis N° ${devisNum}</h4>
+          <p>Date : ${today}</p>
+        </div>
+
+        <div class="devis-preview-section">
+          <h4>Client</h4>
+          <p><strong>${client.prenom || ''} ${client.nom || ''}</strong></p>
+          ${client.email ? `<p>${client.email}</p>` : ''}
+          ${client.tel ? `<p>${formatPhone(client.tel)}</p>` : ''}
+        </div>
+
+        <div class="devis-preview-section">
+          <h4>Lieu d'intervention</h4>
+          <p>${client.cimetiere || 'Non renseigné'}</p>
+          ${client.position_tombe ? `<p>Position : ${client.position_tombe}</p>` : ''}
+        </div>
+
+        <div class="devis-preview-section">
+          <h4>Prestation</h4>
+          <div class="devis-preview-row">
+            <span>${formule.name}</span>
+            <span>${formule.price}€</span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${formule.desc}</p>
+        </div>
+
+        <div class="devis-preview-total">
+          Total TTC : ${formule.price}€
+        </div>
+
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 20px; text-align: center;">
+          Devis valable 30 jours • TVA non applicable, art. 293 B du CGI
+        </p>
+      `;
+
+      document.getElementById('devisModal').classList.add('active');
+    }
+
+    function closeDevisModal() {
+      document.getElementById('devisModal').classList.remove('active');
+    }
+
+    function downloadDevis() {
+      const client = clients.find(c => c.id === currentClientId);
+      const formule = FORMULES[client?.formule_choisie || document.getElementById('detail-formule').value];
+      if (!client || !formule) return;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const devisNum = `DEV-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
+      const today = new Date().toLocaleDateString('fr-FR');
+
+      // Header
+      doc.setFontSize(24);
+      doc.setTextColor(61, 107, 124);
+      doc.text('RENOVACIEUX', 105, 30, { align: 'center' });
+
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('Rénovation et entretien de sépultures', 105, 38, { align: 'center' });
+
+      // Devis info
+      doc.setFontSize(12);
+      doc.setTextColor(0);
+      doc.text(`Devis N° ${devisNum}`, 20, 60);
+      doc.text(`Date : ${today}`, 20, 68);
+
+      // Client
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('CLIENT', 20, 85);
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(`${client.prenom || ''} ${client.nom || ''}`, 20, 93);
+      if (client.email) doc.text(client.email, 20, 100);
+      if (client.tel) doc.text(formatPhone(client.tel), 20, 107);
+
+      // Lieu
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('LIEU D\'INTERVENTION', 20, 125);
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(client.cimetiere || 'Non renseigné', 20, 133);
+      if (client.position_tombe) doc.text(`Position : ${client.position_tombe}`, 20, 140);
+
+      // Prestation
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('PRESTATION', 20, 160);
+
+      doc.setDrawColor(200);
+      doc.line(20, 165, 190, 165);
+
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(formule.name, 20, 175);
+      doc.text(`${formule.price}€`, 190, 175, { align: 'right' });
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text(formule.desc, 20, 182);
+
+      doc.line(20, 190, 190, 190);
+
+      // Total
+      doc.setFontSize(14);
+      doc.setTextColor(61, 107, 124);
+      doc.text(`Total TTC : ${formule.price}€`, 190, 205, { align: 'right' });
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text('Devis valable 30 jours • TVA non applicable, art. 293 B du CGI', 105, 280, { align: 'center' });
+
+      doc.save(`Devis-${devisNum}.pdf`);
+      showToast('PDF téléchargé', 'success');
+    }
+
+    async function sendDevisEmail() {
+      const client = clients.find(c => c.id === currentClientId);
+      const formuleKey = client?.formule_choisie || document.getElementById('detail-formule').value;
+      const formule = FORMULES[formuleKey];
+
+      if (!client) {
+        showToast('Client introuvable', 'error');
+        return;
+      }
+
+      if (!client.email) {
+        showToast('Pas d\'email client', 'error');
+        return;
+      }
+
+      if (!formule) {
+        showToast('Sélectionne une formule', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSendDevis');
+      btn.disabled = true;
+      btn.textContent = 'Envoi...';
+
+      const devisNum = `DEV-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/send-devis`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: client.id,
+            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientEmail: client.email,
+            clientPhone: client.tel,
+            cimetiere: client.cimetiere || 'Non renseigné',
+            positionTombe: client.position_tombe,
+            formuleName: formule.name,
+            formulePrice: formule.price,
+            formuleDesc: formule.desc,
+            devisNumber: devisNum
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          showToast('Email envoyé avec lien de paiement !', 'success');
+
+          // Update status
+          document.getElementById('detail-statut').value = 'devis_envoye';
+          await saveClient();
+          await addHistoryEvent(currentClientId, `Devis ${devisNum} envoyé par email`);
+
+          // Reload to show updated history
+          await loadClients();
+          const updatedClient = clients.find(c => c.id === currentClientId);
+          if (updatedClient) renderHistory(updatedClient);
+        } else {
+          console.error('Send error:', result);
+          showToast(result.error || 'Erreur envoi email', 'error');
+        }
+      } catch (err) {
+        console.error('Network error:', err);
+        showToast('Erreur de connexion', 'error');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Envoyer par email';
+    }
+
+    // ===== TOAST =====
+    function showToast(message, type = '') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + type;
+      toast.classList.add('show');
+
       setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 1500);
+        toast.classList.remove('show');
+      }, 3000);
     }
   </script>
 
