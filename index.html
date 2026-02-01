@@ -623,12 +623,20 @@
 
     /* ===== MINI GALERIE (intégrée à avant/après) ===== */
     .mini-gallery {
-      margin-top: 40px;
+      margin-top: 32px;
+    }
+
+    .mini-gallery-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .mini-gallery-scroll {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       overflow-x: auto;
       padding-bottom: 8px;
       scrollbar-width: none;
@@ -640,18 +648,18 @@
     }
 
     .mini-thumb {
-      flex: 0 0 100px;
-      height: 75px;
-      border-radius: 8px;
+      flex: 0 0 150px;
+      height: 110px;
+      border-radius: 10px;
       overflow: hidden;
-      opacity: 0.7;
       transition: all 0.3s;
       cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .mini-thumb:hover {
-      opacity: 1;
-      transform: scale(1.05);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     .mini-thumb img {
@@ -922,36 +930,93 @@
       border-radius: 3px;
     }
 
-    /* Zone compacte */
-    .zone-compact {
+    /* Zone graphique */
+    .zone-visual {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 12px;
-      padding: 16px 24px;
-      background: var(--cream);
-      border-radius: 12px;
-      white-space: nowrap;
     }
 
-    .zone-compact svg {
-      width: 20px;
-      height: 20px;
-      color: var(--primary);
-      flex-shrink: 0;
+    .zone-map-mini {
+      position: relative;
+      width: 180px;
+      height: 180px;
     }
 
-    .zone-compact-text {
+    .zone-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
       font-size: 14px;
+      box-shadow: 0 4px 15px rgba(61, 107, 124, 0.4);
+      z-index: 2;
     }
 
-    .zone-compact-title {
+    .zone-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border: 2px dashed var(--cream-dark);
+      border-radius: 50%;
+    }
+
+    .zone-dept {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: var(--white);
+      border: 2px solid var(--cream-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--text-light);
+      transition: all 0.3s;
     }
 
-    .zone-compact-sub {
+    .zone-dept:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      transform: scale(1.15);
+    }
+
+    .zone-dept:nth-child(3) { top: 5px; left: 50%; transform: translateX(-50%); }
+    .zone-dept:nth-child(4) { top: 25px; right: 15px; }
+    .zone-dept:nth-child(5) { top: 50%; right: 0; transform: translateY(-50%); }
+    .zone-dept:nth-child(6) { bottom: 25px; right: 15px; }
+    .zone-dept:nth-child(7) { bottom: 5px; left: 50%; transform: translateX(-50%); }
+    .zone-dept:nth-child(8) { bottom: 25px; left: 15px; }
+    .zone-dept:nth-child(9) { top: 50%; left: 0; transform: translateY(-50%); }
+    .zone-dept:nth-child(10) { top: 25px; left: 15px; }
+
+    .zone-label {
+      font-size: 13px;
       color: var(--text-muted);
-      font-size: 12px;
+      text-align: center;
+    }
+
+    .zone-label strong {
+      color: var(--text);
+      display: block;
+      font-size: 15px;
+      margin-bottom: 2px;
     }
 
     /* ===== CONTACT ===== */
@@ -1302,8 +1367,8 @@
 
       .footer-grid { grid-template-columns: 1fr 1fr; }
 
-      .trust-band-inner { flex-direction: column; text-align: center; }
-      .zone-compact { justify-content: center; }
+      .trust-band-inner { flex-direction: column; text-align: center; gap: 50px; }
+      .zone-visual { margin-top: 20px; }
     }
 
     @media (max-width: 600px) {
@@ -1466,6 +1531,7 @@
 
           <!-- Mini galerie intégrée -->
           <div class="mini-gallery reveal reveal-delay-3">
+            <p class="mini-gallery-label">Autres interventions</p>
             <div class="mini-gallery-scroll">
               <div class="mini-thumb"><img src="img-galerie-2.png" alt="Rénovation"></div>
               <div class="mini-thumb"><img src="img-galerie-1.png" alt="Entretien"></div>
@@ -1568,15 +1634,22 @@
         </div>
       </div>
 
-      <!-- Zone compacte -->
-      <div class="zone-compact reveal reveal-delay-1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="2.5"/>
-        </svg>
-        <div class="zone-compact-text">
-          <div class="zone-compact-title">Paris & Île-de-France</div>
-          <div class="zone-compact-sub">8 départements couverts</div>
+      <!-- Zone graphique -->
+      <div class="zone-visual reveal reveal-delay-1">
+        <div class="zone-map-mini">
+          <div class="zone-ring"></div>
+          <div class="zone-center">75</div>
+          <div class="zone-dept">92</div>
+          <div class="zone-dept">93</div>
+          <div class="zone-dept">94</div>
+          <div class="zone-dept">78</div>
+          <div class="zone-dept">91</div>
+          <div class="zone-dept">95</div>
+          <div class="zone-dept">77</div>
+        </div>
+        <div class="zone-label">
+          <strong>Île-de-France</strong>
+          Tous les cimetières de la région
         </div>
       </div>
     </div>
