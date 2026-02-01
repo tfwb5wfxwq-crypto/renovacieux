@@ -3611,8 +3611,14 @@
     }
 
     function selectOffre(type) {
-      selectedOffre = type;
-      selectedUpsell = (type === 'serenite' || type === 'prestige') ? type : null;
+      // Reclique = désélectionne
+      if (selectedOffre === type) {
+        selectedOffre = null;
+        selectedUpsell = null;
+      } else {
+        selectedOffre = type;
+        selectedUpsell = (type === 'serenite' || type === 'prestige') ? type : null;
+      }
 
       // Styles boutons
       const interventionCard = document.getElementById('offre-intervention');
@@ -3620,16 +3626,16 @@
       const btnPrestige = document.getElementById('btn-prestige');
 
       if (interventionCard) {
-        interventionCard.style.borderColor = type === 'intervention' ? 'white' : 'transparent';
-        interventionCard.style.boxShadow = type === 'intervention' ? '0 0 0 2px white' : 'none';
+        interventionCard.style.borderColor = selectedOffre === 'intervention' ? 'white' : 'transparent';
+        interventionCard.style.boxShadow = selectedOffre === 'intervention' ? '0 0 0 2px white' : 'none';
       }
       if (btnSerenite) {
-        btnSerenite.style.borderColor = type === 'serenite' ? 'white' : 'rgba(255,255,255,0.3)';
-        btnSerenite.style.background = type === 'serenite' ? 'rgba(255,255,255,0.2)' : 'transparent';
+        btnSerenite.style.borderColor = selectedOffre === 'serenite' ? 'white' : 'rgba(255,255,255,0.3)';
+        btnSerenite.style.background = selectedOffre === 'serenite' ? 'rgba(255,255,255,0.2)' : 'transparent';
       }
       if (btnPrestige) {
-        btnPrestige.style.borderColor = type === 'prestige' ? 'white' : 'rgba(255,255,255,0.3)';
-        btnPrestige.style.background = type === 'prestige' ? 'rgba(255,255,255,0.2)' : 'transparent';
+        btnPrestige.style.borderColor = selectedOffre === 'prestige' ? 'white' : 'rgba(255,255,255,0.3)';
+        btnPrestige.style.background = selectedOffre === 'prestige' ? 'rgba(255,255,255,0.2)' : 'transparent';
       }
 
       updateOffreRecap();
