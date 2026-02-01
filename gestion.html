@@ -2964,7 +2964,7 @@
       // Show created date
       const createdInfo = document.getElementById('clientCreatedInfo');
       if (client.created_at) {
-        const dateStr = new Date(client.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const dateStr = new Date(client.created_at).toLocaleString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         createdInfo.innerHTML = `<strong>Reçu le :</strong> ${dateStr}` + (client.formule_demandee ? ` • <strong>Formule demandée :</strong> ${client.formule_demandee}` : '');
       } else {
         createdInfo.innerHTML = '';
@@ -4153,7 +4153,7 @@
                 <div class="history-icon ${e.type}">${icon}</div>
                 <div class="history-content">
                   <div class="history-text">${e.text}</div>
-                  <div class="history-date">${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                  <div class="history-date">${new Date(e.date).toLocaleString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                   ${links}
                 </div>
               </div>
