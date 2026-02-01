@@ -683,6 +683,9 @@
 
       <!-- Page: Nouveaux -->
       <div class="page active" id="page-nouveaux">
+        <button class="btn btn-primary" onclick="openNewClient()" style="margin-bottom: 20px;">
+          ➕ Ajouter un client
+        </button>
         <div id="newClientsList"></div>
         <div class="empty-state" id="emptyNew" style="display:none;">
           <div class="empty-state-icon">✅</div>
@@ -1009,9 +1012,116 @@
       el.classList.add('selected');
     }
 
+    async function deleteClient() {
+      if (!confirm('Supprimer définitivement ce contact ?')) return;
+
+      const success = await removeClient(currentClientId);
+      if (success) {
+        await loadClients();
+        goBack();
+      }
+    }
+
+    // ===== ACTIONS =====
+    function generateDevis() {
+      const client = clients.find(c => c.id === currentClientId);
+      alert(`📄 Génération du devis pour ${client.prenom} ${client.nom}\n\n(Fonctionnalité bientôt disponible)`);
+    }
+
+    function sendPaymentLink() {
+      const client = clients.find(c => c.id === currentClientId);
+      alert(`💳 Envoi du lien de paiement à ${client.email}\n\n(Fonctionnalité bientôt disponible)`);
+    }
+
+    function callClient() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (client && client.tel) {
+        window.location.href = 'tel:' + client.tel.replace(/\s/g, '');
+      }
+    }
+
+    // ===== ADD NEW CLIENT =====
+    async function openNewClient() {
+      currentClientId = null;
+
+      // Clear all fields
+      document.getElementById('detail-nom').value = '';
+      document.getElementById('detail-prenom').value = '';
+      document.getElementById('detail-tel').value = '';
+      document.getElementById('detail-email').value = '';
+      document.getElementById('detail-cimetiere').value = '';
+      document.getElementById('detail-formule-init').value = '';
+      document.getElementById('detail-message').value = '';
+      document.getElementById('detail-position').value = '';
+      document.getElementById('detail-notes').value = '';
+      document.getElementById('detail-formule').value = '';
+      document.getElementById('detail-statut').value = 'nouveau';
+
+      // Make form fields editable for new client
+      document.querySelectorAll('.detail-card .form-group.readonly input, .detail-card .form-group.readonly textarea').forEach(el => {
+        el.removeAttribute('readonly');
+        el.style.background = '';
+        el.style.color = '';
+        el.style.borderColor = '';
+      });
+
+      document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
+
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-detail').classList.add('active');
+    }
+
     async function saveClient() {
       const facileEl = document.querySelector('[onclick*="facile"].selected');
 
+      // If new client (no currentClientId), create it
+      if (!currentClientId) {
+        const newClient = {
+          nom: document.getElementById('detail-nom').value,
+          prenom: document.getElementById('detail-prenom').value,
+          tel: document.getElementById('detail-tel').value,
+          email: document.getElementById('detail-email').value,
+          cimetiere: document.getElementById('detail-cimetiere').value,
+          formule_demandee: document.getElementById('detail-formule-init').value,
+          message: document.getElementById('detail-message').value,
+          position_tombe: document.getElementById('detail-position').value,
+          notes: document.getElementById('detail-notes').value,
+          formule_choisie: document.getElementById('detail-formule').value,
+          statut: document.getElementById('detail-statut').value,
+          facile_trouver: facileEl ? facileEl.dataset.value : ''
+        };
+
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ Création...';
+        btn.disabled = true;
+
+        const { data, error } = await db
+          .from('clients')
+          .insert([newClient])
+          .select();
+
+        if (error) {
+          console.error('Erreur création:', error);
+          btn.innerHTML = '❌ Erreur';
+          btn.style.background = 'var(--red)';
+        } else {
+          btn.innerHTML = '✅ Client créé !';
+          btn.style.background = 'var(--green)';
+          currentClientId = data[0].id;
+          await loadClients();
+        }
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 1500);
+
+        return;
+      }
+
+      // Existing client - update
       const updates = {
         position_tombe: document.getElementById('detail-position').value,
         notes: document.getElementById('detail-notes').value,
@@ -1041,34 +1151,6 @@
         btn.style.background = '';
         btn.disabled = false;
       }, 1500);
-    }
-
-    async function deleteClient() {
-      if (!confirm('Supprimer définitivement ce contact ?')) return;
-
-      const success = await removeClient(currentClientId);
-      if (success) {
-        await loadClients();
-        goBack();
-      }
-    }
-
-    // ===== ACTIONS =====
-    function generateDevis() {
-      const client = clients.find(c => c.id === currentClientId);
-      alert(`📄 Génération du devis pour ${client.prenom} ${client.nom}\n\n(Fonctionnalité bientôt disponible)`);
-    }
-
-    function sendPaymentLink() {
-      const client = clients.find(c => c.id === currentClientId);
-      alert(`💳 Envoi du lien de paiement à ${client.email}\n\n(Fonctionnalité bientôt disponible)`);
-    }
-
-    function callClient() {
-      const client = clients.find(c => c.id === currentClientId);
-      if (client && client.tel) {
-        window.location.href = 'tel:' + client.tel.replace(/\s/g, '');
-      }
     }
   </script>
 
