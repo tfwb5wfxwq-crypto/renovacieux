@@ -3452,7 +3452,7 @@
       const fraisDiv = document.getElementById('frais-deplacement');
       const fraisMontant = document.getElementById('frais-deplacement-montant');
       const fraisDetail = document.getElementById('frais-deplacement-detail');
-      const upsellDiv = document.getElementById('upsell-formule');
+      const formuleEntretienDiv = document.getElementById('formule-entretien');
 
       // Get selected travaux
       const travaux = [];
@@ -3471,7 +3471,7 @@
       if (travaux.length === 0) {
         prixRealtimeDiv.style.display = 'none';
         fraisDiv.style.display = 'none';
-        upsellDiv.style.display = 'none';
+        formuleEntretienDiv.style.display = 'none';
         document.getElementById('travaux-total').style.display = 'none';
         return;
       }
