@@ -829,7 +829,7 @@
     // ===== SUPABASE CONFIG =====
     const SUPABASE_URL = 'https://ujfyvlkmsabinrfylzdr.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnl2bGttc2FiaW5yZnlsemRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NDY0NzcsImV4cCI6MjA4NTUyMjQ3N30.SeDhwjsdOisDO-OTLTbtsvjbXLAc8QT-T8cvfs0tZSQ';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const PASSWORD = 'kikinou75';
 
@@ -839,7 +839,7 @@
 
     // ===== SUPABASE FUNCTIONS =====
     async function loadClients() {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('clients')
         .select('*')
         .order('created_at', { ascending: false });
@@ -853,7 +853,7 @@
     }
 
     async function updateClient(id, updates) {
-      const { error } = await supabase
+      const { error } = await db
         .from('clients')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id);
@@ -867,7 +867,7 @@
     }
 
     async function removeClient(id) {
-      const { error } = await supabase
+      const { error } = await db
         .from('clients')
         .delete()
         .eq('id', id);
