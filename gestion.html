@@ -2134,37 +2134,57 @@
             </label>
           </div>
 
-          <!-- PRIX EN TEMPS RÉEL -->
-          <div id="prix-realtime" style="display: none; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <span style="font-size: 14px; opacity: 0.9;">Intervention ponctuelle</span>
-              <span id="prix-ponctuel" style="font-size: 28px; font-weight: 700;">0€</span>
+          <!-- ENCART 1: INTERVENTION PONCTUELLE -->
+          <div id="prix-realtime" style="display: none; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; opacity: 0.9;">
+              <span>🔧</span> REMISE EN ÉTAT
             </div>
-            <div id="prix-detail-lignes" style="font-size: 12px; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 14px; opacity: 0.8;">Intervention unique</div>
+                <div id="prix-detail-lignes" style="font-size: 11px; opacity: 0.7; margin-top: 4px;"></div>
+              </div>
+              <span id="prix-ponctuel" style="font-size: 32px; font-weight: 700;">0€</span>
+            </div>
           </div>
 
-          <!-- UPSELL FORMULE -->
-          <div id="upsell-formule" style="display: none; background: linear-gradient(135deg, var(--accent) 0%, #B8944D 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 16px;">
-            <div style="font-weight: 600; margin-bottom: 8px;">💡 Offre combinée</div>
-            <p style="font-size: 13px; opacity: 0.9; margin-bottom: 12px;">Pour que la tombe ne se retrouve plus dans cet état, proposez une formule d'entretien :</p>
-            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-              <button type="button" class="upsell-btn" onclick="selectUpsell('serenite')" id="upsell-serenite" style="flex: 1; padding: 10px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; font-size: 13px;">
-                Sérénité<br><strong>+180€/an</strong>
+          <!-- ENCART 2: FORMULE D'ENTRETIEN -->
+          <div id="formule-entretien" style="display: none; background: linear-gradient(135deg, var(--green) 0%, #2D8A47 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; opacity: 0.9;">
+              <span>🌿</span> ENTRETIEN RÉGULIER
+            </div>
+            <p style="font-size: 12px; opacity: 0.85; margin-bottom: 12px;">Pour que la tombe reste impeccable toute l'année :</p>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" onclick="selectUpsell('serenite')" id="upsell-serenite" style="flex: 1; padding: 12px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <div style="font-size: 13px;">Sérénité</div>
+                <div style="font-size: 11px; opacity: 0.8;">2 passages/an</div>
+                <div style="font-size: 18px; font-weight: 700; margin-top: 4px;">180€</div>
               </button>
-              <button type="button" class="upsell-btn" onclick="selectUpsell('prestige')" id="upsell-prestige" style="flex: 1; padding: 10px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; font-size: 13px;">
-                Prestige<br><strong>+380€/an</strong>
+              <button type="button" onclick="selectUpsell('prestige')" id="upsell-prestige" style="flex: 1; padding: 12px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <div style="font-size: 13px;">Prestige</div>
+                <div style="font-size: 11px; opacity: 0.8;">4 passages/an</div>
+                <div style="font-size: 18px; font-weight: 700; margin-top: 4px;">380€</div>
               </button>
             </div>
-            <div id="upsell-total" style="display: none; background: rgba(255,255,255,0.15); padding: 12px; border-radius: 8px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <span>Intervention + Formule</span>
-                <span id="upsell-prix-brut" style="text-decoration: line-through; opacity: 0.7;">0€</span>
+          </div>
+
+          <!-- ENCART 3: OFFRE COMBINÉE -->
+          <div id="upsell-total" style="display: none; background: linear-gradient(135deg, var(--accent) 0%, #B8944D 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px;">
+              <span>⭐</span> OFFRE COMBINÉE
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div>
+                <span id="upsell-formule-nom">Intervention + Sérénité</span>
               </div>
-              <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700;">
-                <span>Avec -10%</span>
-                <span id="upsell-prix-reduit">0€</span>
+              <span id="upsell-prix-brut" style="text-decoration: line-through; opacity: 0.7; font-size: 16px;">0€</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.15); padding: 12px; border-radius: 8px;">
+              <div>
+                <div style="font-size: 12px; opacity: 0.9;">Avec remise -10%</div>
+                <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Année suivante : seulement la formule</div>
               </div>
-              <p style="font-size: 11px; opacity: 0.8; margin-top: 8px;">L'année prochaine : seulement la formule</p>
+              <span id="upsell-prix-reduit" style="font-size: 28px; font-weight: 700;">0€</span>
             </div>
           </div>
           <div class="form-row" style="margin-bottom: 12px;">
@@ -2198,18 +2218,8 @@
             <span style="color: var(--orange);">🚗 Frais déplacement : <strong id="frais-deplacement-montant">0€</strong></span>
             <span id="frais-deplacement-detail" style="color: var(--text-muted); margin-left: 8px;"></span>
           </div>
-          <div class="form-group" style="margin-bottom: 12px;">
-            <button type="button" class="btn btn-primary" onclick="applyTravauxToPrice()" style="width: 100%;">
-              📊 Calculer et appliquer au prix final
-            </button>
-          </div>
-          <div id="travaux-total" style="display: none; background: linear-gradient(135deg, var(--green-light) 0%, #D4F0DB 100%); padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="color: var(--text);">Estimation</span>
-              <span id="travaux-total-prix" style="font-size: 18px; font-weight: 700; color: var(--green);">0€</span>
-            </div>
-            <div id="travaux-detail" style="font-size: 12px; color: var(--text-light); margin-top: 8px;"></div>
-          </div>
+          <!-- Old elements hidden, keeping IDs for compatibility -->
+          <div id="travaux-total" style="display: none;"><span id="travaux-total-prix"></span><span id="travaux-detail"></span></div>
 
           <div class="divider"></div>
 
@@ -3392,6 +3402,10 @@
       document.getElementById('detail-distance-km').value = '';
       document.getElementById('travaux-total').style.display = 'none';
       document.getElementById('frais-deplacement').style.display = 'none';
+      document.getElementById('prix-realtime').style.display = 'none';
+      document.getElementById('formule-entretien').style.display = 'none';
+      document.getElementById('upsell-total').style.display = 'none';
+      selectedUpsell = null;
       toggleZoneOptions();
 
       document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
@@ -3573,12 +3587,14 @@
       // Hide old total div
       document.getElementById('travaux-total').style.display = 'none';
 
-      // Show upsell if price > 150€
-      if (total >= 150) {
-        upsellDiv.style.display = 'block';
+      // Show formule entretien if price > 100€
+      const formuleDiv = document.getElementById('formule-entretien');
+      if (total >= 100) {
+        formuleDiv.style.display = 'block';
         updateUpsellPrices(total);
       } else {
-        upsellDiv.style.display = 'none';
+        formuleDiv.style.display = 'none';
+        document.getElementById('upsell-total').style.display = 'none';
       }
     }
 
@@ -3589,23 +3605,25 @@
       document.getElementById('upsell-prestige').style.borderColor = formule === 'prestige' ? 'white' : 'rgba(255,255,255,0.3)';
       document.getElementById('upsell-prestige').style.background = formule === 'prestige' ? 'rgba(255,255,255,0.2)' : 'transparent';
 
-      const prixPonctuel = parseInt(document.getElementById('prix-ponctuel').textContent);
+      const prixPonctuel = parseInt(document.getElementById('prix-ponctuel').textContent) || 0;
       updateUpsellPrices(prixPonctuel);
     }
 
     function updateUpsellPrices(prixPonctuel) {
       const upsellTotalDiv = document.getElementById('upsell-total');
 
-      if (!selectedUpsell) {
+      if (!selectedUpsell || prixPonctuel < 100) {
         upsellTotalDiv.style.display = 'none';
         return;
       }
 
+      const formuleNom = selectedUpsell === 'serenite' ? 'Sérénité' : 'Prestige';
       const formulePrix = selectedUpsell === 'serenite' ? 180 : 380;
       const totalBrut = prixPonctuel + formulePrix;
       const totalReduit = Math.round(totalBrut * 0.9); // -10%
 
       upsellTotalDiv.style.display = 'block';
+      document.getElementById('upsell-formule-nom').textContent = `Intervention + ${formuleNom}`;
       document.getElementById('upsell-prix-brut').textContent = totalBrut + '€';
       document.getElementById('upsell-prix-reduit').textContent = totalReduit + '€';
     }
