@@ -108,27 +108,92 @@
       overflow-x: hidden;
     }
 
+    /* Subtle grain overlay for premium film look */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      opacity: 0.018;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
     h1, h2, h3, h4 {
       font-family: 'Libre Baskerville', Georgia, serif;
       font-weight: 400;
       line-height: 1.3;
     }
 
-    /* Animations */
+    /* ===== ANIMATIONS PREMIUM ===== */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateY(40px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1) rotate(0);
     }
 
-    .reveal-delay-1 { transition-delay: 0.15s; }
-    .reveal-delay-2 { transition-delay: 0.3s; }
-    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Variantes d'animation */
+    .reveal-fade {
+      opacity: 0;
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-fade.visible { opacity: 1; }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* Animation enfants staggered (pour grilles) */
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.15s; }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.2s; }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.25s; }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
+    .stagger-children.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* ===== NAVIGATION ===== */
     nav {
@@ -218,6 +283,19 @@
       padding: 120px 60px 80px;
       position: relative;
       overflow: hidden;
+    }
+
+    /* Subtle vignette for cinematic feel */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 40%, rgba(0,0,0,0.03) 100%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .hero-bg-pattern {
@@ -341,10 +419,26 @@
 
     .hero-image-main img {
       width: 110%;
-      height: 110%;
+      height: 120%;
       object-fit: cover;
       object-position: center 20%;
       margin: -5%;
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+    }
+
+    /* Subtle film grain overlay */
+    .hero-image-main::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      mix-blend-mode: overlay;
     }
 
     .hero-image-placeholder {
@@ -423,7 +517,19 @@
     /* ===== SERVICES ===== */
     .services {
       padding: 80px 60px;
-      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
+      background: linear-gradient(180deg, var(--cream) 0%, rgba(236, 238, 232, 0.7) 100%);
+      position: relative;
+    }
+
+    .services::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(125, 139, 116, 0.04) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     .container {
@@ -461,48 +567,49 @@
       color: var(--text-light);
     }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .services-grid-compact {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .service-card-big {
+      display: flex;
+      align-items: flex-start;
       gap: 24px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border-radius: 18px;
+      padding: 28px 32px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
-    .service-card {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-radius: 20px;
-      padding: 36px 28px;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 4px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9);
-      cursor: default;
-    }
-
-    .service-card:hover {
-      transform: translateY(-10px);
+    .service-card-big:hover {
+      transform: translateX(8px);
       background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0 25px 60px rgba(125, 139, 116, 0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+      box-shadow: 0 12px 40px rgba(125, 139, 116, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
       border-color: rgba(125, 139, 116, 0.2);
     }
 
-    .service-card:hover .service-icon {
-      transform: scale(1.1);
-      color: var(--gold);
-    }
-
-    .service-icon {
-      transition: all 0.4s;
-    }
-
-    .service-icon {
-      width: 52px;
-      height: 52px;
-      margin-bottom: 20px;
+    .service-card-big .service-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
       color: var(--primary);
+      transition: all 0.3s;
     }
 
-    .service-icon svg {
+    .service-card-big:hover .service-icon {
+      color: var(--gold);
+      transform: scale(1.1);
+    }
+
+    .service-card-big .service-icon svg {
       width: 100%;
       height: 100%;
       stroke: currentColor;
@@ -510,16 +617,17 @@
       fill: none;
     }
 
-    .service-card h3 {
-      font-size: 20px;
+    .service-content h3 {
+      font-size: 18px;
       color: var(--text);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .service-card p {
-      font-size: 15px;
+    .service-content p {
+      font-size: 14px;
       color: var(--text-light);
       line-height: 1.7;
+      margin: 0;
     }
 
     /* ===== AVANT/APRÈS ===== */
@@ -544,10 +652,23 @@
       border-radius: 24px;
       overflow: hidden;
       cursor: ew-resize;
-      box-shadow: 0 25px 60px rgba(125, 139, 116, 0.2);
+      box-shadow: 0 30px 70px rgba(125, 139, 116, 0.18), 0 0 0 1px rgba(255,255,255,0.1);
       user-select: none;
       -webkit-user-select: none;
       touch-action: pan-y;
+    }
+
+    /* Cinematic overlay on slider */
+    .ba-slider::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.08) 100%);
+      pointer-events: none;
+      z-index: 8;
     }
 
     .ba-slider img {
@@ -705,22 +826,28 @@
     .mini-thumb {
       flex: 0 0 150px;
       height: 110px;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      transition: all 0.3s;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .mini-thumb:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     }
 
     .mini-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mini-thumb:hover img {
+      transform: scale(1.08);
     }
 
 
@@ -824,8 +951,13 @@
     .pricing-card.premium .pricing-price { color: var(--gold); }
 
     .pricing-price span {
-      font-size: 16px;
+      font-size: 14px;
       font-family: 'Source Sans 3', sans-serif;
+    }
+
+    .pricing-price span.prefix {
+      display: block;
+      margin-bottom: 4px;
     }
 
     .pricing-card:not(.featured):not(.premium) .pricing-price span { color: var(--text-muted); }
@@ -907,81 +1039,22 @@
       filter: brightness(1.1);
     }
 
-    /* FAQ Compact intégré aux tarifs */
-    .faq-compact {
-      max-width: 700px;
-      margin: 50px auto 0;
-      background: var(--cream);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .faq-toggle {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 28px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      transition: all 0.3s;
-    }
-
-    .faq-toggle:hover {
-      background: var(--cream-dark);
-    }
-
-    .faq-toggle svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--primary);
-      stroke-width: 2;
-      fill: none;
-      transition: transform 0.3s;
-    }
-
-    .faq-compact.open .faq-toggle svg {
-      transform: rotate(180deg);
-    }
-
-    .faq-compact-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-
-    .faq-compact.open .faq-compact-content {
-      max-height: 400px;
-    }
-
-    .faq-compact-item {
-      padding: 16px 28px;
-      border-top: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .faq-compact-item strong {
-      display: block;
-      font-size: 14px;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .faq-compact-item p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin: 0;
-      line-height: 1.5;
-    }
-
     /* ===== ZONE D'INTERVENTION ===== */
     .zone-section {
       padding: 80px 60px;
-      background: var(--white);
+      background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%);
+      position: relative;
+    }
+
+    .zone-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse 60% 40% at 80% 100%, rgba(125, 139, 116, 0.03) 0%, transparent 60%);
+      pointer-events: none;
     }
 
     .zone-grid {
@@ -991,25 +1064,30 @@
     }
 
     .zone-card-big {
-      background: var(--cream);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border-radius: 18px;
       padding: 28px 24px;
       text-align: center;
       text-decoration: none;
       color: inherit;
-      transition: all 0.3s;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: block;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .zone-card-big:hover {
-      background: var(--primary);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(125,139,116,0.25);
+      background: rgba(125, 139, 116, 0.95);
+      backdrop-filter: blur(16px);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(125, 139, 116, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border-color: rgba(125, 139, 116, 0.3);
     }
 
     .zone-card-big:hover h4,
-    .zone-card-big:hover p,
-    .zone-card-big:hover .zone-note {
+    .zone-card-big:hover p {
       color: white;
     }
 
@@ -1041,15 +1119,6 @@
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
-      transition: color 0.3s;
-    }
-
-    .zone-note {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--primary);
-      font-weight: 600;
       transition: color 0.3s;
     }
 
@@ -1141,13 +1210,14 @@
     .form-group select {
       width: 100%;
       padding: 14px 18px;
-      background: #f0f3f5;
-      border: 2px solid #e0e5e8;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.06);
       border-radius: 12px;
       font-size: 15px;
       font-family: inherit;
       transition: all 0.3s;
       color: var(--text);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .form-group select {
@@ -1162,8 +1232,9 @@
     .form-group textarea:focus,
     .form-group select:focus {
       outline: none;
-      border-color: var(--primary);
-      background-color: var(--white);
+      border-color: var(--primary-light);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(125, 139, 116, 0.08), inset 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
     .form-group textarea {
@@ -1308,76 +1379,114 @@
 
     /* ===== FOOTER ===== */
     footer {
-      background: rgba(42, 47, 51, 0.95);
+      background: rgba(42, 47, 51, 0.97);
       backdrop-filter: blur(20px) saturate(150%);
       -webkit-backdrop-filter: blur(20px) saturate(150%);
       color: white;
-      padding: 50px 60px 30px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 40px 60px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
-    .footer-grid {
-      max-width: 1200px;
+    .footer-grid-compact {
+      max-width: 1100px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 40px;
-      padding-bottom: 35px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 60px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-main {
+      flex: 0 0 260px;
     }
 
     .footer-brand {
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .footer-brand img {
-      height: 36px;
+      height: 32px;
       width: auto;
-      filter: brightness(1.5);
+      filter: brightness(1.4);
     }
 
-    .footer-col p {
+    .footer-main p {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .footer-contact-inline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .footer-contact-inline span {
       color: rgba(255,255,255,0.6);
-      font-size: 14px;
-      line-height: 1.8;
+      font-size: 13px;
     }
 
-    .footer-col h4 {
-      font-size: 12px;
+    .footer-links-row {
+      display: flex;
+      gap: 50px;
+    }
+
+    .footer-col-mini h4 {
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--primary-light);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       font-family: 'Source Sans 3', sans-serif;
     }
 
-    .footer-col ul {
+    .footer-col-mini ul {
       list-style: none;
     }
 
-    .footer-col li {
-      margin-bottom: 8px;
+    .footer-col-mini li {
+      margin-bottom: 6px;
     }
 
-    .footer-col a {
-      color: rgba(255,255,255,0.6);
+    .footer-col-mini a {
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       transition: color 0.3s;
     }
 
-    .footer-col a:hover {
+    .footer-col-mini a:hover {
       color: white;
     }
 
+    .footer-faq ul {
+      list-style: none;
+    }
+
+    .footer-faq li {
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .footer-faq li strong {
+      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+    }
+
     .footer-bottom {
-      max-width: 1200px;
-      margin: 30px auto 0;
+      max-width: 1100px;
+      margin: 20px auto 0;
       display: flex;
       justify-content: space-between;
-      font-size: 13px;
-      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
     }
 
     /* ===== RESPONSIVE ===== */
@@ -1401,8 +1510,8 @@
       .hero-image-main { aspect-ratio: 4/3; border-radius: 24px; }
       .hero-float-card { left: 20px; bottom: 20px; }
 
-      .services-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .service-card-big {
+        padding: 24px;
       }
 
       .pricing-grid {
@@ -1411,24 +1520,35 @@
 
       .pricing-card.featured, .pricing-card.premium { transform: none; }
 
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid-compact { flex-direction: column; gap: 30px; }
+      .footer-links-row { flex-wrap: wrap; gap: 30px; }
 
       .zone-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 600px) {
-      .services-grid, .pricing-grid, .footer-grid, .zone-grid {
+      .pricing-grid, .footer-grid, .zone-grid {
         grid-template-columns: 1fr;
+      }
+
+      .service-card-big {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 20px;
+      }
+
+      .service-card-big:hover {
+        transform: translateY(-4px);
       }
 
       .form-row { grid-template-columns: 1fr; }
       .ba-slider { max-width: 100%; }
 
       .hero-buttons { flex-direction: column; }
-      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .footer-links-row { gap: 24px; }
       .zone-section { padding: 60px 24px; }
-
-      .faq-compact { margin-top: 40px; }
+      footer { padding: 30px 24px 20px; }
     }
   </style>
 </head>
@@ -1493,53 +1613,37 @@
   <section id="services" class="services">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag reveal">Nos Services</span>
-        <h2 class="section-title reveal reveal-delay-1">Nos services de nettoyage et entretien de tombes</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Nous redonnons dignité et éclat aux tombes de vos proches avec professionnalisme.</p>
+        <span class="section-tag reveal">Ce que nous faisons</span>
+        <h2 class="section-title reveal reveal-delay-1">Prenons soin de leurs tombes</h2>
       </div>
 
-      <div class="services-grid">
-        <div class="service-card reveal">
+      <div class="services-grid-compact">
+        <div class="service-card-big reveal">
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
           </div>
-          <h3>Nettoyage complet</h3>
-          <p>Nettoyage en profondeur de la pierre tombale et de l'entourage avec des produits adaptés.</p>
-        </div>
-        <div class="service-card reveal reveal-delay-1">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 22V8M12 8c-2-3-6-4-6 0s4 4 6 0M12 8c2-3 6-4 6 0s-4 4-6 0M7 22h10"/></svg>
+          <div class="service-content">
+            <h3>Nettoyage & Entretien</h3>
+            <p>Nettoyage complet de la pierre tombale, désherbage, entretien végétal. Nous adaptons nos produits à chaque matériau (granit, marbre, pierre).</p>
           </div>
-          <h3>Entretien végétal</h3>
-          <p>Désherbage minutieux, taille des plantes et entretien de la jardinière.</p>
         </div>
-        <div class="service-card reveal reveal-delay-2">
+        <div class="service-card-big reveal reveal-delay-1">
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><path d="M12 3c-3 0-5 2-5 5 0 4 5 7 5 7s5-3 5-7c0-3-2-5-5-5z"/><path d="M12 22v-7M8 22h8"/><circle cx="12" cy="7" r="1.5" fill="currentColor"/></svg>
           </div>
-          <h3>Fleurissement</h3>
-          <p>Compositions florales naturelles ou artificielles adaptées aux saisons.</p>
-        </div>
-        <div class="service-card reveal reveal-delay-1">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l2-10h8l2 10M9 6V4h6v2"/><path d="M10 12h4" stroke-linecap="round"/></svg>
+          <div class="service-content">
+            <h3>Fleurissement</h3>
+            <p>Compositions florales de saison, fleurs pour les dates importantes : anniversaires, Toussaint, fêtes. Naturelles ou artificielles selon vos souhaits.</p>
           </div>
-          <h3>Dorures & Gravures</h3>
-          <p>Ravivage des dorures ternies et restauration des inscriptions.</p>
         </div>
-        <div class="service-card reveal reveal-delay-2">
+        <div class="service-card-big reveal reveal-delay-2">
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M3 9h3M18 9h3"/></svg>
           </div>
-          <h3>Photos & Rapports</h3>
-          <p>Photos avant/après et rapport détaillé envoyés systématiquement.</p>
-        </div>
-        <div class="service-card reveal reveal-delay-3">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 22c-1 0-2-1-2-3h4c0 2-1 3-2 3zM12 2v1M12 3c0 2-1 3-1 5 0 1.5 1 2 1 4v5c0 1 .5 2 2 2M12 3c0 2 1 3 1 5 0 1.5-1 2-1 4"/><path d="M9 19h6"/></svg>
+          <div class="service-content">
+            <h3>Suivi personnalisé</h3>
+            <p>Photos avant/après systématiques, rapport d'intervention, ravivage des dorures et gravures si besoin. Vous restez informé à chaque étape.</p>
           </div>
-          <h3>Dates importantes</h3>
-          <p>Bougies et fleurs pour les anniversaires, Toussaint et dates qui comptent.</p>
         </div>
       </div>
     </div>
@@ -1549,7 +1653,7 @@
   <section id="realisations" class="before-after">
     <div class="container">
       <div class="ba-grid">
-        <div class="ba-slider reveal" id="baSlider">
+        <div class="ba-slider reveal-left" id="baSlider">
           <img src="img-avant.png" alt="Avant rénovation" class="ba-before">
           <img src="img-apres.png" alt="Après rénovation" class="ba-after">
           <div class="ba-slider-handle" id="baHandle"></div>
@@ -1557,13 +1661,13 @@
           <span class="ba-slider-label after">Après</span>
         </div>
 
-        <div class="ba-content">
-          <span class="section-tag reveal">Résultats</span>
-          <h2 class="reveal reveal-delay-1">Des résultats visibles</h2>
-          <p class="reveal reveal-delay-2">Photos avant/après envoyées après chaque intervention. Gardez un lien avec le lieu de mémoire de vos proches, même à distance.</p>
+        <div class="ba-content reveal-right">
+          <span class="section-tag">Résultats</span>
+          <h2>Des résultats visibles</h2>
+          <p>Photos avant/après envoyées après chaque intervention. Gardez un lien avec le lieu de mémoire de vos proches, même à distance.</p>
 
           <!-- Mini galerie intégrée -->
-          <div class="mini-gallery reveal reveal-delay-3">
+          <div class="mini-gallery">
             <p class="mini-gallery-label">Autres interventions</p>
             <div class="mini-gallery-scroll">
               <div class="mini-thumb"><img src="img-galerie-2.png" alt="Rénovation"></div>
@@ -1587,11 +1691,11 @@
         <p class="section-subtitle reveal reveal-delay-2">Des formules adaptées à vos besoins et votre budget.<br><small style="opacity: 0.7;">Tarifs indicatifs — devis personnalisé gratuit</small></p>
       </div>
 
-      <div class="pricing-grid">
-        <div class="pricing-card reveal">
+      <div class="pricing-grid reveal stagger-children">
+        <div class="pricing-card">
           <h3>Ponctuel</h3>
           <p class="pricing-freq">Intervention unique</p>
-          <p class="pricing-price">89€<span>à partir de</span></p>
+          <p class="pricing-price"><span class="prefix">à partir de</span>89€</p>
           <ul class="pricing-features">
             <li>Nettoyage complet</li>
             <li>Désherbage</li>
@@ -1601,7 +1705,7 @@
           <a href="#contact" class="pricing-cta" data-formule="Ponctuel - Intervention unique (à partir de 89€)">Demander un devis</a>
         </div>
 
-        <div class="pricing-card featured reveal reveal-delay-1">
+        <div class="pricing-card featured">
           <span class="pricing-badge">Populaire</span>
           <h3>Sérénité</h3>
           <p class="pricing-freq">2 passages par an</p>
@@ -1616,7 +1720,7 @@
           <a href="#contact" class="pricing-cta" data-formule="Sérénité - 2 passages/an (180€)">Choisir cette formule</a>
         </div>
 
-        <div class="pricing-card premium reveal reveal-delay-2">
+        <div class="pricing-card premium">
           <span class="pricing-badge" style="background: linear-gradient(135deg, #C4A962, #D4BE82);">Premium</span>
           <h3>Prestige</h3>
           <p class="pricing-freq">4 passages par an</p>
@@ -1632,27 +1736,6 @@
         </div>
       </div>
 
-      <!-- FAQ Compact intégré -->
-      <div class="faq-compact reveal">
-        <button class="faq-toggle" onclick="toggleFaqCompact(this)">
-          <span>Questions fréquentes</span>
-          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-        <div class="faq-compact-content">
-          <div class="faq-compact-item">
-            <strong>Délai d'intervention ?</strong>
-            <p>7 à 15 jours après acceptation du devis. Urgences possibles.</p>
-          </div>
-          <div class="faq-compact-item">
-            <strong>Photos avant/après ?</strong>
-            <p>Oui, systématiquement envoyées par email.</p>
-          </div>
-          <div class="faq-compact-item">
-            <strong>Quels cimetières ?</strong>
-            <p>Tous les cimetières de Paris, Île-de-France et Côte d'Azur.</p>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1662,10 +1745,10 @@
       <div class="section-header">
         <span class="section-tag reveal">Zone d'intervention</span>
         <h2 class="section-title reveal reveal-delay-1">Où intervenons-nous ?</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Paris, Île-de-France et Côte d'Azur. Cliquez sur votre ville.</p>
+        <p class="section-subtitle reveal reveal-delay-2">Paris, Île-de-France et Côte d'Azur. Cliquez sur votre ville.<br><small style="opacity: 0.6; font-size: 13px;">Frais de déplacement selon localisation — devis gratuit</small></p>
       </div>
 
-      <div class="zone-grid reveal">
+      <div class="zone-grid reveal stagger-children">
         <a href="/paris/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -1679,7 +1762,6 @@
           </div>
           <h4>Nice</h4>
           <p>Cimetière du Château, Caucade, Cimiez, Saint-Barthélémy...</p>
-          <span class="zone-note">+frais de déplacement</span>
         </a>
         <a href="/cannes/" class="zone-card-big">
           <div class="zone-card-icon">
@@ -1687,7 +1769,6 @@
           </div>
           <h4>Cannes</h4>
           <p>Grand Jas, Petit Jas, La Bocca, Le Cannet...</p>
-          <span class="zone-note">+frais de déplacement</span>
         </a>
         <a href="/antibes/" class="zone-card-big">
           <div class="zone-card-icon">
@@ -1695,7 +1776,6 @@
           </div>
           <h4>Antibes</h4>
           <p>Rabiac, Juan-les-Pins, Vallauris, Biot...</p>
-          <span class="zone-note">+frais de déplacement</span>
         </a>
         <a href="/grasse/" class="zone-card-big">
           <div class="zone-card-icon">
@@ -1703,7 +1783,6 @@
           </div>
           <h4>Grasse</h4>
           <p>Saint-Roch, Mougins, Peymeinade, Cabris...</p>
-          <span class="zone-note">+frais de déplacement</span>
         </a>
       </div>
 
@@ -1801,42 +1880,49 @@
 
   <!-- Footer -->
   <footer>
-    <div class="footer-grid">
-      <div class="footer-col">
+    <div class="footer-grid-compact">
+      <div class="footer-main">
         <div class="footer-brand">
           <img src="logo-animated.svg" alt="Renovacieux">
         </div>
-        <p>Service professionnel de nettoyage de tombes, rénovation et entretien de sépultures à Paris et Côte d'Azur. Nous prenons soin de la mémoire de vos proches.</p>
+        <p>Nettoyage et entretien de sépultures à Paris et Côte d'Azur.</p>
+        <div class="footer-contact-inline">
+          <span>06 XX XX XX XX</span>
+          <span>dimitri@renovacieux.com</span>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#realisations">Réalisations</a></li>
-          <li><a href="#formules">Formules</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Zone</h4>
-        <ul>
-          <li><a href="/paris/">Paris & Île-de-France</a></li>
-          <li><a href="/nice/">Nice</a></li>
-          <li><a href="/cannes/">Cannes</a></li>
-          <li><a href="/antibes/">Antibes</a></li>
-          <li><a href="/grasse/">Grasse</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <p>06 XX XX XX XX</p>
-        <p>dimitri@renovacieux.com</p>
-        <p style="margin-top: 12px;">Paris & Côte d'Azur</p>
+      <div class="footer-links-row">
+        <div class="footer-col-mini">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#realisations">Réalisations</a></li>
+            <li><a href="#formules">Formules</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col-mini">
+          <h4>Zones</h4>
+          <ul>
+            <li><a href="/paris/">Paris</a></li>
+            <li><a href="/nice/">Nice</a></li>
+            <li><a href="/cannes/">Cannes</a></li>
+            <li><a href="/antibes/">Antibes</a></li>
+            <li><a href="/grasse/">Grasse</a></li>
+          </ul>
+        </div>
+        <div class="footer-col-mini footer-faq">
+          <h4>FAQ</h4>
+          <ul>
+            <li><strong>Prix ?</strong> À partir de 89€, devis gratuit.</li>
+            <li><strong>Délai ?</strong> 7-15 jours après validation.</li>
+            <li><strong>Photos ?</strong> Avant/après systématiques.</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Renovacieux. Tous droits réservés.</span>
+      <span>© 2026 Renovacieux</span>
       <a href="#" style="color: inherit; text-decoration: none;">Mentions légales</a>
     </div>
   </footer>
@@ -2003,6 +2089,25 @@
         }
       });
     });
+
+    // Parallax effect on hero image
+    const heroImg = document.querySelector('.hero-image-main img');
+    if (heroImg) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * 0.15;
+            if (scrolled < 800) {
+              heroImg.style.transform = `translateY(${rate}px) scale(1.02)`;
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    }
 
     // Before/After Slider
     const slider = document.getElementById('baSlider');
