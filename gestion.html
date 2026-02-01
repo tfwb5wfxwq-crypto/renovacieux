@@ -2032,72 +2032,50 @@
           <div id="clientCreatedInfo" style="font-size: 12px; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);"></div>
         </div>
 
-        <!-- À compléter -->
+        <!-- Tombe & Devis -->
         <div class="detail-card">
-          <h3>Notes et suivi</h3>
-          <div class="form-group">
-            <label>Position de la tombe</label>
-            <input type="text" id="detail-position" placeholder="Ex: Allée 4, Rang 12, numéro 8">
-          </div>
-          <div class="form-group">
-            <label>Facile à trouver ?</label>
-            <div class="toggle-buttons">
-              <button class="toggle-btn" data-value="oui" onclick="selectOption(this, 'facile')">Oui</button>
-              <button class="toggle-btn" data-value="non" onclick="selectOption(this, 'facile')">Difficile</button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Notes (appel, remarques...)</label>
-            <textarea id="detail-notes" placeholder="Ce qu'il faut retenir..."></textarea>
-          </div>
+          <h3>🪦 La sépulture</h3>
 
-          <div class="divider"></div>
-
-          <!-- DÉTAILS TOMBE -->
-          <h4 style="font-size: 14px; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <span>🪦</span> Détails de la tombe
-          </h4>
           <div class="form-row">
             <div class="form-group">
-              <label>Âge approximatif</label>
-              <select id="detail-tombe-age">
-                <option value="">Non renseigné</option>
-                <option value="recent">Récent (< 10 ans)</option>
-                <option value="moyen">Moyen (10-30 ans)</option>
-                <option value="ancien">Ancien (30-50 ans)</option>
-                <option value="tres_ancien">Très ancien (> 50 ans)</option>
+              <label>Position</label>
+              <input type="text" id="detail-position" placeholder="Allée 4, Rang 12...">
+            </div>
+            <div class="form-group">
+              <label>Taille</label>
+              <select id="detail-tombe-taille" onchange="updatePriceFromTravaux()">
+                <option value="simple">Simple</option>
+                <option value="double">Double (×1.5)</option>
+                <option value="caveau">Caveau (×2)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>État</label>
+              <select id="detail-tombe-etat" onchange="updatePriceFromTravaux()">
+                <option value="bon">Bon état</option>
+                <option value="moyen">Moyen (+30%)</option>
+                <option value="mauvais">Mauvais (+60%)</option>
               </select>
             </div>
             <div class="form-group">
               <label>Matériau</label>
-              <select id="detail-tombe-materiau">
-                <option value="">Non renseigné</option>
+              <select id="detail-tombe-materiau" onchange="updatePriceFromTravaux()">
+                <option value="">-</option>
                 <option value="granit">Granit</option>
-                <option value="marbre">Marbre</option>
-                <option value="pierre">Pierre</option>
-                <option value="autre">Autre</option>
+                <option value="marbre">Marbre (+20%)</option>
+                <option value="pierre">Pierre (+15%)</option>
               </select>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Taille</label>
-              <select id="detail-tombe-taille" onchange="updatePriceFromTravaux()">
-                <option value="">Non renseigné</option>
-                <option value="simple">Simple (1 place)</option>
-                <option value="double">Double (2 places) ×1.5</option>
-                <option value="caveau">Caveau familial ×2</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>État général</label>
-              <select id="detail-tombe-etat" onchange="updatePriceFromTravaux()">
-                <option value="">Non renseigné</option>
-                <option value="bon">Bon état</option>
-                <option value="moyen">État moyen +30%</option>
-                <option value="mauvais">Mauvais état +60%</option>
-              </select>
-            </div>
+          <!-- Hidden fields for compatibility -->
+          <select id="detail-tombe-age" style="display:none;"><option value=""></option></select>
+          <input type="hidden" id="facile-value" value="">
+
+          <div class="form-group" style="margin-top: 12px;">
+            <label>Notes</label>
+            <textarea id="detail-notes" placeholder="Infos utiles, remarques..." style="min-height: 60px;"></textarea>
           </div>
 
           <div class="divider"></div>
@@ -2134,118 +2112,101 @@
             </label>
           </div>
 
-          <!-- ENCART 1: INTERVENTION PONCTUELLE -->
-          <div id="prix-realtime" style="display: none; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; opacity: 0.9;">
-              <span>🔧</span> REMISE EN ÉTAT
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-size: 14px; opacity: 0.8;">Intervention unique</div>
-                <div id="prix-detail-lignes" style="font-size: 11px; opacity: 0.7; margin-top: 4px;"></div>
+          <!-- SÉLECTION OFFRE -->
+          <div id="offre-selection" style="display: none; margin-bottom: 16px;">
+
+            <!-- Option 1: Intervention seule -->
+            <div id="offre-intervention" onclick="selectOffre('intervention')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; border: 3px solid transparent; transition: all 0.2s;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 14px; font-weight: 600;">🔧 Intervention seule</div>
+                  <div id="prix-detail-lignes" style="font-size: 11px; opacity: 0.7; margin-top: 4px;"></div>
+                </div>
+                <span id="prix-ponctuel" style="font-size: 28px; font-weight: 700;">0€</span>
               </div>
-              <span id="prix-ponctuel" style="font-size: 32px; font-weight: 700;">0€</span>
+            </div>
+
+            <!-- Option 2: Intervention + Formule -->
+            <div id="offre-formule-section" style="background: linear-gradient(135deg, var(--green) 0%, #2D8A47 100%); color: white; padding: 16px 20px; border-radius: 12px; border: 3px solid transparent; transition: all 0.2s;">
+              <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">🌿 Intervention + Entretien annuel <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px;">-10%</span></div>
+
+              <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <button type="button" onclick="selectOffre('serenite')" id="btn-serenite" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                  <div style="font-size: 13px; font-weight: 600;">Sérénité</div>
+                  <div style="font-size: 11px; opacity: 0.8;">2 passages/an</div>
+                  <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Intervention + <span id="prix-serenite-base">180€</span></div>
+                  <div id="prix-serenite-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">0€</div>
+                </button>
+                <button type="button" onclick="selectOffre('prestige')" id="btn-prestige" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                  <div style="font-size: 13px; font-weight: 600;">Prestige</div>
+                  <div style="font-size: 11px; opacity: 0.8;">4 passages/an</div>
+                  <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Intervention + <span id="prix-prestige-base">380€</span></div>
+                  <div id="prix-prestige-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">0€</div>
+                </button>
+              </div>
+
+              <label style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; font-size: 12px;">
+                <input type="checkbox" id="formule-fleurs" onchange="updateOffrePrices()" style="width: 14px; height: 14px;">
+                <span style="flex: 1;">💐 Fleurs à chaque passage</span>
+                <span style="opacity: 0.8;">+30€/passage</span>
+              </label>
+            </div>
+
+            <!-- Récap sélection -->
+            <div id="offre-recap" style="display: none; margin-top: 12px; padding: 12px 16px; background: var(--bg); border: 2px solid var(--primary); border-radius: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span style="font-size: 12px; color: var(--text-muted);">Offre sélectionnée</span>
+                  <div id="offre-recap-nom" style="font-weight: 600; color: var(--text);"></div>
+                </div>
+                <div id="offre-recap-prix" style="font-size: 24px; font-weight: 700; color: var(--primary);"></div>
+              </div>
             </div>
           </div>
 
-          <!-- ENCART 2: FORMULE D'ENTRETIEN -->
-          <div id="formule-entretien" style="display: none; background: linear-gradient(135deg, var(--green) 0%, #2D8A47 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; opacity: 0.9;">
-              <span>🌿</span> ENTRETIEN RÉGULIER
-            </div>
-            <p style="font-size: 12px; opacity: 0.85; margin-bottom: 12px;">Pour que la tombe reste impeccable toute l'année :</p>
-            <div style="display: flex; gap: 8px;">
-              <button type="button" onclick="selectUpsell('serenite')" id="upsell-serenite" style="flex: 1; padding: 12px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
-                <div style="font-size: 13px;">Sérénité</div>
-                <div style="font-size: 11px; opacity: 0.8;">2 passages/an</div>
-                <div style="font-size: 18px; font-weight: 700; margin-top: 4px;">180€</div>
-              </button>
-              <button type="button" onclick="selectUpsell('prestige')" id="upsell-prestige" style="flex: 1; padding: 12px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
-                <div style="font-size: 13px;">Prestige</div>
-                <div style="font-size: 11px; opacity: 0.8;">4 passages/an</div>
-                <div style="font-size: 18px; font-weight: 700; margin-top: 4px;">380€</div>
-              </button>
-            </div>
-          </div>
-
-          <!-- ENCART 3: OFFRE COMBINÉE -->
-          <div id="upsell-total" style="display: none; background: linear-gradient(135deg, var(--accent) 0%, #B8944D 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px;">
-              <span>⭐</span> OFFRE COMBINÉE
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div>
-                <span id="upsell-formule-nom">Intervention + Sérénité</span>
-              </div>
-              <span id="upsell-prix-brut" style="text-decoration: line-through; opacity: 0.7; font-size: 16px;">0€</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.15); padding: 12px; border-radius: 8px;">
-              <div>
-                <div style="font-size: 12px; opacity: 0.9;">Avec remise -10%</div>
-                <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Année suivante : seulement la formule</div>
-              </div>
-              <span id="upsell-prix-reduit" style="font-size: 28px; font-weight: 700;">0€</span>
-            </div>
-          </div>
+          <!-- Hidden for compatibility -->
+          <div id="prix-realtime" style="display:none;"></div>
+          <div id="formule-entretien" style="display:none;"></div>
+          <div id="upsell-total" style="display:none;"></div>
+          <span id="upsell-serenite" style="display:none;"></span>
+          <span id="upsell-prestige" style="display:none;"></span>
+          <span id="upsell-formule-nom" style="display:none;"></span>
+          <span id="upsell-prix-brut" style="display:none;"></span>
+          <span id="upsell-prix-reduit" style="display:none;"></span>
+          <span id="prix-serenite" style="display:none;"></span>
+          <span id="prix-prestige" style="display:none;"></span>
+          <!-- Zone et durée (simplifié) -->
           <div class="form-row" style="margin-bottom: 12px;">
             <div class="form-group">
-              <label>Nombre de jours estimé</label>
-              <select id="detail-nb-jours" onchange="updatePriceFromTravaux()">
-                <option value="0.5">Demi-journée</option>
-                <option value="1" selected>1 jour</option>
-                <option value="2">2 jours</option>
-                <option value="3">3 jours</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Zone géographique</label>
-              <select id="detail-zone" onchange="toggleZoneOptions()">
-                <option value="idf">Paris / Île-de-France</option>
+              <label>Zone</label>
+              <select id="detail-zone" onchange="toggleZoneOptions(); updatePriceFromTravaux();">
+                <option value="idf">Île-de-France</option>
                 <option value="cote-azur">Côte d'Azur (+150€)</option>
               </select>
             </div>
-          </div>
-          <div id="zone-distance-options" style="margin-bottom: 12px;">
             <div class="form-group">
-              <label id="distance-label">Distance (km depuis La Celle-St-Cloud)</label>
-              <div style="display: flex; gap: 8px;">
-                <input type="number" id="detail-distance-km" placeholder="Auto" min="0" style="flex: 1;" onchange="updatePriceFromTravaux()">
-                <button type="button" class="btn btn-outline" onclick="autoDetectDistance()" style="padding: 8px 12px;" title="Détecter depuis cimetière">📍</button>
-              </div>
+              <label>Durée</label>
+              <select id="detail-nb-jours" onchange="updatePriceFromTravaux()">
+                <option value="0.5">½ journée</option>
+                <option value="1" selected>1 jour</option>
+                <option value="2">2 jours</option>
+              </select>
             </div>
           </div>
-          <div id="frais-deplacement" style="display: none; background: var(--orange-light); padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px;">
-            <span style="color: var(--orange);">🚗 Frais déplacement : <strong id="frais-deplacement-montant">0€</strong></span>
+          <!-- Frais déplacement (auto-calculé) -->
+          <input type="hidden" id="detail-distance-km" value="">
+          <div id="frais-deplacement" style="display: none; background: var(--orange-light); padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px;">
+            <span style="color: var(--orange);">🚗 Déplacement : <strong id="frais-deplacement-montant">0€</strong></span>
             <span id="frais-deplacement-detail" style="color: var(--text-muted); margin-left: 8px;"></span>
           </div>
-          <!-- Old elements hidden, keeping IDs for compatibility -->
+          <!-- Hidden elements for compatibility -->
           <div id="travaux-total" style="display: none;"><span id="travaux-total-prix"></span><span id="travaux-detail"></span></div>
+          <select id="detail-formule" style="display: none;"><option value=""></option><option value="ponctuel"></option><option value="serenite"></option><option value="prestige"></option><option value="custom"></option></select>
+          <input type="hidden" id="detail-prix" value="">
+          <input type="hidden" id="detail-prix-note" value="">
 
           <div class="divider"></div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>Formule choisie</label>
-              <select id="detail-formule" onchange="updatePriceFromFormule()">
-                <option value="">Pas encore décidé</option>
-                <option value="ponctuel">Ponctuel — 89€</option>
-                <option value="serenite">Sérénité — 180€/an</option>
-                <option value="prestige">Prestige — 420€/an</option>
-                <option value="custom">Autre / Personnalisé</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Prix final (€)</label>
-              <input type="number" id="detail-prix" placeholder="89" min="0" step="1">
-              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                Modifiable : supplément déplacement, remise...
-              </p>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Détail prix (si modifié)</label>
-            <input type="text" id="detail-prix-note" placeholder="Ex: +20€ déplacement, -10€ remise fidélité...">
-          </div>
           <div class="form-row">
             <div class="form-group">
               <label>Statut</label>
@@ -2670,6 +2631,13 @@
       simple: 1,
       double: 1.5,
       caveau: 2
+    };
+
+    // Coefficient selon matériau (facilité nettoyage)
+    const MATERIAU_COEF = {
+      granit: 1,       // Dur, facile à nettoyer
+      marbre: 1.2,     // Délicat, attention karcher (+20%)
+      pierre: 1.15     // Poreux, plus long (+15%)
     };
 
     // Distance depuis La Celle-Saint-Cloud (base) - cimetières courants IDF
@@ -3443,16 +3411,16 @@
       }
     }
 
-    let selectedUpsell = null;
+    let selectedOffre = null; // 'intervention', 'serenite', 'prestige'
+    let selectedUpsell = null; // for compatibility
 
     function updatePriceFromTravaux() {
-      const prixRealtimeDiv = document.getElementById('prix-realtime');
+      const offreSection = document.getElementById('offre-selection');
       const prixPonctuelSpan = document.getElementById('prix-ponctuel');
       const prixDetailLignes = document.getElementById('prix-detail-lignes');
       const fraisDiv = document.getElementById('frais-deplacement');
       const fraisMontant = document.getElementById('frais-deplacement-montant');
       const fraisDetail = document.getElementById('frais-deplacement-detail');
-      const formuleEntretienDiv = document.getElementById('formule-entretien');
 
       // Get selected travaux
       const travaux = [];
@@ -3463,32 +3431,31 @@
         if (checkbox && checkbox.checked) {
           travaux.push(key);
           basePrix += prix;
-          const labels = { nettoyage: 'Nettoyage', karcher: 'Haute pression', lettres: 'Lettres', joints: 'Joints', fleurs: 'Fleurs' };
-          lignesDetail.push(`${labels[key]}: ${prix}€`);
+          const labels = { nettoyage: 'Nettoyage', karcher: 'Karcher', lettres: 'Lettres', joints: 'Joints', fleurs: 'Fleurs' };
+          lignesDetail.push(`${labels[key]} ${prix}€`);
         }
       }
 
       if (travaux.length === 0) {
-        if (prixRealtimeDiv) prixRealtimeDiv.style.display = 'none';
+        if (offreSection) offreSection.style.display = 'none';
         if (fraisDiv) fraisDiv.style.display = 'none';
-        if (formuleEntretienDiv) formuleEntretienDiv.style.display = 'none';
-        const travauxTotal = document.getElementById('travaux-total');
-        if (travauxTotal) travauxTotal.style.display = 'none';
-        const upsellTotal = document.getElementById('upsell-total');
-        if (upsellTotal) upsellTotal.style.display = 'none';
+        selectedOffre = null;
+        updateOffreRecap();
         return;
       }
 
-      // Get taille coefficient
+      // Get coefficients
       const taille = document.getElementById('detail-tombe-taille').value || 'simple';
       const coefTaille = TAILLE_COEF[taille] || 1;
 
-      // Get état coefficient
       const etat = document.getElementById('detail-tombe-etat').value || 'bon';
       const coefEtat = ETAT_COEF[etat] || 1;
 
+      const materiau = document.getElementById('detail-tombe-materiau').value || '';
+      const coefMateriau = MATERIAU_COEF[materiau] || 1;
+
       // Combined coefficient
-      const coefTotal = coefTaille * coefEtat;
+      const coefTotal = coefTaille * coefEtat * coefMateriau;
 
       // Get number of days
       const nbJours = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
@@ -3558,12 +3525,12 @@
 
       // Show frais déplacement
       if (fraisDeplacement > 0) {
-        fraisDiv.style.display = 'block';
-        fraisMontant.textContent = fraisDeplacement + '€';
-        fraisDetail.textContent = fraisDetailText ? `(${fraisDetailText})` : '';
+        if (fraisDiv) fraisDiv.style.display = 'block';
+        if (fraisMontant) fraisMontant.textContent = fraisDeplacement + '€';
+        if (fraisDetail) fraisDetail.textContent = fraisDetailText ? `(${fraisDetailText})` : '';
         lignesDetail.push(`Déplacement: ${fraisDeplacement}€`);
       } else {
-        fraisDiv.style.display = 'none';
+        if (fraisDiv) fraisDiv.style.display = 'none';
       }
 
       const total = totalTravaux + fraisDeplacement;
@@ -3571,65 +3538,141 @@
       // Build coefficient explanation
       let coefExplain = [];
       if (coefTaille !== 1) {
-        const tailleLabels = { double: 'double', caveau: 'caveau' };
+        const tailleLabels = { double: '×1.5 double', caveau: '×2 caveau' };
         coefExplain.push(tailleLabels[taille]);
       }
       if (coefEtat !== 1) {
-        const etatLabels = { moyen: 'état moyen +30%', mauvais: 'mauvais état +60%' };
+        const etatLabels = { moyen: '+30% état', mauvais: '+60% état' };
         coefExplain.push(etatLabels[etat]);
       }
+      if (coefMateriau !== 1) {
+        const matLabels = { marbre: '+20% marbre', pierre: '+15% pierre' };
+        coefExplain.push(matLabels[materiau]);
+      }
       if (coefExplain.length > 0) {
-        lignesDetail.push(`Coef: ${coefExplain.join(', ')}`);
+        lignesDetail.push(coefExplain.join(' • '));
       }
 
-      // Show real-time price
-      prixRealtimeDiv.style.display = 'block';
-      prixPonctuelSpan.textContent = total + '€';
-      prixDetailLignes.innerHTML = lignesDetail.join(' • ');
-
-      // Hide old total div
-      document.getElementById('travaux-total').style.display = 'none';
-
-      // Show formule entretien if price > 100€
-      const formuleDiv = document.getElementById('formule-entretien');
-      if (total >= 100) {
-        formuleDiv.style.display = 'block';
-        updateUpsellPrices(total);
-      } else {
-        formuleDiv.style.display = 'none';
-        document.getElementById('upsell-total').style.display = 'none';
+      // Show offre selection
+      if (offreSection) {
+        offreSection.style.display = 'block';
       }
+      if (prixPonctuelSpan) {
+        prixPonctuelSpan.textContent = total + '€';
+      }
+      if (prixDetailLignes) {
+        prixDetailLignes.textContent = lignesDetail.join(' • ');
+      }
+
+      // Store total for formule calculations
+      window.currentInterventionTotal = total;
+
+      // Update formule prices
+      updateOffrePrices();
+
+      // Update recap if offre already selected
+      updateOffreRecap();
     }
 
-    function selectUpsell(formule) {
-      selectedUpsell = formule;
-      document.getElementById('upsell-serenite').style.borderColor = formule === 'serenite' ? 'white' : 'rgba(255,255,255,0.3)';
-      document.getElementById('upsell-serenite').style.background = formule === 'serenite' ? 'rgba(255,255,255,0.2)' : 'transparent';
-      document.getElementById('upsell-prestige').style.borderColor = formule === 'prestige' ? 'white' : 'rgba(255,255,255,0.3)';
-      document.getElementById('upsell-prestige').style.background = formule === 'prestige' ? 'rgba(255,255,255,0.2)' : 'transparent';
+    // Prix de base des formules
+    const FORMULE_BASE = { serenite: 180, prestige: 380 };
+    const FORMULE_PASSAGES = { serenite: 2, prestige: 4 };
+    const FLEURS_PAR_PASSAGE = 30;
 
-      const prixPonctuel = parseInt(document.getElementById('prix-ponctuel').textContent) || 0;
-      updateUpsellPrices(prixPonctuel);
+    function getFormulePrix(formule) {
+      const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
+      const base = FORMULE_BASE[formule] || 0;
+      const passages = FORMULE_PASSAGES[formule] || 0;
+      return base + (avecFleurs ? FLEURS_PAR_PASSAGE * passages : 0);
     }
 
-    function updateUpsellPrices(prixPonctuel) {
-      const upsellTotalDiv = document.getElementById('upsell-total');
+    function updateOffrePrices() {
+      const intervention = window.currentInterventionTotal || 0;
+      const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
 
-      if (!selectedUpsell || prixPonctuel < 100) {
-        upsellTotalDiv.style.display = 'none';
+      // Prix formules avec fleurs si coché
+      const prixSereniteBase = FORMULE_BASE.serenite + (avecFleurs ? FLEURS_PAR_PASSAGE * FORMULE_PASSAGES.serenite : 0);
+      const prixPrestigeBase = FORMULE_BASE.prestige + (avecFleurs ? FLEURS_PAR_PASSAGE * FORMULE_PASSAGES.prestige : 0);
+
+      // Prix combinés avec -10%
+      const prixSereniteTot = Math.round((intervention + prixSereniteBase) * 0.9);
+      const prixPrestigeTot = Math.round((intervention + prixPrestigeBase) * 0.9);
+
+      // Mettre à jour affichage
+      const elSereniteBase = document.getElementById('prix-serenite-base');
+      const elPrestigeBase = document.getElementById('prix-prestige-base');
+      const elSereniteTot = document.getElementById('prix-serenite-total');
+      const elPrestigeTot = document.getElementById('prix-prestige-total');
+
+      if (elSereniteBase) elSereniteBase.textContent = prixSereniteBase + '€';
+      if (elPrestigeBase) elPrestigeBase.textContent = prixPrestigeBase + '€';
+      if (elSereniteTot) elSereniteTot.textContent = prixSereniteTot + '€';
+      if (elPrestigeTot) elPrestigeTot.textContent = prixPrestigeTot + '€';
+    }
+
+    function selectOffre(type) {
+      selectedOffre = type;
+      selectedUpsell = (type === 'serenite' || type === 'prestige') ? type : null;
+
+      // Styles boutons
+      const interventionCard = document.getElementById('offre-intervention');
+      const btnSerenite = document.getElementById('btn-serenite');
+      const btnPrestige = document.getElementById('btn-prestige');
+
+      if (interventionCard) {
+        interventionCard.style.borderColor = type === 'intervention' ? 'white' : 'transparent';
+        interventionCard.style.boxShadow = type === 'intervention' ? '0 0 0 2px white' : 'none';
+      }
+      if (btnSerenite) {
+        btnSerenite.style.borderColor = type === 'serenite' ? 'white' : 'rgba(255,255,255,0.3)';
+        btnSerenite.style.background = type === 'serenite' ? 'rgba(255,255,255,0.2)' : 'transparent';
+      }
+      if (btnPrestige) {
+        btnPrestige.style.borderColor = type === 'prestige' ? 'white' : 'rgba(255,255,255,0.3)';
+        btnPrestige.style.background = type === 'prestige' ? 'rgba(255,255,255,0.2)' : 'transparent';
+      }
+
+      updateOffreRecap();
+    }
+
+    function updateOffreRecap() {
+      const recapDiv = document.getElementById('offre-recap');
+      const recapNom = document.getElementById('offre-recap-nom');
+      const recapPrix = document.getElementById('offre-recap-prix');
+
+      if (!selectedOffre || !recapDiv) {
+        if (recapDiv) recapDiv.style.display = 'none';
         return;
       }
 
-      const formuleNom = selectedUpsell === 'serenite' ? 'Sérénité' : 'Prestige';
-      const formulePrix = selectedUpsell === 'serenite' ? 180 : 380;
-      const totalBrut = prixPonctuel + formulePrix;
-      const totalReduit = Math.round(totalBrut * 0.9); // -10%
+      const intervention = window.currentInterventionTotal || 0;
+      const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
+      let nom = '';
+      let prix = 0;
 
-      upsellTotalDiv.style.display = 'block';
-      document.getElementById('upsell-formule-nom').textContent = `Intervention + ${formuleNom}`;
-      document.getElementById('upsell-prix-brut').textContent = totalBrut + '€';
-      document.getElementById('upsell-prix-reduit').textContent = totalReduit + '€';
+      if (selectedOffre === 'intervention') {
+        nom = 'Intervention seule';
+        prix = intervention;
+      } else {
+        const formulePrix = getFormulePrix(selectedOffre);
+        const formuleNom = selectedOffre === 'serenite' ? 'Sérénité' : 'Prestige';
+        prix = Math.round((intervention + formulePrix) * 0.9);
+        nom = `Intervention + ${formuleNom}${avecFleurs ? ' + Fleurs' : ''} (-10%)`;
+      }
+
+      recapDiv.style.display = 'block';
+      if (recapNom) recapNom.textContent = nom;
+      if (recapPrix) recapPrix.textContent = prix + '€';
+
+      // Update hidden field for compatibility
+      const detailPrix = document.getElementById('detail-prix');
+      if (detailPrix) detailPrix.value = prix;
     }
+
+    // Compatibility functions (old names)
+    function updateFormulePrices() { updateOffrePrices(); }
+    function selectUpsell(formule) { selectOffre(formule); }
+    function updateUpsellPrices() { updateOffreRecap(); }
 
     function detectDistanceFromCimetiere() {
       const client = clients.find(c => c.id === currentClientId);
@@ -3646,38 +3689,9 @@
       return CIMETIERES_DISTANCE['default'];
     }
 
-    function autoDetectDistance() {
-      const zone = document.getElementById('detail-zone').value;
-      let detected = null;
-
-      if (zone === 'idf') {
-        detected = detectDistanceFromCimetiere();
-      } else if (zone === 'cote-azur') {
-        detected = detectDistanceCoteAzur();
-      }
-
-      if (detected) {
-        document.getElementById('detail-distance-km').value = detected.km;
-        updatePriceFromTravaux();
-        const base = zone === 'idf' ? 'La Celle-St-Cloud' : 'Biot';
-        showToast(`Distance détectée: ${detected.km}km depuis ${base}`, 'success');
-      } else {
-        showToast('Cimetière non reconnu, entre la distance manuellement', 'error');
-      }
-    }
-
     function toggleZoneOptions() {
-      const zone = document.getElementById('detail-zone').value;
-      const distanceLabel = document.getElementById('distance-label');
-
-      // Clear distance when changing zone
+      // Clear distance when changing zone, will be auto-detected
       document.getElementById('detail-distance-km').value = '';
-
-      if (zone === 'idf') {
-        distanceLabel.textContent = 'Distance (km depuis La Celle-St-Cloud)';
-      } else if (zone === 'cote-azur') {
-        distanceLabel.textContent = 'Distance (km depuis Biot)';
-      }
       updatePriceFromTravaux();
     }
 
@@ -5028,12 +5042,6 @@
 
     async function sendDevisEmail() {
       const client = clients.find(c => c.id === currentClientId);
-      const formuleKey = client?.formule_choisie || document.getElementById('detail-formule').value;
-      const formule = FORMULES[formuleKey];
-
-      // Get price from field (custom or formula)
-      const customPrice = document.getElementById('detail-prix').value;
-      const priceNote = document.getElementById('detail-prix-note').value;
 
       if (!client) {
         showToast('Client introuvable', 'error');
@@ -5045,20 +5053,31 @@
         return;
       }
 
-      // Need either a formula or a custom price
-      const finalPrice = customPrice ? parseFloat(customPrice) : (formule ? formule.price : null);
+      // Check if offer selected
+      if (!selectedOffre) {
+        showToast('Sélectionne une offre (intervention ou formule)', 'error');
+        return;
+      }
+
+      // Get price from hidden field (set by updateOffreRecap)
+      const finalPrice = parseFloat(document.getElementById('detail-prix').value) || 0;
       if (!finalPrice) {
-        showToast('Indique un prix ou une formule', 'error');
+        showToast('Coche des travaux pour calculer le prix', 'error');
         return;
       }
 
       // Determine the formula name to display
-      let formuleName = formule ? formule.name : 'Prestation personnalisée';
-      let formuleDesc = formule ? formule.desc : (priceNote || 'Entretien de sépulture');
+      let formuleName = 'Intervention';
+      let formuleDesc = 'Remise en état de sépulture';
+      const formuleKey = selectedOffre;
 
-      // If price differs from formula, add note
-      if (formule && customPrice && parseFloat(customPrice) !== formule.price && priceNote) {
-        formuleDesc = `${formule.desc} (${priceNote})`;
+      const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
+      if (selectedOffre === 'serenite') {
+        formuleName = 'Intervention + Sérénité' + (avecFleurs ? ' + Fleurs' : '');
+        formuleDesc = 'Remise en état + entretien 2 passages/an' + (avecFleurs ? ' avec fleurissement' : '');
+      } else if (selectedOffre === 'prestige') {
+        formuleName = 'Intervention + Prestige' + (avecFleurs ? ' + Fleurs' : '');
+        formuleDesc = 'Remise en état + entretien 4 passages/an' + (avecFleurs ? ' avec fleurissement' : '');
       }
 
       const btn = document.getElementById('btnSendDevis');
@@ -5085,9 +5104,11 @@
         }
       }
 
-      // Get taille coefficient for travaux prices
+      // Get coefficients for travaux prices
       const taille = document.getElementById('detail-tombe-taille').value || 'simple';
-      const coef = TAILLE_COEF[taille] || 1;
+      const etat = document.getElementById('detail-tombe-etat').value || 'bon';
+      const materiau = document.getElementById('detail-tombe-materiau').value || '';
+      const coef = (TAILLE_COEF[taille] || 1) * (ETAT_COEF[etat] || 1) * (MATERIAU_COEF[materiau] || 1);
       if (coef !== 1) {
         selectedTravaux.forEach(t => { t.prix = Math.round(t.prix * coef); });
       }
@@ -5122,6 +5143,27 @@
         fraisDeplacement = fraisTransport + locationVoiture + fraisEssence + (parking * nbJoursDevis);
       }
 
+      // Check for combined offer (intervention + formula)
+      let offreCombinee = null;
+      if (selectedUpsell && selectedTravaux.length > 0) {
+        const prixIntervention = parseInt(document.getElementById('prix-ponctuel')?.textContent) || 0;
+        const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
+        const formuleUpsellNom = selectedUpsell === 'serenite' ? 'Sérénité' : 'Prestige';
+        const formuleUpsellPrix = getFormulePrix(selectedUpsell);
+        const totalBrut = prixIntervention + formuleUpsellPrix;
+        const totalReduit = Math.round(totalBrut * 0.9); // -10%
+        const economie = totalBrut - totalReduit;
+        offreCombinee = {
+          interventionPrix: prixIntervention,
+          formuleName: formuleUpsellNom + (avecFleurs ? ' + Fleurs' : ''),
+          formulePrix: formuleUpsellPrix,
+          totalBrut: totalBrut,
+          totalReduit: totalReduit,
+          economie: economie,
+          avecFleurs: avecFleurs
+        };
+      }
+
       try {
         const response = await fetch(`${SUPABASE_URL}/functions/v1/send-devis`, {
           method: 'POST',
@@ -5137,7 +5179,7 @@
             cimetiere: client.cimetiere || 'Non renseigné',
             positionTombe: client.position_tombe,
             formuleName: formuleName,
-            formulePrice: finalPrice,
+            formulePrice: offreCombinee ? offreCombinee.totalReduit : finalPrice,
             formuleDesc: formuleDesc,
             formuleKey: formuleKey,
             devisNumber: devisNum,
@@ -5148,7 +5190,9 @@
             travaux: selectedTravaux.length > 0 ? selectedTravaux : null,
             nbJours: document.getElementById('detail-nb-jours').value,
             zone: zone,
-            fraisDeplacement: fraisDeplacement > 0 ? fraisDeplacement : null
+            fraisDeplacement: fraisDeplacement > 0 ? fraisDeplacement : null,
+            // Offre combinée
+            offreCombinee: offreCombinee
           })
         });
 
