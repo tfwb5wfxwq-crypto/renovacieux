@@ -719,7 +719,7 @@
 
         <!-- Infos du formulaire -->
         <div class="detail-card">
-          <h3>📋 Infos reçues du site</h3>
+          <h3 id="info-section-title">📋 Infos reçues du site</h3>
           <div class="form-row">
             <div class="form-group readonly">
               <label>Nom</label>
@@ -987,6 +987,17 @@
       const client = clients.find(c => c.id === id);
       if (!client) return;
 
+      // Restore section title
+      document.getElementById('info-section-title').textContent = '📋 Infos reçues du site';
+
+      // Restore readonly for website fields
+      document.querySelectorAll('.detail-card .form-group.readonly input, .detail-card .form-group.readonly textarea').forEach(el => {
+        el.setAttribute('readonly', true);
+        el.style.background = 'var(--bg)';
+        el.style.color = 'var(--text-light)';
+        el.style.borderColor = 'transparent';
+      });
+
       document.getElementById('detail-nom').value = client.nom || '';
       document.getElementById('detail-prenom').value = client.prenom || '';
       document.getElementById('detail-tel').value = client.tel || '';
@@ -1041,8 +1052,11 @@
     }
 
     // ===== ADD NEW CLIENT =====
-    async function openNewClient() {
+    function openNewClient() {
       currentClientId = null;
+
+      // Change section title
+      document.getElementById('info-section-title').textContent = '📞 Nouveau client (appel)';
 
       // Clear all fields
       document.getElementById('detail-nom').value = '';
@@ -1057,12 +1071,12 @@
       document.getElementById('detail-formule').value = '';
       document.getElementById('detail-statut').value = 'nouveau';
 
-      // Make form fields editable for new client
+      // Make ALL fields editable for new client
       document.querySelectorAll('.detail-card .form-group.readonly input, .detail-card .form-group.readonly textarea').forEach(el => {
         el.removeAttribute('readonly');
-        el.style.background = '';
-        el.style.color = '';
-        el.style.borderColor = '';
+        el.style.background = 'var(--white)';
+        el.style.color = 'var(--text)';
+        el.style.borderColor = 'var(--border)';
       });
 
       document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
