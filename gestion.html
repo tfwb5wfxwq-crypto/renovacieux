@@ -3452,11 +3452,11 @@
         // If intervention was selected, deselect it
         if (selectedOffre === 'intervention') {
           selectedOffre = null;
-          updateOffreRecap();
         }
 
-        // Update formule prices (sans intervention)
+        // Update formule prices et recap (sans intervention)
         updateOffrePrices();
+        updateOffreRecap();
         return;
       }
 
@@ -3590,7 +3590,7 @@
     }
 
     // Prix de base des formules
-    const FORMULE_BASE = { serenite: 180, prestige: 380 };
+    const FORMULE_BASE = { serenite: 180, prestige: 420 };
     const FORMULE_PASSAGES = { serenite: 2, prestige: 4 };
     const FLEURS_PAR_PASSAGE = 50;
 
