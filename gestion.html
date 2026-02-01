@@ -186,6 +186,38 @@
       height: 36px;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .header-btn {
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-btn:hover {
+      background: var(--bg);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .header-btn.calendar {
+      color: var(--primary);
+      border-color: var(--primary-light);
+    }
+
     .header-logout {
       padding: 10px 18px;
       font-size: 14px;
@@ -979,6 +1011,98 @@
       font-size: 14px;
       color: var(--text);
     }
+
+    /* Mini Calendar */
+    .mini-calendar {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .calendar-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .calendar-nav {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--white);
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+
+    .calendar-nav:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      color: var(--text);
+    }
+
+    .calendar-day:hover:not(.empty):not(.selected) {
+      background: var(--white);
+    }
+
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+    .calendar-day.today {
+      background: var(--blue-light);
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .calendar-day.selected {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .calendar-day.past {
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
@@ -1015,7 +1139,18 @@
         </svg>
         Gestion
       </div>
-      <button class="header-logout" onclick="logout()">Quitter</button>
+      <div class="header-actions">
+        <button class="header-btn calendar" onclick="showCalendarModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Sync Calendrier
+        </button>
+        <button class="header-logout" onclick="logout()">Quitter</button>
+      </div>
     </header>
 
     <!-- Tabs -->
@@ -1093,42 +1228,17 @@
           </button>
         </div>
 
-        <!-- Infos client - Version lecture (client du site) -->
-        <div class="detail-card" id="clientInfoReadonly">
-          <h3>Informations client <span style="font-size: 11px; background: var(--blue-light); color: var(--blue); padding: 3px 8px; border-radius: 10px; margin-left: 8px;">Via le site</span></h3>
-          <div class="info-row">
-            <div class="info-label">Nom</div>
-            <div class="info-value" id="detail-fullname">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Email</div>
-            <div class="info-value" id="detail-email">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Téléphone</div>
-            <div class="info-value" id="detail-tel-readonly">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Cimetière</div>
-            <div class="info-value" id="detail-cimetiere">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Formule</div>
-            <div class="info-value" id="detail-formule-demandee">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Message</div>
-            <div class="info-value" id="detail-message">-</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Reçu le</div>
-            <div class="info-value" id="detail-created">-</div>
-          </div>
+        <!-- Alerte infos manquantes -->
+        <div class="detail-card" id="missingInfoAlert" style="display: none; background: linear-gradient(135deg, #FEF3E0 0%, #FFF8E8 100%); border: 2px solid var(--orange);">
+          <h3 style="color: var(--orange); margin-bottom: 12px;">
+            <span style="font-size: 18px;">⚠️</span> Infos à demander au client
+          </h3>
+          <div id="missingInfoList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
         </div>
 
-        <!-- Infos client - Version éditable (client manuel/téléphone) -->
-        <div class="detail-card" id="clientInfoEditable" style="display: none;">
-          <h3>Informations client <span style="font-size: 11px; background: var(--orange-light); color: var(--orange); padding: 3px 8px; border-radius: 10px; margin-left: 8px;">Ajout manuel</span></h3>
+        <!-- Infos client - Toujours éditable -->
+        <div class="detail-card" id="clientInfoEditable">
+          <h3>Informations client <span id="clientSourceBadge" style="font-size: 11px; background: var(--blue-light); color: var(--blue); padding: 3px 8px; border-radius: 10px; margin-left: 8px;">Via le site</span></h3>
           <div class="form-row">
             <div class="form-group">
               <label>Prénom</label>
@@ -1145,18 +1255,19 @@
               <input type="tel" id="edit-tel" placeholder="06 XX XX XX XX">
             </div>
             <div class="form-group">
-              <label>Email</label>
+              <label>Email <span style="color: var(--text-muted); font-weight: 400;">(pour envoyer devis)</span></label>
               <input type="email" id="edit-email" placeholder="email@exemple.com">
             </div>
           </div>
-          <div class="form-group">
-            <label>Cimetière</label>
+          <div class="form-group" id="cimetiereGroup">
+            <label>Cimetière <span class="required-dot" style="display: none; color: var(--orange);">●</span></label>
             <input type="text" id="edit-cimetiere" placeholder="Nom du cimetière et ville">
           </div>
           <div class="form-group">
             <label>Message / Contexte</label>
             <textarea id="edit-message" placeholder="Comment il vous a contacté, ce qu'il veut..."></textarea>
           </div>
+          <div id="clientCreatedInfo" style="font-size: 12px; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);"></div>
         </div>
 
         <!-- À compléter -->
@@ -1183,13 +1294,27 @@
           <div class="form-row">
             <div class="form-group">
               <label>Formule choisie</label>
-              <select id="detail-formule">
+              <select id="detail-formule" onchange="updatePriceFromFormule()">
                 <option value="">Pas encore décidé</option>
                 <option value="ponctuel">Ponctuel — 89€</option>
                 <option value="serenite">Sérénité — 180€/an</option>
                 <option value="prestige">Prestige — 420€/an</option>
+                <option value="custom">Autre / Personnalisé</option>
               </select>
             </div>
+            <div class="form-group">
+              <label>Prix final (€)</label>
+              <input type="number" id="detail-prix" placeholder="89" min="0" step="1">
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                Modifiable : supplément déplacement, remise...
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Détail prix (si modifié)</label>
+            <input type="text" id="detail-prix-note" placeholder="Ex: +20€ déplacement, -10€ remise fidélité...">
+          </div>
+          <div class="form-row">
             <div class="form-group">
               <label>Statut</label>
               <select id="detail-statut">
@@ -1202,6 +1327,16 @@
                 <option value="perdu">Perdu</option>
               </select>
             </div>
+            <div class="form-group">
+              <label>Mode de paiement</label>
+              <select id="detail-paiement">
+                <option value="">Non défini</option>
+                <option value="stripe">Carte (Stripe)</option>
+                <option value="especes">Espèces</option>
+                <option value="virement">Virement</option>
+                <option value="cheque">Chèque</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -1212,6 +1347,16 @@
         <!-- Devis & Paiement -->
         <div class="detail-card">
           <h3>Devis & Paiement</h3>
+
+          <!-- Info devis envoyé (hidden by default) -->
+          <div id="devisSentInfo" style="display: none; background: var(--green-light); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="color: var(--green); font-size: 16px;">✓</span>
+              <span style="font-weight: 600; color: var(--green);">Devis envoyé</span>
+            </div>
+            <p id="devisSentDate" style="font-size: 12px; color: var(--text-light); margin: 0;">-</p>
+          </div>
+
           <div class="btn-grid">
             <button class="btn btn-accent btn-small" onclick="previewDevis()">
               Générer devis
@@ -1220,20 +1365,105 @@
               Envoyer par email
             </button>
           </div>
+
+          <!-- Relancer button (hidden by default) -->
+          <button class="btn btn-outline btn-small" onclick="sendDevisEmail()" id="btnRelancer" style="display: none; margin-top: 8px;">
+            🔄 Relancer le devis
+          </button>
+
           <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 8px;">
-            L'email contient le devis PDF + lien de paiement Stripe
+            L'email contient le devis + lien de paiement Stripe
           </p>
+        </div>
+
+        <!-- Facture (visible si client actif) -->
+        <div class="detail-card" id="factureSection" style="display: none;">
+          <h3>Facture</h3>
+          <div style="background: var(--green-light); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--green); font-size: 16px;">✓</span>
+              <span style="font-weight: 600; color: var(--green);">Paiement reçu</span>
+            </div>
+          </div>
+          <div class="btn-grid">
+            <button class="btn btn-outline btn-small" onclick="downloadFacture()">
+              Télécharger PDF
+            </button>
+            <button class="btn btn-primary btn-small" onclick="sendFactureEmail()" id="btnSendFacture">
+              Envoyer au client
+            </button>
+          </div>
         </div>
 
         <!-- Dates d'intervention -->
         <div class="detail-card">
           <h3>Dates d'intervention</h3>
+
+          <!-- Mini calendrier -->
+          <div class="mini-calendar" id="miniCalendar">
+            <div class="calendar-header">
+              <button class="calendar-nav" onclick="changeMonth(-1)">‹</button>
+              <span class="calendar-title" id="calendarTitle">Février 2026</span>
+              <button class="calendar-nav" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="calendar-weekdays">
+              <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="calendar-days" id="calendarDays">
+              <!-- Days generated by JS -->
+            </div>
+          </div>
+
+          <!-- Dates planifiées -->
           <div class="dates-list" id="datesList">
             <!-- Dates will be rendered here -->
           </div>
-          <div class="add-date-row">
-            <input type="date" id="newDateInput">
-            <button onclick="addDate()">Ajouter</button>
+
+          <!-- Quick add -->
+          <div class="add-date-row" style="margin-top: 16px;">
+            <input type="date" id="newDateInput" style="flex: 1;">
+            <button onclick="addDate()">+ Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Photos Avant/Après -->
+        <div class="detail-card" id="photosSection">
+          <h3>Photos Avant / Après</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+            Après chaque intervention, ajoute les photos et envoie au client
+          </p>
+
+          <div id="photosList">
+            <!-- Photos will be rendered here -->
+          </div>
+
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <div class="form-group">
+              <label>Date de l'intervention</label>
+              <select id="photoInterventionDate" style="margin-bottom: 12px;">
+                <option value="">Sélectionner une date</option>
+              </select>
+            </div>
+
+            <div class="form-row" style="gap: 12px;">
+              <div class="form-group" style="flex: 1;">
+                <label>Photo Avant</label>
+                <input type="url" id="photoAvant" placeholder="Lien de la photo avant">
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label>Photo Après</label>
+                <input type="url" id="photoApres" placeholder="Lien de la photo après">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 12px;">
+              <button class="btn btn-outline" onclick="savePhotos()" style="flex: 1;">
+                Sauvegarder
+              </button>
+              <button class="btn btn-primary" onclick="sendPhotosEmail()" style="flex: 1;">
+                Envoyer au client
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1271,6 +1501,58 @@
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeDevisModal()">Fermer</button>
         <button class="btn btn-accent" onclick="downloadDevis()">Télécharger PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR MODAL -->
+  <div class="modal-overlay" id="calendarModal">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2>Synchroniser avec Google Calendar</h2>
+        <button class="modal-close" onclick="closeCalendarModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <h3 style="margin-bottom: 12px; color: var(--text);">Abonnez-vous au calendrier</h3>
+          <p style="color: var(--text-light); margin-bottom: 24px; font-size: 14px;">
+            Toutes les interventions planifiées apparaîtront automatiquement dans votre Google Calendar.
+          </p>
+
+          <div style="background: var(--bg); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Lien d'abonnement iCal :</p>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="calendarUrl" readonly
+                style="flex: 1; padding: 12px; font-size: 13px; border: 1px solid var(--border); border-radius: 8px; background: var(--white);"
+                value="https://ujfyvlkmsabinrfylzdr.supabase.co/functions/v1/calendar-feed?token=renovacieux2024">
+              <button onclick="copyCalendarUrl()" class="btn btn-primary" style="padding: 12px 16px;">
+                Copier
+              </button>
+            </div>
+          </div>
+
+          <div style="text-align: left; background: var(--blue-light); border-radius: 12px; padding: 16px;">
+            <p style="font-weight: 600; color: var(--primary); margin-bottom: 8px;">Comment ajouter à Google Calendar :</p>
+            <ol style="font-size: 13px; color: var(--text-light); padding-left: 20px; line-height: 1.8;">
+              <li>Ouvrez <a href="https://calendar.google.com" target="_blank" style="color: var(--primary);">Google Calendar</a></li>
+              <li>Cliquez sur "+" à côté de "Autres agendas"</li>
+              <li>Sélectionnez "À partir de l'URL"</li>
+              <li>Collez le lien copié ci-dessus</li>
+              <li>Cliquez sur "Ajouter l'agenda"</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeCalendarModal()">Fermer</button>
       </div>
     </div>
   </div>
@@ -1483,41 +1765,51 @@
       if (!client) return;
 
       // Determine if client is from website or manual
-      const isFromWebsite = client.email && client.email.includes('@');
-
-      // Show appropriate form
-      document.getElementById('clientInfoReadonly').style.display = isFromWebsite ? 'block' : 'none';
-      document.getElementById('clientInfoEditable').style.display = isFromWebsite ? 'none' : 'block';
+      const isFromWebsite = client.email && client.email.includes('@') && client.created_at;
+      const badge = document.getElementById('clientSourceBadge');
+      if (isFromWebsite) {
+        badge.textContent = 'Via le site';
+        badge.style.background = 'var(--blue-light)';
+        badge.style.color = 'var(--blue)';
+      } else {
+        badge.textContent = 'Ajout manuel';
+        badge.style.background = 'var(--orange-light)';
+        badge.style.color = 'var(--orange)';
+      }
 
       // Phone highlight
       const phone = formatPhone(client.tel);
       document.getElementById('phoneNumber').textContent = phone || 'Pas de numéro';
       document.getElementById('phoneHighlight').style.display = client.tel ? 'block' : 'none';
 
-      if (isFromWebsite) {
-        // Client info - readonly version
-        document.getElementById('detail-fullname').textContent = `${client.prenom || ''} ${client.nom || ''}`.trim() || '-';
-        document.getElementById('detail-email').textContent = client.email || '-';
-        document.getElementById('detail-tel-readonly').textContent = formatPhone(client.tel) || '-';
-        document.getElementById('detail-cimetiere').textContent = client.cimetiere || '-';
-        document.getElementById('detail-formule-demandee').textContent = client.formule_demandee || '-';
-        document.getElementById('detail-message').textContent = client.message || '-';
-        document.getElementById('detail-created').textContent = client.created_at ? new Date(client.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+      // Fill all editable fields
+      document.getElementById('edit-prenom').value = client.prenom || '';
+      document.getElementById('edit-nom').value = client.nom || '';
+      document.getElementById('edit-tel').value = client.tel || '';
+      document.getElementById('edit-email').value = client.email || '';
+      document.getElementById('edit-cimetiere').value = client.cimetiere || '';
+      document.getElementById('edit-message').value = client.message || '';
+
+      // Show created date
+      const createdInfo = document.getElementById('clientCreatedInfo');
+      if (client.created_at) {
+        const dateStr = new Date(client.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        createdInfo.innerHTML = `<strong>Reçu le :</strong> ${dateStr}` + (client.formule_demandee ? ` • <strong>Formule demandée :</strong> ${client.formule_demandee}` : '');
       } else {
-        // Client info - editable version (manual client)
-        document.getElementById('edit-prenom').value = client.prenom || '';
-        document.getElementById('edit-nom').value = client.nom || '';
-        document.getElementById('edit-tel').value = client.tel || '';
-        document.getElementById('edit-email').value = client.email || '';
-        document.getElementById('edit-cimetiere').value = client.cimetiere || '';
-        document.getElementById('edit-message').value = client.message || '';
+        createdInfo.innerHTML = '';
       }
+
+      // Check missing info
+      checkMissingInfo(client);
 
       // Editable fields (common to both)
       document.getElementById('detail-position').value = client.position_tombe || '';
       document.getElementById('detail-notes').value = client.notes || '';
       document.getElementById('detail-formule').value = client.formule_choisie || '';
+      document.getElementById('detail-prix').value = client.prix_final || (FORMULES[client.formule_choisie]?.price || '');
+      document.getElementById('detail-prix-note').value = client.prix_note || '';
       document.getElementById('detail-statut').value = client.statut || 'nouveau';
+      document.getElementById('detail-paiement').value = client.mode_paiement || '';
 
       // Facile toggle
       document.querySelectorAll('[onclick*="facile"]').forEach(el => {
@@ -1527,12 +1819,82 @@
       // Dates
       renderDates(client);
 
+      // Photos
+      renderPhotos(client);
+
       // History
       renderHistory(client);
+
+      // Check if devis was sent before
+      updateDevisUI(client);
+
+      // Show facture section if client is actif (has paid)
+      document.getElementById('factureSection').style.display = client.statut === 'actif' ? 'block' : 'none';
 
       // Show detail page
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-detail').classList.add('active');
+    }
+
+    function checkMissingInfo(client) {
+      const missing = [];
+
+      if (!client.cimetiere) missing.push({ label: 'Cimetière', icon: '📍' });
+      if (!client.email) missing.push({ label: 'Email', icon: '📧' });
+      if (!client.tel) missing.push({ label: 'Téléphone', icon: '📱' });
+      if (!client.formule_choisie && !client.prix_final) missing.push({ label: 'Formule/Prix', icon: '💰' });
+
+      const alertDiv = document.getElementById('missingInfoAlert');
+      const listDiv = document.getElementById('missingInfoList');
+
+      if (missing.length > 0) {
+        alertDiv.style.display = 'block';
+        listDiv.innerHTML = missing.map(m =>
+          `<span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--orange); border: 1px solid var(--orange);">${m.icon} ${m.label}</span>`
+        ).join('');
+
+        // Highlight missing cimetiere field
+        const cimInput = document.getElementById('edit-cimetiere');
+        if (!client.cimetiere) {
+          cimInput.style.borderColor = 'var(--orange)';
+          cimInput.style.background = '#FEF9F0';
+        } else {
+          cimInput.style.borderColor = '';
+          cimInput.style.background = '';
+        }
+      } else {
+        alertDiv.style.display = 'none';
+        document.getElementById('edit-cimetiere').style.borderColor = '';
+        document.getElementById('edit-cimetiere').style.background = '';
+      }
+    }
+
+    function updateDevisUI(client) {
+      const history = client.historique ? JSON.parse(client.historique) : [];
+      const devisEvents = history.filter(e => e.text && e.text.includes('Devis') && e.text.includes('envoyé'));
+
+      const sentInfo = document.getElementById('devisSentInfo');
+      const sentDate = document.getElementById('devisSentDate');
+      const relancerBtn = document.getElementById('btnRelancer');
+      const sendBtn = document.getElementById('btnSendDevis');
+
+      if (devisEvents.length > 0) {
+        // Sort by date desc to get latest
+        devisEvents.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const lastDevis = devisEvents[0];
+        const dateStr = new Date(lastDevis.date).toLocaleDateString('fr-FR', {
+          day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+
+        sentInfo.style.display = 'block';
+        sentDate.textContent = `Dernier envoi : ${dateStr}`;
+        relancerBtn.style.display = 'block';
+        sendBtn.textContent = 'Renvoyer';
+      } else {
+        sentInfo.style.display = 'none';
+        relancerBtn.style.display = 'none';
+        sendBtn.textContent = 'Envoyer par email';
+      }
     }
 
     function openNewClient() {
@@ -1541,9 +1903,14 @@
       // Hide phone highlight for new client
       document.getElementById('phoneHighlight').style.display = 'none';
 
-      // Show editable form, hide readonly
-      document.getElementById('clientInfoReadonly').style.display = 'none';
-      document.getElementById('clientInfoEditable').style.display = 'block';
+      // Hide missing info alert
+      document.getElementById('missingInfoAlert').style.display = 'none';
+
+      // Set badge to manual
+      const badge = document.getElementById('clientSourceBadge');
+      badge.textContent = 'Nouveau';
+      badge.style.background = 'var(--green-light)';
+      badge.style.color = 'var(--green)';
 
       // Clear editable client info fields
       document.getElementById('edit-prenom').value = '';
@@ -1551,19 +1918,30 @@
       document.getElementById('edit-tel').value = '';
       document.getElementById('edit-email').value = '';
       document.getElementById('edit-cimetiere').value = '';
+      document.getElementById('edit-cimetiere').style.borderColor = '';
+      document.getElementById('edit-cimetiere').style.background = '';
       document.getElementById('edit-message').value = '';
+      document.getElementById('clientCreatedInfo').innerHTML = '';
 
       // Clear other editable fields
       document.getElementById('detail-position').value = '';
       document.getElementById('detail-notes').value = '';
       document.getElementById('detail-formule').value = '';
+      document.getElementById('detail-prix').value = '';
+      document.getElementById('detail-prix-note').value = '';
       document.getElementById('detail-statut').value = 'nouveau';
+      document.getElementById('detail-paiement').value = '';
 
       document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
 
       // Clear dates & history
       document.getElementById('datesList').innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Aucune date prévue</p>';
       document.getElementById('historyList').innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Nouveau client</p>';
+
+      // Reset devis UI
+      document.getElementById('devisSentInfo').style.display = 'none';
+      document.getElementById('btnRelancer').style.display = 'none';
+      document.getElementById('btnSendDevis').textContent = 'Envoyer par email';
 
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-detail').classList.add('active');
@@ -1574,28 +1952,89 @@
       el.classList.add('selected');
     }
 
+    function updatePriceFromFormule() {
+      const formuleKey = document.getElementById('detail-formule').value;
+      const priceInput = document.getElementById('detail-prix');
+
+      if (formuleKey && formuleKey !== 'custom' && FORMULES[formuleKey]) {
+        priceInput.value = FORMULES[formuleKey].price;
+      }
+      // Don't clear price if "custom" or empty - let user modify
+
+      // Suggest dates for multi-passage formulas
+      if (formuleKey === 'serenite' || formuleKey === 'prestige') {
+        suggestDates(formuleKey);
+      }
+    }
+
+    function suggestDates(formuleKey) {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      // Check if client already has dates
+      const existingDates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+      if (existingDates.length > 0) return; // Don't overwrite existing dates
+
+      const numPassages = formuleKey === 'serenite' ? 2 : 4;
+      const monthsBetween = 12 / numPassages; // 6 months for Sérénité, 3 months for Prestige
+      const suggestedDates = [];
+
+      // Start from today
+      const today = new Date();
+      let currentDate = new Date(today);
+
+      for (let i = 0; i < numPassages; i++) {
+        // First passage in 2 weeks, then evenly spaced
+        if (i === 0) {
+          currentDate.setDate(currentDate.getDate() + 14); // First passage in 2 weeks
+        } else {
+          currentDate.setMonth(currentDate.getMonth() + monthsBetween);
+        }
+
+        // Format as YYYY-MM-DD
+        const dateStr = currentDate.toISOString().split('T')[0];
+        suggestedDates.push(dateStr);
+      }
+
+      // Show confirmation with nice date format
+      const dateLabels = suggestedDates.map((d, i) => {
+        const date = new Date(d);
+        const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        return `${i + 1}. ${label}`;
+      }).join('\n');
+
+      if (confirm(`Formule ${formuleKey === 'serenite' ? 'Sérénité' : 'Prestige'} : ${numPassages} passages/an\n\nDates suggérées :\n${dateLabels}\n\nTu pourras ajuster les dates après.\nAjouter ces dates ?`)) {
+        updateClient(currentClientId, { dates_intervention: JSON.stringify(suggestedDates) }).then(async success => {
+          if (success) {
+            await loadClients();
+            const updatedClient = clients.find(c => c.id === currentClientId);
+            if (updatedClient) renderDates(updatedClient);
+            showToast(`${numPassages} dates d'intervention ajoutées`);
+          }
+        });
+      }
+    }
+
     async function saveClient() {
       const facileEl = document.querySelector('[onclick*="facile"].selected');
-      const isEditableMode = document.getElementById('clientInfoEditable').style.display !== 'none';
 
-      // Base updates (common to all)
+      // All fields are now always editable
       const updates = {
+        prenom: document.getElementById('edit-prenom').value.trim(),
+        nom: document.getElementById('edit-nom').value.trim(),
+        tel: document.getElementById('edit-tel').value.trim(),
+        email: document.getElementById('edit-email').value.trim(),
+        cimetiere: document.getElementById('edit-cimetiere').value.trim(),
+        message: document.getElementById('edit-message').value.trim(),
         position_tombe: document.getElementById('detail-position').value,
         notes: document.getElementById('detail-notes').value,
         formule_choisie: document.getElementById('detail-formule').value,
+        prix_final: document.getElementById('detail-prix').value ? parseFloat(document.getElementById('detail-prix').value) : null,
+        prix_note: document.getElementById('detail-prix-note').value,
         statut: document.getElementById('detail-statut').value,
+        mode_paiement: document.getElementById('detail-paiement').value,
         facile_trouver: facileEl ? facileEl.dataset.value : ''
       };
-
-      // If in editable mode (manual client), add those fields
-      if (isEditableMode) {
-        updates.prenom = document.getElementById('edit-prenom').value.trim();
-        updates.nom = document.getElementById('edit-nom').value.trim();
-        updates.tel = document.getElementById('edit-tel').value.trim();
-        updates.email = document.getElementById('edit-email').value.trim();
-        updates.cimetiere = document.getElementById('edit-cimetiere').value.trim();
-        updates.message = document.getElementById('edit-message').value.trim();
-      }
 
       let success;
 
@@ -1621,11 +2060,16 @@
         showToast('Enregistré !', 'success');
         await loadClients();
 
-        // Update phone display if changed
+        // Update displays after save
         const client = clients.find(c => c.id === currentClientId);
-        if (client && client.tel) {
-          document.getElementById('phoneNumber').textContent = formatPhone(client.tel);
-          document.getElementById('phoneHighlight').style.display = 'block';
+        if (client) {
+          // Update phone display
+          if (client.tel) {
+            document.getElementById('phoneNumber').textContent = formatPhone(client.tel);
+            document.getElementById('phoneHighlight').style.display = 'block';
+          }
+          // Refresh missing info alert
+          checkMissingInfo(client);
         }
       }
     }
@@ -1655,31 +2099,101 @@
       });
     }
 
-    // ===== DATES =====
+    // ===== CALENDAR & DATES =====
+    let calendarDate = new Date();
+    let clientDates = [];
+
+    function renderCalendar() {
+      const year = calendarDate.getFullYear();
+      const month = calendarDate.getMonth();
+
+      // Update title
+      const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+      document.getElementById('calendarTitle').textContent = `${monthNames[month]} ${year}`;
+
+      // Get first day of month and total days
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      // Adjust for Monday start (0=Sun -> 6, 1=Mon -> 0, etc)
+      const startDay = firstDay === 0 ? 6 : firstDay - 1;
+
+      let html = '';
+
+      // Empty cells before first day
+      for (let i = 0; i < startDay; i++) {
+        html += '<button class="calendar-day empty"></button>';
+      }
+
+      // Days of month
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const thisDate = new Date(year, month, day);
+        const isToday = thisDate.getTime() === today.getTime();
+        const isPast = thisDate < today;
+        const isSelected = clientDates.includes(dateStr);
+
+        let classes = 'calendar-day';
+        if (isToday) classes += ' today';
+        if (isPast) classes += ' past';
+        if (isSelected) classes += ' selected';
+
+        html += `<button class="${classes}" onclick="selectCalendarDate('${dateStr}')">${day}</button>`;
+      }
+
+      document.getElementById('calendarDays').innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+      calendarDate.setMonth(calendarDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function selectCalendarDate(dateStr) {
+      // Toggle date selection
+      if (clientDates.includes(dateStr)) {
+        // Remove date
+        const index = clientDates.indexOf(dateStr);
+        removeDate(index);
+      } else {
+        // Add date
+        document.getElementById('newDateInput').value = dateStr;
+        addDate();
+      }
+    }
+
     function renderDates(client) {
-      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+      clientDates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
       const container = document.getElementById('datesList');
 
-      if (dates.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">Aucune date prévue</p>';
+      // Render calendar
+      renderCalendar();
+
+      if (clientDates.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 14px; text-align: center;">Clique sur le calendrier pour ajouter une date</p>';
         return;
       }
 
-      container.innerHTML = dates.map((d, i) => {
+      // Sort dates and render list
+      const sortedDates = [...clientDates].sort();
+      container.innerHTML = sortedDates.map((d, i) => {
         const date = new Date(d);
         const day = date.getDate();
-        const month = date.toLocaleDateString('fr-FR', { month: 'short' });
+        const month = date.toLocaleDateString('fr-FR', { month: 'long' });
         const year = date.getFullYear();
+        const weekday = date.toLocaleDateString('fr-FR', { weekday: 'long' });
         const isPast = date < new Date();
 
         return `
           <div class="date-item" style="${isPast ? 'opacity: 0.5;' : ''}">
-            <div class="date-item-icon">${day}</div>
+            <div class="date-item-icon" style="${isPast ? '' : 'background: var(--green);'}">${day}</div>
             <div class="date-item-info">
-              <div class="date-item-label">${month} ${year}</div>
-              <div class="date-item-value">${isPast ? 'Passée' : 'À venir'}</div>
+              <div class="date-item-label">${weekday.charAt(0).toUpperCase() + weekday.slice(1)} ${day} ${month}</div>
+              <div class="date-item-value">${isPast ? 'Intervention passée' : 'Intervention prévue'}</div>
             </div>
-            <button class="date-item-delete" onclick="removeDate(${i})">×</button>
+            <button class="date-item-delete" onclick="removeDate(${clientDates.indexOf(d)})">×</button>
           </div>
         `;
       }).join('');
@@ -1693,11 +2207,16 @@
         return;
       }
 
+      // Check if date already exists
+      if (clientDates.includes(dateValue)) {
+        showToast('Date déjà planifiée', 'error');
+        return;
+      }
+
       const client = clients.find(c => c.id === currentClientId);
       if (!client) return;
 
-      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
-      dates.push(dateValue);
+      const dates = [...clientDates, dateValue];
       dates.sort();
 
       const success = await updateClient(currentClientId, { dates_intervention: JSON.stringify(dates) });
@@ -1723,6 +2242,184 @@
         const updatedClient = clients.find(c => c.id === currentClientId);
         renderDates(updatedClient);
         showToast('Date supprimée', 'success');
+      }
+    }
+
+    // ===== PHOTOS =====
+    function renderPhotos(client) {
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      const photosList = document.getElementById('photosList');
+      const dateSelect = document.getElementById('photoInterventionDate');
+
+      // Get intervention dates for the select
+      const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
+
+      // Populate date select
+      dateSelect.innerHTML = '<option value="">Sélectionner une date</option>' +
+        dates.map(d => {
+          const date = new Date(d);
+          const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+          const hasPhotos = photos.some(p => p.date === d);
+          return `<option value="${d}" ${hasPhotos ? 'style="color: var(--green);"' : ''}>${label}${hasPhotos ? ' ✓' : ''}</option>`;
+        }).join('');
+
+      // Render existing photos
+      if (photos.length === 0) {
+        photosList.innerHTML = '<p style="color: var(--text-muted); font-size: 14px; text-align: center;">Aucune photo enregistrée</p>';
+        return;
+      }
+
+      photosList.innerHTML = photos.map((p, i) => {
+        const date = new Date(p.date);
+        const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        return `
+          <div style="background: var(--bg); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <strong style="font-size: 14px;">${label}</strong>
+              <div style="display: flex; gap: 8px;">
+                ${p.sent ? '<span style="color: var(--green); font-size: 12px;">✓ Envoyé</span>' : ''}
+                <button onclick="deletePhoto(${i})" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">Suppr.</button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              ${p.avant ? `<a href="${p.avant}" target="_blank" style="flex: 1; text-align: center; padding: 8px; background: var(--white); border-radius: 8px; color: var(--primary); text-decoration: none; font-size: 13px;">📷 Voir Avant</a>` : '<span style="flex: 1; text-align: center; padding: 8px; color: var(--text-muted); font-size: 13px;">Pas de photo avant</span>'}
+              ${p.apres ? `<a href="${p.apres}" target="_blank" style="flex: 1; text-align: center; padding: 8px; background: var(--white); border-radius: 8px; color: var(--primary); text-decoration: none; font-size: 13px;">📷 Voir Après</a>` : '<span style="flex: 1; text-align: center; padding: 8px; color: var(--text-muted); font-size: 13px;">Pas de photo après</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function savePhotos() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const dateSelect = document.getElementById('photoInterventionDate');
+      const avantInput = document.getElementById('photoAvant');
+      const apresInput = document.getElementById('photoApres');
+
+      const selectedDate = dateSelect.value;
+      if (!selectedDate) {
+        showToast('Sélectionne une date d\'intervention', 'error');
+        return;
+      }
+
+      if (!avantInput.value && !apresInput.value) {
+        showToast('Ajoute au moins une photo', 'error');
+        return;
+      }
+
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+
+      // Check if photos already exist for this date
+      const existingIndex = photos.findIndex(p => p.date === selectedDate);
+      const photoEntry = {
+        date: selectedDate,
+        avant: avantInput.value || '',
+        apres: apresInput.value || '',
+        sent: false
+      };
+
+      if (existingIndex >= 0) {
+        photos[existingIndex] = { ...photos[existingIndex], ...photoEntry, sent: photos[existingIndex].sent };
+      } else {
+        photos.push(photoEntry);
+      }
+
+      const success = await updateClient(currentClientId, { photos: JSON.stringify(photos) });
+      if (success) {
+        avantInput.value = '';
+        apresInput.value = '';
+        dateSelect.value = '';
+        await loadClients();
+        const updatedClient = clients.find(c => c.id === currentClientId);
+        renderPhotos(updatedClient);
+        showToast('Photos sauvegardées', 'success');
+      }
+    }
+
+    async function deletePhoto(index) {
+      if (!confirm('Supprimer ces photos ?')) return;
+
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      photos.splice(index, 1);
+
+      const success = await updateClient(currentClientId, { photos: JSON.stringify(photos) });
+      if (success) {
+        await loadClients();
+        const updatedClient = clients.find(c => c.id === currentClientId);
+        renderPhotos(updatedClient);
+        showToast('Photos supprimées', 'success');
+      }
+    }
+
+    async function sendPhotosEmail() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const dateSelect = document.getElementById('photoInterventionDate');
+      const selectedDate = dateSelect.value;
+
+      if (!selectedDate) {
+        showToast('Sélectionne une date d\'intervention', 'error');
+        return;
+      }
+
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      const photoEntry = photos.find(p => p.date === selectedDate);
+
+      if (!photoEntry || (!photoEntry.avant && !photoEntry.apres)) {
+        showToast('Sauvegarde d\'abord les photos pour cette date', 'error');
+        return;
+      }
+
+      if (!client.email) {
+        showToast('Le client n\'a pas d\'email', 'error');
+        return;
+      }
+
+      try {
+        showToast('Envoi en cours...', 'info');
+
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/send-photos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: client.id,
+            clientName: `${client.prenom} ${client.nom}`,
+            clientEmail: client.email,
+            cimetiere: client.cimetiere,
+            interventionDate: selectedDate,
+            photoAvant: photoEntry.avant,
+            photoApres: photoEntry.apres
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // Mark as sent
+          const photoIndex = photos.findIndex(p => p.date === selectedDate);
+          if (photoIndex >= 0) {
+            photos[photoIndex].sent = true;
+            await updateClient(currentClientId, { photos: JSON.stringify(photos) });
+            await loadClients();
+            const updatedClient = clients.find(c => c.id === currentClientId);
+            renderPhotos(updatedClient);
+          }
+          showToast('Email envoyé au client !', 'success');
+        } else {
+          showToast(result.error || 'Erreur d\'envoi', 'error');
+        }
+      } catch (error) {
+        console.error('Error sending photos:', error);
+        showToast('Erreur d\'envoi', 'error');
       }
     }
 
@@ -1770,11 +2467,24 @@
       const client = clients.find(c => c.id === currentClientId);
       if (!client) return;
 
-      const formule = FORMULES[client.formule_choisie || document.getElementById('detail-formule').value];
-      if (!formule) {
-        showToast('Sélectionne une formule d\'abord', 'error');
+      const formuleKey = client.formule_choisie || document.getElementById('detail-formule').value;
+      const formule = FORMULES[formuleKey];
+      const customPrice = document.getElementById('detail-prix').value;
+      const priceNote = document.getElementById('detail-prix-note').value;
+
+      // Get final price
+      const finalPrice = customPrice ? parseFloat(customPrice) : (formule ? formule.price : null);
+      if (!finalPrice) {
+        showToast('Indique un prix ou une formule', 'error');
         return;
       }
+
+      // Determine display info
+      let formuleName = formule ? formule.name : 'Prestation personnalisée';
+      let formuleDesc = formule ? formule.desc : 'Entretien de sépulture';
+
+      // Show price note if exists
+      const priceNoteHtml = priceNote ? `<p style="font-size: 11px; color: var(--orange); margin-top: 4px;">📝 ${priceNote}</p>` : '';
 
       const devisNum = `DEV-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
       const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -1806,14 +2516,15 @@
         <div class="devis-preview-section">
           <h4>Prestation</h4>
           <div class="devis-preview-row">
-            <span>${formule.name}</span>
-            <span>${formule.price}€</span>
+            <span>${formuleName}</span>
+            <span>${finalPrice}€</span>
           </div>
-          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${formule.desc}</p>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${formuleDesc}</p>
+          ${priceNoteHtml}
         </div>
 
         <div class="devis-preview-total">
-          Total TTC : ${formule.price}€
+          Total TTC : ${finalPrice}€
         </div>
 
         <p style="font-size: 11px; color: var(--text-muted); margin-top: 20px; text-align: center;">
@@ -1828,10 +2539,40 @@
       document.getElementById('devisModal').classList.remove('active');
     }
 
+    // ===== CALENDAR MODAL =====
+    function showCalendarModal() {
+      document.getElementById('calendarModal').classList.add('active');
+    }
+
+    function closeCalendarModal() {
+      document.getElementById('calendarModal').classList.remove('active');
+    }
+
+    function copyCalendarUrl() {
+      const urlInput = document.getElementById('calendarUrl');
+      urlInput.select();
+      document.execCommand('copy');
+      showToast('Lien copié !');
+    }
+
     function downloadDevis() {
       const client = clients.find(c => c.id === currentClientId);
-      const formule = FORMULES[client?.formule_choisie || document.getElementById('detail-formule').value];
-      if (!client || !formule) return;
+      if (!client) return;
+
+      const formuleKey = client?.formule_choisie || document.getElementById('detail-formule').value;
+      const formule = FORMULES[formuleKey];
+      const customPrice = document.getElementById('detail-prix').value;
+      const priceNote = document.getElementById('detail-prix-note').value;
+
+      // Get final price
+      const finalPrice = customPrice ? parseFloat(customPrice) : (formule ? formule.price : null);
+      if (!finalPrice) {
+        showToast('Indique un prix', 'error');
+        return;
+      }
+
+      let formuleName = formule ? formule.name : 'Prestation personnalisée';
+      let formuleDesc = formule ? formule.desc : 'Entretien de sépulture';
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
@@ -1883,18 +2624,26 @@
 
       doc.setTextColor(0);
       doc.setFontSize(12);
-      doc.text(formule.name, 20, 175);
-      doc.text(`${formule.price}€`, 190, 175, { align: 'right' });
+      doc.text(formuleName, 20, 175);
+      doc.text(`${finalPrice}€`, 190, 175, { align: 'right' });
       doc.setFontSize(10);
       doc.setTextColor(100);
-      doc.text(formule.desc, 20, 182);
+      doc.text(formuleDesc, 20, 182);
 
-      doc.line(20, 190, 190, 190);
+      // Price note if exists
+      if (priceNote) {
+        doc.setFontSize(9);
+        doc.setTextColor(234, 134, 0); // orange
+        doc.text(priceNote, 20, 189);
+      }
+
+      doc.setDrawColor(200);
+      doc.line(20, 195, 190, 195);
 
       // Total
       doc.setFontSize(14);
       doc.setTextColor(61, 107, 124);
-      doc.text(`Total TTC : ${formule.price}€`, 190, 205, { align: 'right' });
+      doc.text(`Total TTC : ${finalPrice}€`, 190, 210, { align: 'right' });
 
       // Footer
       doc.setFontSize(8);
@@ -1910,6 +2659,10 @@
       const formuleKey = client?.formule_choisie || document.getElementById('detail-formule').value;
       const formule = FORMULES[formuleKey];
 
+      // Get price from field (custom or formula)
+      const customPrice = document.getElementById('detail-prix').value;
+      const priceNote = document.getElementById('detail-prix-note').value;
+
       if (!client) {
         showToast('Client introuvable', 'error');
         return;
@@ -1920,9 +2673,20 @@
         return;
       }
 
-      if (!formule) {
-        showToast('Sélectionne une formule', 'error');
+      // Need either a formula or a custom price
+      const finalPrice = customPrice ? parseFloat(customPrice) : (formule ? formule.price : null);
+      if (!finalPrice) {
+        showToast('Indique un prix ou une formule', 'error');
         return;
+      }
+
+      // Determine the formula name to display
+      let formuleName = formule ? formule.name : 'Prestation personnalisée';
+      let formuleDesc = formule ? formule.desc : (priceNote || 'Entretien de sépulture');
+
+      // If price differs from formula, add note
+      if (formule && customPrice && parseFloat(customPrice) !== formule.price && priceNote) {
+        formuleDesc = `${formule.desc} (${priceNote})`;
       }
 
       const btn = document.getElementById('btnSendDevis');
@@ -1945,9 +2709,10 @@
             clientPhone: client.tel,
             cimetiere: client.cimetiere || 'Non renseigné',
             positionTombe: client.position_tombe,
-            formuleName: formule.name,
-            formulePrice: formule.price,
-            formuleDesc: formule.desc,
+            formuleName: formuleName,
+            formulePrice: finalPrice,
+            formuleDesc: formuleDesc,
+            formuleKey: formuleKey, // For subscription detection (serenite/prestige)
             devisNumber: devisNum
           })
         });
@@ -1977,6 +2742,181 @@
 
       btn.disabled = false;
       btn.textContent = 'Envoyer par email';
+    }
+
+    // ===== FACTURE =====
+    function getFactureNumber(client) {
+      return `FAC-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
+    }
+
+    function downloadFacture() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const formuleKey = client?.formule_choisie;
+      const formule = FORMULES[formuleKey];
+      const finalPrice = client.prix_final || (formule ? formule.price : 0);
+
+      if (!finalPrice) {
+        showToast('Pas de montant défini', 'error');
+        return;
+      }
+
+      let formuleName = formule ? formule.name : 'Prestation personnalisée';
+      let formuleDesc = formule ? formule.desc : 'Entretien de sépulture';
+      const priceNote = client.prix_note || '';
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const factureNum = getFactureNumber(client);
+      const today = new Date().toLocaleDateString('fr-FR');
+
+      // Header
+      doc.setFontSize(24);
+      doc.setTextColor(61, 107, 124);
+      doc.text('RENOVACIEUX', 105, 30, { align: 'center' });
+
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('Rénovation et entretien de sépultures', 105, 38, { align: 'center' });
+
+      // FACTURE badge
+      doc.setFillColor(52, 168, 83);
+      doc.roundedRect(75, 45, 60, 12, 3, 3, 'F');
+      doc.setFontSize(12);
+      doc.setTextColor(255, 255, 255);
+      doc.text('FACTURE ACQUITTÉE', 105, 53, { align: 'center' });
+
+      // Facture info
+      doc.setFontSize(12);
+      doc.setTextColor(0);
+      doc.text(`Facture N° ${factureNum}`, 20, 75);
+      doc.text(`Date : ${today}`, 20, 83);
+
+      // Client
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('CLIENT', 20, 100);
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(`${client.prenom || ''} ${client.nom || ''}`, 20, 108);
+      if (client.email) doc.text(client.email, 20, 115);
+      if (client.tel) doc.text(formatPhone(client.tel), 20, 122);
+
+      // Lieu
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('LIEU D\'INTERVENTION', 20, 140);
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(client.cimetiere || 'Non renseigné', 20, 148);
+      if (client.position_tombe) doc.text(`Position : ${client.position_tombe}`, 20, 155);
+
+      // Prestation
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('PRESTATION', 20, 175);
+
+      doc.setDrawColor(200);
+      doc.line(20, 180, 190, 180);
+
+      doc.setTextColor(0);
+      doc.setFontSize(12);
+      doc.text(formuleName, 20, 190);
+      doc.text(`${finalPrice} EUR`, 190, 190, { align: 'right' });
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text(formuleDesc, 20, 197);
+
+      if (priceNote) {
+        doc.setFontSize(9);
+        doc.setTextColor(234, 134, 0);
+        doc.text(priceNote, 20, 204);
+      }
+
+      doc.setDrawColor(200);
+      doc.line(20, 210, 190, 210);
+
+      // Total
+      doc.setFontSize(14);
+      doc.setTextColor(52, 168, 83);
+      doc.text(`Total payé : ${finalPrice} EUR`, 190, 225, { align: 'right' });
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text('TVA non applicable, art. 293 B du CGI', 105, 270, { align: 'center' });
+      doc.text('Dimitri Poisson - Renovacieux - SIRET: [A COMPLETER]', 105, 276, { align: 'center' });
+
+      doc.save(`Facture-${factureNum}.pdf`);
+      showToast('Facture téléchargée', 'success');
+    }
+
+    async function sendFactureEmail() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) {
+        showToast('Client introuvable', 'error');
+        return;
+      }
+
+      if (!client.email) {
+        showToast('Pas d\'email client', 'error');
+        return;
+      }
+
+      const formuleKey = client?.formule_choisie;
+      const formule = FORMULES[formuleKey];
+      const finalPrice = client.prix_final || (formule ? formule.price : 0);
+
+      if (!finalPrice) {
+        showToast('Pas de montant', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSendFacture');
+      btn.disabled = true;
+      btn.textContent = 'Envoi...';
+
+      const factureNum = getFactureNumber(client);
+      let formuleName = formule ? formule.name : 'Prestation personnalisée';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/send-facture`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: client.id,
+            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientEmail: client.email,
+            cimetiere: client.cimetiere || 'Non renseigné',
+            formuleName: formuleName,
+            formulePrice: finalPrice,
+            factureNumber: factureNum
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          showToast('Facture envoyée !', 'success');
+          await addHistoryEvent(currentClientId, `Facture ${factureNum} envoyée par email`);
+          await loadClients();
+          const updatedClient = clients.find(c => c.id === currentClientId);
+          if (updatedClient) renderHistory(updatedClient);
+        } else {
+          showToast(result.error || 'Erreur envoi', 'error');
+        }
+      } catch (err) {
+        console.error('Network error:', err);
+        showToast('Erreur de connexion', 'error');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Envoyer au client';
     }
 
     // ===== TOAST =====

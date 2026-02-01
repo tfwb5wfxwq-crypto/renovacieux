@@ -381,6 +381,7 @@
     const sessionId = params.get('session_id');
     const clientId = params.get('client_id');
     const formule = params.get('formule');
+    const formuleKey = params.get('formule_key'); // serenite, prestige, ponctuel
     const price = params.get('price');
     const devis = params.get('devis');
     const email = params.get('email');
@@ -418,6 +419,7 @@
             clientName: name ? decodeURIComponent(name) : '',
             formuleName: decodeURIComponent(formule),
             formulePrice: parseFloat(price),
+            formuleKey: formuleKey || '', // For subscription detection
             devisNumber: devis || `DEV-${new Date().getFullYear()}-${clientId}`,
             returnUrl: window.location.origin + window.location.pathname + '?success=true&session_id={CHECKOUT_SESSION_ID}'
           })

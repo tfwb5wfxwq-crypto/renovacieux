@@ -13,9 +13,27 @@ CREATE TABLE IF NOT EXISTS clients (
   formule_choisie TEXT,
   statut TEXT DEFAULT 'nouveau',
   facile_trouver TEXT,
+  dates_intervention TEXT,  -- JSON array of dates
+  historique TEXT,          -- JSON array of history events
+  prix_final DECIMAL,
+  prix_note TEXT,
+  mode_paiement TEXT,
+  stripe_subscription_id TEXT,
+  stripe_customer_id TEXT,
+  photos TEXT,              -- JSON array of {date, avant, apres, sent}
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Add columns if table already exists
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS dates_intervention TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS historique TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS prix_final DECIMAL;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS prix_note TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS mode_paiement TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS stripe_subscription_id TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS photos TEXT;
 
 -- Activer RLS (Row Level Security)
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
