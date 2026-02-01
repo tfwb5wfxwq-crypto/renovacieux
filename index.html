@@ -930,83 +930,59 @@
       border-radius: 3px;
     }
 
-    /* Zone graphique */
-    .zone-visual {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .zone-map-mini {
+    /* Zone carte interactive */
+    .zone-map-wrapper {
       position: relative;
-      width: 180px;
-      height: 180px;
+      perspective: 800px;
     }
 
-    .zone-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-      box-shadow: 0 4px 15px rgba(61, 107, 124, 0.4);
-      z-index: 2;
+    .zone-map-idf {
+      width: 200px;
+      height: 200px;
+      transition: transform 0.1s ease-out;
     }
 
-    .zone-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      border: 2px dashed var(--cream-dark);
-      border-radius: 50%;
+    .zone-map-idf svg {
+      width: 100%;
+      height: 100%;
     }
 
-    .zone-dept {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      background: var(--white);
-      border: 2px solid var(--cream-dark);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-light);
+    .zone-map-idf .dept {
+      fill: var(--cream-dark);
+      stroke: white;
+      stroke-width: 1.5;
       transition: all 0.3s;
+      cursor: pointer;
     }
 
-    .zone-dept:hover {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-      transform: scale(1.15);
+    .zone-map-idf .dept:hover {
+      fill: var(--primary);
     }
 
-    .zone-dept:nth-child(3) { top: 5px; left: 50%; transform: translateX(-50%); }
-    .zone-dept:nth-child(4) { top: 25px; right: 15px; }
-    .zone-dept:nth-child(5) { top: 50%; right: 0; transform: translateY(-50%); }
-    .zone-dept:nth-child(6) { bottom: 25px; right: 15px; }
-    .zone-dept:nth-child(7) { bottom: 5px; left: 50%; transform: translateX(-50%); }
-    .zone-dept:nth-child(8) { bottom: 25px; left: 15px; }
-    .zone-dept:nth-child(9) { top: 50%; left: 0; transform: translateY(-50%); }
-    .zone-dept:nth-child(10) { top: 25px; left: 15px; }
+    .zone-map-idf .dept.paris {
+      fill: var(--primary);
+    }
+
+    .zone-map-idf .dept-label {
+      font-size: 8px;
+      font-weight: 600;
+      fill: var(--text-light);
+      pointer-events: none;
+      transition: fill 0.3s;
+    }
+
+    .zone-map-idf .dept:hover + .dept-label,
+    .zone-map-idf .paris-label {
+      fill: white;
+    }
+
+    .zone-map-idf .paris-label {
+      font-size: 10px;
+      fill: white;
+    }
 
     .zone-label {
+      margin-top: 16px;
       font-size: 13px;
       color: var(--text-muted);
       text-align: center;
@@ -1017,6 +993,20 @@
       display: block;
       font-size: 15px;
       margin-bottom: 2px;
+    }
+
+    /* Pin animé */
+    .zone-pin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, -100%); }
+      50% { transform: translate(-50%, -110%); }
     }
 
     /* ===== CONTACT ===== */
@@ -1634,21 +1624,52 @@
         </div>
       </div>
 
-      <!-- Zone graphique -->
-      <div class="zone-visual reveal reveal-delay-1">
-        <div class="zone-map-mini">
-          <div class="zone-ring"></div>
-          <div class="zone-center">75</div>
-          <div class="zone-dept">92</div>
-          <div class="zone-dept">93</div>
-          <div class="zone-dept">94</div>
-          <div class="zone-dept">78</div>
-          <div class="zone-dept">91</div>
-          <div class="zone-dept">95</div>
-          <div class="zone-dept">77</div>
+      <!-- Zone carte interactive -->
+      <div class="zone-map-wrapper reveal reveal-delay-1">
+        <div class="zone-map-idf" id="zoneMap">
+          <svg viewBox="0 0 200 200">
+            <!-- Val d'Oise (95) - Nord -->
+            <path class="dept" d="M60,20 L140,20 L150,50 L130,70 L70,70 L50,50 Z" data-dept="95"/>
+            <text class="dept-label" x="100" y="45">95</text>
+
+            <!-- Seine-et-Marne (77) - Est -->
+            <path class="dept" d="M150,50 L180,60 L185,140 L150,160 L130,130 L130,70 Z" data-dept="77"/>
+            <text class="dept-label" x="158" y="105">77</text>
+
+            <!-- Essonne (91) - Sud -->
+            <path class="dept" d="M50,130 L70,130 L100,150 L130,130 L150,160 L130,180 L70,180 L50,160 Z" data-dept="91"/>
+            <text class="dept-label" x="100" y="165">91</text>
+
+            <!-- Yvelines (78) - Ouest -->
+            <path class="dept" d="M15,60 L50,50 L70,70 L70,130 L50,130 L20,140 L15,100 Z" data-dept="78"/>
+            <text class="dept-label" x="38" y="100">78</text>
+
+            <!-- Val-de-Marne (94) - Sud-Est -->
+            <path class="dept" d="M100,110 L130,130 L130,130 L100,150 L85,130 Z" data-dept="94"/>
+            <text class="dept-label" x="105" y="132">94</text>
+
+            <!-- Hauts-de-Seine (92) - Sud-Ouest -->
+            <path class="dept" d="M70,95 L85,95 L85,115 L70,130 L60,115 Z" data-dept="92"/>
+            <text class="dept-label" x="72" y="115">92</text>
+
+            <!-- Seine-Saint-Denis (93) - Nord-Est -->
+            <path class="dept" d="M100,70 L130,70 L130,100 L115,110 L100,95 Z" data-dept="93"/>
+            <text class="dept-label" x="112" y="90">93</text>
+
+            <!-- Paris (75) - Centre -->
+            <path class="dept paris" d="M85,80 L100,70 L115,80 L115,95 L100,110 L85,95 Z" data-dept="75"/>
+            <text class="dept-label paris-label" x="100" y="93" text-anchor="middle">75</text>
+
+            <!-- Pin animé sur Paris -->
+            <g class="zone-pin">
+              <circle cx="100" cy="85" r="4" fill="var(--gold)"/>
+              <path d="M100,75 L100,60" stroke="var(--gold)" stroke-width="2"/>
+              <circle cx="100" cy="58" r="3" fill="var(--gold)"/>
+            </g>
+          </svg>
         </div>
         <div class="zone-label">
-          <strong>Île-de-France</strong>
+          <strong>Paris & Île-de-France</strong>
           Tous les cimetières de la région
         </div>
       </div>
@@ -1965,6 +1986,24 @@
         dot.addEventListener('click', () => {
           showSlide(parseInt(dot.dataset.index));
         });
+      });
+    }
+
+    // Zone Map Parallax Effect
+    const zoneMap = document.getElementById('zoneMap');
+    if (zoneMap) {
+      const wrapper = zoneMap.closest('.zone-map-wrapper');
+
+      wrapper.addEventListener('mousemove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) / 15;
+        const y = (e.clientY - rect.top - rect.height / 2) / 15;
+
+        zoneMap.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+      });
+
+      wrapper.addEventListener('mouseleave', () => {
+        zoneMap.style.transform = 'rotateY(0deg) rotateX(0deg)';
       });
     }
 
