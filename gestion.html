@@ -2151,13 +2151,8 @@
             <div class="form-group">
               <label>Zone géographique</label>
               <select id="detail-zone" onchange="toggleZoneOptions()">
-                <option value="idf">Île-de-France</option>
+                <option value="idf">Paris / Île-de-France</option>
                 <option value="cote-azur">Côte d'Azur (+150€)</option>
-                <option value="paca">PACA autre (+120€)</option>
-                <option value="sud-ouest">Sud-Ouest (+130€)</option>
-                <option value="bretagne">Bretagne (+100€)</option>
-                <option value="normandie">Normandie (+60€)</option>
-                <option value="centre">Centre (+50€)</option>
               </select>
             </div>
           </div>
@@ -2672,14 +2667,9 @@
     const FRAIS_KM = 0.60; // 0.60€/km (essence + usure)
     const SEUIL_GRATUIT = 10; // km gratuits
 
-    // Zones hors IDF - frais fixes (transport + hébergement si besoin)
+    // Zones - Paris/IDF et Côte d'Azur uniquement
     const ZONES_LONGUE_DISTANCE = {
-      'cote-azur': { label: 'Côte d\'Azur', frais: 150, desc: 'Train/avion + déplacements locaux' },
-      'paca': { label: 'PACA (autre)', frais: 120, desc: 'Train + déplacements' },
-      'sud-ouest': { label: 'Sud-Ouest', frais: 130, desc: 'Train + déplacements' },
-      'bretagne': { label: 'Bretagne', frais: 100, desc: 'Train + déplacements' },
-      'normandie': { label: 'Normandie', frais: 60, desc: 'Voiture' },
-      'centre': { label: 'Centre', frais: 50, desc: 'Voiture' }
+      'cote-azur': { label: 'Côte d\'Azur', frais: 150, desc: 'Déplacements locaux inclus' }
     };
 
     const STATUS_LABELS = {
@@ -4894,6 +4884,55 @@
 
       const devisNum = `DEV-${new Date().getFullYear()}-${String(client.id).padStart(4, '0')}`;
 
+      // Build travaux details
+      const travauxLabels = {
+        nettoyage: 'Nettoyage simple',
+        karcher: 'Nettoyage haute pression',
+        lettres: 'Rénovation lettres',
+        joints: 'Joints à refaire',
+        accessoires: 'Remplacement accessoires',
+        fleurs: 'Fleurissement'
+      };
+
+      const selectedTravaux = [];
+      for (const [key, prix] of Object.entries(TRAVAUX_PRIX)) {
+        const checkbox = document.getElementById('travail-' + key);
+        if (checkbox && checkbox.checked) {
+          selectedTravaux.push({ nom: travauxLabels[key], prix: prix });
+        }
+      }
+
+      // Get taille coefficient for travaux prices
+      const taille = document.getElementById('detail-tombe-taille').value || 'simple';
+      const coef = TAILLE_COEF[taille] || 1;
+      if (coef !== 1) {
+        selectedTravaux.forEach(t => { t.prix = Math.round(t.prix * coef); });
+      }
+
+      // Get zone and frais
+      const zone = document.getElementById('detail-zone').value;
+      let fraisDeplacement = 0;
+      if (zone !== 'idf') {
+        const zoneData = ZONES_LONGUE_DISTANCE[zone];
+        if (zoneData) fraisDeplacement = zoneData.frais;
+      } else {
+        // IDF km calculation
+        let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
+        let parking = 0;
+        if (distanceKm === 0) {
+          const detected = detectDistanceFromCimetiere();
+          if (detected) {
+            distanceKm = detected.km;
+            parking = detected.parking;
+          }
+        }
+        const nbJours = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
+        if (distanceKm > SEUIL_GRATUIT) {
+          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJours);
+        }
+        fraisDeplacement += parking * nbJours;
+      }
+
       try {
         const response = await fetch(`${SUPABASE_URL}/functions/v1/send-devis`, {
           method: 'POST',
@@ -4911,8 +4950,16 @@
             formuleName: formuleName,
             formulePrice: finalPrice,
             formuleDesc: formuleDesc,
-            formuleKey: formuleKey, // For subscription detection (serenite/prestige)
-            devisNumber: devisNum
+            formuleKey: formuleKey,
+            devisNumber: devisNum,
+            // Detailed info
+            tombeAge: document.getElementById('detail-tombe-age').value,
+            tombeMateriau: document.getElementById('detail-tombe-materiau').value,
+            tombeTaille: document.getElementById('detail-tombe-taille').value,
+            travaux: selectedTravaux.length > 0 ? selectedTravaux : null,
+            nbJours: document.getElementById('detail-nb-jours').value,
+            zone: zone,
+            fraisDeplacement: fraisDeplacement > 0 ? fraisDeplacement : null
           })
         });
 
