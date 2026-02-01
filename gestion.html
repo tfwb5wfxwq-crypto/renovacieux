@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Gestion - Renovacieux</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 70'%3E%3Crect x='4' y='54' width='52' height='8' rx='1' fill='%23C5C0B8'/%3E%3Cpath d='M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z' fill='%23D8D4CD' stroke='%23C5C0B8' stroke-width='1'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%237D8B74'%3ER%3C/text%3E%3C/svg%3E">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F5F7F9;
+      --white: #FFFFFF;
+      --primary: #3D6B7C;
+      --primary-light: #5A8A9C;
+      --green: #4CAF50;
+      --orange: #FF9800;
+      --red: #F44336;
+      --text: #1A2632;
+      --text-light: #5A6A7A;
+      --border: #E0E5EA;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 18px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ===== LOGIN ===== */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .login-logo {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 40px;
+    }
+
+    .login-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .login-box h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 18px 20px;
+      font-size: 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 4px;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 18px;
+      font-size: 20px;
+      font-weight: 600;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .login-box button:active {
+      transform: scale(0.98);
+    }
+
+    .login-error {
+      color: var(--red);
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+
+    /* ===== APP ===== */
+    .app {
+      display: none;
+    }
+
+    .app.active {
+      display: block;
+    }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .header-logout {
+      padding: 10px 16px;
+      font-size: 16px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 18px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: rgba(61, 107, 124, 0.05);
+    }
+
+    .tab-badge {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+
+    /* Content */
+    .content {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* ===== CLIENT LIST ===== */
+    .client-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: transform 0.2s;
+      border-left: 5px solid var(--border);
+    }
+
+    .client-card:active {
+      transform: scale(0.98);
+    }
+
+    .client-card.new {
+      border-left-color: var(--red);
+      background: #FFF8F8;
+    }
+
+    .client-card.pending {
+      border-left-color: var(--orange);
+    }
+
+    .client-card.active-client {
+      border-left-color: var(--green);
+    }
+
+    .client-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .client-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .client-status {
+      font-size: 14px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .client-status.new {
+      background: #FFEBEE;
+      color: var(--red);
+    }
+
+    .client-status.pending {
+      background: #FFF3E0;
+      color: #E65100;
+    }
+
+    .client-status.active-client {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+
+    .client-info {
+      font-size: 16px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    .client-info span {
+      display: block;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    /* ===== CLIENT DETAIL ===== */
+    .detail-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      color: var(--primary);
+      background: none;
+      border: none;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .detail-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .detail-card h3 {
+      font-size: 16px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--white);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group.readonly input {
+      background: #F0F0F0;
+      color: var(--text-light);
+    }
+
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-danger {
+      background: var(--white);
+      color: var(--red);
+      border: 2px solid var(--red);
+    }
+
+    /* Status select */
+    .status-select {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .status-option {
+      padding: 14px;
+      font-size: 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .status-option.selected {
+      border-color: var(--primary);
+      background: rgba(61, 107, 124, 0.1);
+    }
+
+    /* Hide screens */
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen login-screen active" id="loginScreen">
+    <div class="login-logo">🪦 Renovacieux</div>
+    <div class="login-box">
+      <h2>Connexion</h2>
+      <input type="password" id="loginPassword" placeholder="Mot de passe" autocomplete="off">
+      <button onclick="tryLogin()">Entrer</button>
+      <p class="login-error" id="loginError">Mot de passe incorrect</p>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div class="screen app" id="appScreen">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">🪦 Renovacieux</div>
+      <button class="header-logout" onclick="logout()">Déconnexion</button>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="nouveaux" onclick="switchTab('nouveaux')">
+        🆕 Nouveaux
+        <span class="tab-badge" id="newCount">0</span>
+      </button>
+      <button class="tab" data-tab="clients" onclick="switchTab('clients')">
+        👥 Clients
+      </button>
+      <button class="tab" data-tab="calendrier" onclick="switchTab('calendrier')">
+        📅 Calendrier
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Page: Nouveaux -->
+      <div class="page active" id="page-nouveaux">
+        <div id="newClientsList"></div>
+        <div class="empty-state" id="emptyNew" style="display:none;">
+          <div class="empty-state-icon">✅</div>
+          <p>Aucun nouveau contact</p>
+        </div>
+      </div>
+
+      <!-- Page: Clients -->
+      <div class="page" id="page-clients">
+        <div id="clientsList"></div>
+        <div class="empty-state" id="emptyClients" style="display:none;">
+          <div class="empty-state-icon">👥</div>
+          <p>Aucun client pour l'instant</p>
+        </div>
+      </div>
+
+      <!-- Page: Calendrier -->
+      <div class="page" id="page-calendrier">
+        <div class="empty-state">
+          <div class="empty-state-icon">📅</div>
+          <p>Calendrier synchronisé avec Google Calendar</p>
+          <p style="margin-top:10px; font-size:14px;">(À venir)</p>
+        </div>
+      </div>
+
+      <!-- Page: Detail client -->
+      <div class="page" id="page-detail">
+        <button class="detail-back" onclick="goBack()">
+          ← Retour
+        </button>
+
+        <div class="detail-card">
+          <h3>📋 Infos reçues du formulaire</h3>
+          <div class="form-row">
+            <div class="form-group readonly">
+              <label>Nom</label>
+              <input type="text" id="detail-nom" readonly>
+            </div>
+            <div class="form-group readonly">
+              <label>Prénom</label>
+              <input type="text" id="detail-prenom" readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group readonly">
+              <label>Téléphone</label>
+              <input type="text" id="detail-tel" readonly>
+            </div>
+            <div class="form-group readonly">
+              <label>Email</label>
+              <input type="text" id="detail-email" readonly>
+            </div>
+          </div>
+          <div class="form-group readonly">
+            <label>Cimetière indiqué</label>
+            <input type="text" id="detail-cimetiere" readonly>
+          </div>
+          <div class="form-group readonly">
+            <label>Formule souhaitée</label>
+            <input type="text" id="detail-formule-init" readonly>
+          </div>
+          <div class="form-group readonly">
+            <label>Message</label>
+            <textarea id="detail-message" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3>✏️ À compléter (appel téléphonique)</h3>
+          <div class="form-group">
+            <label>Position de la tombe</label>
+            <input type="text" id="detail-position" placeholder="Ex: Allée 4, Rang 12, n°8">
+          </div>
+          <div class="form-group">
+            <label>Facile à trouver ?</label>
+            <div class="status-select">
+              <div class="status-option" data-value="oui" onclick="selectOption(this, 'facile')">✅ Oui</div>
+              <div class="status-option" data-value="non" onclick="selectOption(this, 'facile')">❌ Non</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Notes de l'appel</label>
+            <textarea id="detail-notes" placeholder="Infos importantes..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Formule choisie</label>
+            <select id="detail-formule">
+              <option value="">-- Pas encore décidé --</option>
+              <option value="ponctuel">Ponctuel (89€)</option>
+              <option value="serenite">Sérénité - 2x/an (180€)</option>
+              <option value="prestige">Prestige - 4x/an (420€)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Statut</label>
+            <select id="detail-statut">
+              <option value="nouveau">🆕 Nouveau</option>
+              <option value="a_rappeler">📞 À rappeler</option>
+              <option value="en_discussion">💬 En discussion</option>
+              <option value="devis_envoye">📄 Devis envoyé</option>
+              <option value="attente_paiement">💳 Attente paiement</option>
+              <option value="actif">✅ Client actif</option>
+              <option value="perdu">❌ Perdu</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveClient()">
+          💾 Enregistrer
+        </button>
+
+        <div class="detail-card">
+          <h3>📤 Actions</h3>
+          <button class="btn btn-outline" onclick="generateDevis()">
+            📄 Générer un devis
+          </button>
+          <button class="btn btn-success" onclick="sendPaymentLink()">
+            💳 Envoyer lien de paiement
+          </button>
+          <button class="btn btn-outline" onclick="callClient()">
+            📞 Appeler
+          </button>
+        </div>
+
+        <button class="btn btn-danger" onclick="deleteClient()">
+          🗑️ Supprimer ce contact
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ===== CONFIG =====
+    const PASSWORD = 'renovacieux2026'; // À changer
+
+    // ===== DATA (sera remplacé par Supabase) =====
+    let clients = [
+      {
+        id: 1,
+        nom: 'Dupont',
+        prenom: 'Marie',
+        tel: '06 12 34 56 78',
+        email: 'marie.dupont@gmail.com',
+        cimetiere: 'Père Lachaise, Paris',
+        formuleInit: 'Sérénité - 2 passages/an',
+        message: 'Ma mère est décédée il y a 2 ans, je vis à Lyon et je ne peux pas entretenir sa tombe.',
+        position: '',
+        facile: '',
+        notes: '',
+        formule: '',
+        statut: 'nouveau',
+        createdAt: new Date()
+      },
+      {
+        id: 2,
+        nom: 'Martin',
+        prenom: 'Philippe',
+        tel: '06 98 76 54 32',
+        email: 'philippe.martin@orange.fr',
+        cimetiere: 'Montparnasse',
+        formuleInit: 'Prestige - 4 passages/an',
+        message: 'Je souhaite un entretien premium pour mes parents.',
+        position: 'Division 15, ligne 8',
+        facile: 'oui',
+        notes: 'Client exigeant mais sympa. Veut des photos HD.',
+        formule: 'prestige',
+        statut: 'actif',
+        createdAt: new Date(Date.now() - 86400000 * 5)
+      }
+    ];
+
+    let currentClientId = null;
+    let currentTab = 'nouveaux';
+
+    // ===== LOGIN =====
+    function tryLogin() {
+      const pwd = document.getElementById('loginPassword').value;
+      if (pwd === PASSWORD) {
+        document.getElementById('loginScreen').classList.remove('active');
+        document.getElementById('appScreen').classList.add('active');
+        localStorage.setItem('renovacieux_logged', 'true');
+        renderLists();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('renovacieux_logged');
+      location.reload();
+    }
+
+    // Check if already logged in
+    if (localStorage.getItem('renovacieux_logged') === 'true') {
+      document.getElementById('loginScreen').classList.remove('active');
+      document.getElementById('appScreen').classList.add('active');
+      renderLists();
+    }
+
+    // Enter key to login
+    document.getElementById('loginPassword').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') tryLogin();
+    });
+
+    // ===== TABS =====
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + tab).classList.add('active');
+    }
+
+    function goBack() {
+      switchTab(currentTab);
+    }
+
+    // ===== RENDER =====
+    function renderLists() {
+      const newClients = clients.filter(c => c.statut === 'nouveau');
+      const otherClients = clients.filter(c => c.statut !== 'nouveau');
+
+      // Update badge
+      document.getElementById('newCount').textContent = newClients.length;
+      document.getElementById('newCount').style.display = newClients.length > 0 ? 'inline' : 'none';
+
+      // New clients
+      const newList = document.getElementById('newClientsList');
+      if (newClients.length === 0) {
+        newList.innerHTML = '';
+        document.getElementById('emptyNew').style.display = 'block';
+      } else {
+        document.getElementById('emptyNew').style.display = 'none';
+        newList.innerHTML = newClients.map(c => renderClientCard(c)).join('');
+      }
+
+      // All clients
+      const clientList = document.getElementById('clientsList');
+      if (otherClients.length === 0) {
+        clientList.innerHTML = '';
+        document.getElementById('emptyClients').style.display = 'block';
+      } else {
+        document.getElementById('emptyClients').style.display = 'none';
+        clientList.innerHTML = otherClients.map(c => renderClientCard(c)).join('');
+      }
+    }
+
+    function renderClientCard(client) {
+      const statusLabels = {
+        nouveau: ['new', '🆕 Nouveau'],
+        a_rappeler: ['pending', '📞 À rappeler'],
+        en_discussion: ['pending', '💬 En discussion'],
+        devis_envoye: ['pending', '📄 Devis envoyé'],
+        attente_paiement: ['pending', '💳 Attente paiement'],
+        actif: ['active-client', '✅ Actif'],
+        perdu: ['', '❌ Perdu']
+      };
+
+      const [statusClass, statusLabel] = statusLabels[client.statut] || ['', client.statut];
+
+      return `
+        <div class="client-card ${statusClass}" onclick="openClient(${client.id})">
+          <div class="client-card-header">
+            <div class="client-name">${client.prenom} ${client.nom}</div>
+            <div class="client-status ${statusClass}">${statusLabel}</div>
+          </div>
+          <div class="client-info">
+            <span>📍 ${client.cimetiere || 'Non renseigné'}</span>
+            <span>📞 ${client.tel}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ===== CLIENT DETAIL =====
+    function openClient(id) {
+      currentClientId = id;
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+
+      // Fill form
+      document.getElementById('detail-nom').value = client.nom;
+      document.getElementById('detail-prenom').value = client.prenom;
+      document.getElementById('detail-tel').value = client.tel;
+      document.getElementById('detail-email').value = client.email;
+      document.getElementById('detail-cimetiere').value = client.cimetiere;
+      document.getElementById('detail-formule-init').value = client.formuleInit;
+      document.getElementById('detail-message').value = client.message;
+      document.getElementById('detail-position').value = client.position;
+      document.getElementById('detail-notes').value = client.notes;
+      document.getElementById('detail-formule').value = client.formule;
+      document.getElementById('detail-statut').value = client.statut;
+
+      // Facile option
+      document.querySelectorAll('[onclick*="facile"]').forEach(el => {
+        el.classList.toggle('selected', el.dataset.value === client.facile);
+      });
+
+      // Show page
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-detail').classList.add('active');
+    }
+
+    function selectOption(el, group) {
+      el.parentElement.querySelectorAll('.status-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function saveClient() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      client.position = document.getElementById('detail-position').value;
+      client.notes = document.getElementById('detail-notes').value;
+      client.formule = document.getElementById('detail-formule').value;
+      client.statut = document.getElementById('detail-statut').value;
+
+      const facileEl = document.querySelector('[onclick*="facile"].selected');
+      client.facile = facileEl ? facileEl.dataset.value : '';
+
+      // Save to localStorage (sera Supabase)
+      localStorage.setItem('renovacieux_clients', JSON.stringify(clients));
+
+      alert('✅ Enregistré !');
+      renderLists();
+    }
+
+    function deleteClient() {
+      if (!confirm('Supprimer ce contact ?')) return;
+      clients = clients.filter(c => c.id !== currentClientId);
+      localStorage.setItem('renovacieux_clients', JSON.stringify(clients));
+      goBack();
+      renderLists();
+    }
+
+    // ===== ACTIONS =====
+    function generateDevis() {
+      alert('📄 Génération de devis\n\n(Fonctionnalité à venir)');
+    }
+
+    function sendPaymentLink() {
+      alert('💳 Envoi du lien de paiement\n\n(Fonctionnalité à venir)');
+    }
+
+    function callClient() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (client && client.tel) {
+        window.location.href = 'tel:' + client.tel.replace(/\s/g, '');
+      }
+    }
+
+    // ===== INIT =====
+    // Load from localStorage
+    const saved = localStorage.getItem('renovacieux_clients');
+    if (saved) {
+      clients = JSON.parse(saved);
+    }
+
+    renderLists();
+  </script>
+
+</body>
+</html>
