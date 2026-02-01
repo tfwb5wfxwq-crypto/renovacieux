@@ -1,0 +1,9 @@
+# Robots.txt for Renovacieux
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://renovation-tombe.com/sitemap.xml
+
+# Block admin/gestion page from indexing
+Disallow: /gestion.html
