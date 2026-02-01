@@ -1693,7 +1693,7 @@
           </ul>
         </div>
 
-        <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/ldvk@me.com" method="POST" novalidate>
+        <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/dimitripoisson@gmail.com" method="POST" novalidate>
           <!-- Formsubmit config -->
           <input type="hidden" name="_subject" value="🪦 Nouvelle demande Renovacieux">
           <input type="hidden" name="_captcha" value="false">
@@ -1867,10 +1867,16 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // Supabase config
+    const SUPABASE_URL = 'https://ujfyvlkmsabinrfylzdr.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnl2bGttc2FiaW5yZnlsemRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NDY0NzcsImV4cCI6MjA4NTUyMjQ3N30.SeDhwjsdOisDO-OTLTbtsvjbXLAc8QT-T8cvfs0tZSQ';
+
     // Form validation
     const form = document.getElementById('contactForm');
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
       // Reset errors
       form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
 
@@ -1894,10 +1900,42 @@
         }
       });
 
-      if (!isValid) {
-        e.preventDefault(); // Stop submission only if invalid
+      if (!isValid) return;
+
+      // Collect form data
+      const formData = {
+        nom: form.querySelector('[name="Nom"]').value.trim(),
+        prenom: form.querySelector('[name="Prénom"]').value.trim(),
+        email: form.querySelector('[name="Email"]').value.trim(),
+        tel: form.querySelector('[name="Téléphone"]').value.trim(),
+        cimetiere: form.querySelector('[name="Cimetière"]').value.trim(),
+        formule_demandee: form.querySelector('[name="Formule"]').value,
+        message: form.querySelector('[name="Message"]').value.trim(),
+        statut: 'nouveau'
+      };
+
+      // Save to Supabase
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/clients`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          console.error('Supabase error:', await response.text());
+        }
+      } catch (err) {
+        console.error('Failed to save to Supabase:', err);
       }
-      // If valid, form submits naturally to Formsubmit
+
+      // Submit to FormSubmit for email notification
+      form.submit();
     });
 
     // Remove error on input
