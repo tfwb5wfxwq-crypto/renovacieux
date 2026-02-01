@@ -930,16 +930,17 @@
       border-radius: 3px;
     }
 
-    /* Zone carte interactive */
+    /* Zone carte élégante */
     .zone-map-wrapper {
       position: relative;
-      perspective: 800px;
+      perspective: 1000px;
     }
 
     .zone-map-idf {
-      width: 200px;
+      width: 220px;
       height: 200px;
-      transition: transform 0.1s ease-out;
+      transition: transform 0.15s ease-out;
+      filter: drop-shadow(0 8px 20px rgba(61, 107, 124, 0.15));
     }
 
     .zone-map-idf svg {
@@ -948,65 +949,69 @@
     }
 
     .zone-map-idf .dept {
-      fill: var(--cream-dark);
+      fill: #E8EDEF;
       stroke: white;
-      stroke-width: 1.5;
-      transition: all 0.3s;
+      stroke-width: 2;
+      transition: all 0.3s ease;
       cursor: pointer;
     }
 
     .zone-map-idf .dept:hover {
-      fill: var(--primary);
+      fill: var(--primary-light);
+      filter: brightness(1.05);
     }
 
     .zone-map-idf .dept.paris {
       fill: var(--primary);
+      filter: drop-shadow(0 2px 6px rgba(61, 107, 124, 0.4));
+    }
+
+    .zone-map-idf .dept.petite-couronne {
+      fill: #D5DEE3;
+    }
+
+    .zone-map-idf .dept.petite-couronne:hover {
+      fill: var(--primary);
     }
 
     .zone-map-idf .dept-label {
-      font-size: 8px;
+      font-size: 9px;
       font-weight: 600;
-      fill: var(--text-light);
+      fill: #7A8A94;
       pointer-events: none;
-      transition: fill 0.3s;
+      font-family: 'Source Sans 3', sans-serif;
     }
 
-    .zone-map-idf .dept:hover + .dept-label,
+    .zone-map-idf .dept.paris .dept-label,
     .zone-map-idf .paris-label {
       fill: white;
+      font-size: 11px;
     }
 
-    .zone-map-idf .paris-label {
-      font-size: 10px;
-      fill: white;
-    }
-
-    .zone-label {
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
+    .zone-info {
+      margin-top: 20px;
       text-align: center;
     }
 
-    .zone-label strong {
+    .zone-info-title {
+      font-size: 16px;
+      font-weight: 600;
       color: var(--text);
-      display: block;
-      font-size: 15px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
-    /* Pin animé */
-    .zone-pin {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -100%);
-      animation: bounce 2s infinite;
+    .zone-info-sub {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
-    @keyframes bounce {
-      0%, 100% { transform: translate(-50%, -100%); }
-      50% { transform: translate(-50%, -110%); }
+    .zone-info-sub span {
+      display: inline-block;
+      background: var(--cream);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin: 4px 2px 0;
+      font-size: 11px;
     }
 
     /* ===== CONTACT ===== */
@@ -1624,53 +1629,54 @@
         </div>
       </div>
 
-      <!-- Zone carte interactive -->
+      <!-- Zone carte élégante -->
       <div class="zone-map-wrapper reveal reveal-delay-1">
         <div class="zone-map-idf" id="zoneMap">
-          <svg viewBox="0 0 200 200">
-            <!-- Val d'Oise (95) - Nord -->
-            <path class="dept" d="M60,20 L140,20 L150,50 L130,70 L70,70 L50,50 Z" data-dept="95"/>
-            <text class="dept-label" x="100" y="45">95</text>
+          <svg viewBox="0 0 240 220">
+            <!-- Grande couronne -->
+            <!-- Val d'Oise (95) -->
+            <path class="dept" d="M70,15 Q90,8 130,10 Q160,12 175,30 L165,55 Q150,50 130,55 L100,58 Q80,55 70,50 L55,35 Q60,20 70,15 Z"/>
+            <text class="dept-label" x="115" y="38">95</text>
 
-            <!-- Seine-et-Marne (77) - Est -->
-            <path class="dept" d="M150,50 L180,60 L185,140 L150,160 L130,130 L130,70 Z" data-dept="77"/>
-            <text class="dept-label" x="158" y="105">77</text>
+            <!-- Seine-et-Marne (77) -->
+            <path class="dept" d="M175,30 Q195,45 210,75 Q220,110 215,150 Q210,180 190,195 L150,175 Q160,150 155,120 L150,85 Q155,65 165,55 Z"/>
+            <text class="dept-label" x="182" y="115">77</text>
 
-            <!-- Essonne (91) - Sud -->
-            <path class="dept" d="M50,130 L70,130 L100,150 L130,130 L150,160 L130,180 L70,180 L50,160 Z" data-dept="91"/>
-            <text class="dept-label" x="100" y="165">91</text>
+            <!-- Essonne (91) -->
+            <path class="dept" d="M55,145 Q70,155 95,165 Q120,175 150,175 L130,200 Q100,210 70,205 Q45,195 35,175 Q40,160 55,145 Z"/>
+            <text class="dept-label" x="95" y="188">91</text>
 
-            <!-- Yvelines (78) - Ouest -->
-            <path class="dept" d="M15,60 L50,50 L70,70 L70,130 L50,130 L20,140 L15,100 Z" data-dept="78"/>
-            <text class="dept-label" x="38" y="100">78</text>
+            <!-- Yvelines (78) -->
+            <path class="dept" d="M15,65 Q25,45 55,35 L70,50 Q65,70 60,90 L55,120 Q50,135 55,145 L35,175 Q20,155 15,130 Q12,95 15,65 Z"/>
+            <text class="dept-label" x="38" y="105">78</text>
 
-            <!-- Val-de-Marne (94) - Sud-Est -->
-            <path class="dept" d="M100,110 L130,130 L130,130 L100,150 L85,130 Z" data-dept="94"/>
-            <text class="dept-label" x="105" y="132">94</text>
+            <!-- Petite couronne -->
+            <!-- Hauts-de-Seine (92) -->
+            <path class="dept petite-couronne" d="M70,80 L88,75 L92,95 L88,115 L70,120 Q62,105 60,90 Q65,82 70,80 Z"/>
+            <text class="dept-label" x="75" y="100">92</text>
 
-            <!-- Hauts-de-Seine (92) - Sud-Ouest -->
-            <path class="dept" d="M70,95 L85,95 L85,115 L70,130 L60,115 Z" data-dept="92"/>
-            <text class="dept-label" x="72" y="115">92</text>
+            <!-- Seine-Saint-Denis (93) -->
+            <path class="dept petite-couronne" d="M108,58 L130,55 Q145,60 150,85 L135,95 L120,100 L108,88 Z"/>
+            <text class="dept-label" x="128" y="78">93</text>
 
-            <!-- Seine-Saint-Denis (93) - Nord-Est -->
-            <path class="dept" d="M100,70 L130,70 L130,100 L115,110 L100,95 Z" data-dept="93"/>
-            <text class="dept-label" x="112" y="90">93</text>
+            <!-- Val-de-Marne (94) -->
+            <path class="dept petite-couronne" d="M108,110 L120,100 L135,95 Q145,110 155,120 Q150,140 150,150 L120,145 Q105,135 95,125 Z"/>
+            <text class="dept-label" x="128" y="125">94</text>
 
             <!-- Paris (75) - Centre -->
-            <path class="dept paris" d="M85,80 L100,70 L115,80 L115,95 L100,110 L85,95 Z" data-dept="75"/>
-            <text class="dept-label paris-label" x="100" y="93" text-anchor="middle">75</text>
-
-            <!-- Pin animé sur Paris -->
-            <g class="zone-pin">
-              <circle cx="100" cy="85" r="4" fill="var(--gold)"/>
-              <path d="M100,75 L100,60" stroke="var(--gold)" stroke-width="2"/>
-              <circle cx="100" cy="58" r="3" fill="var(--gold)"/>
-            </g>
+            <path class="dept paris" d="M88,75 L108,70 Q115,75 120,85 L120,100 L108,110 Q100,115 92,110 L88,95 Q85,85 88,75 Z"/>
+            <text class="dept-label paris-label" x="104" y="95" text-anchor="middle">75</text>
           </svg>
         </div>
-        <div class="zone-label">
-          <strong>Paris & Île-de-France</strong>
-          Tous les cimetières de la région
+        <div class="zone-info">
+          <div class="zone-info-title">Paris & Île-de-France</div>
+          <div class="zone-info-sub">
+            Tous les cimetières de la région
+            <br>
+            <span>Père-Lachaise</span>
+            <span>Montparnasse</span>
+            <span>Montmartre</span>
+          </div>
         </div>
       </div>
     </div>
