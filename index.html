@@ -59,14 +59,6 @@
       },
       {
         "@type": "Question",
-        "name": "Dans quelles villes intervenez-vous ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nous intervenons à Paris et dans toute l'Île-de-France, ainsi que sur la Côte d'Azur : Nice, Cannes, Antibes, Grasse, Mougins, Vallauris, Valbonne, Biot et communes environnantes."
-        }
-      },
-      {
-        "@type": "Question",
         "name": "Quel délai pour une intervention ?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -79,14 +71,6 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Oui, systématiquement. Nous envoyons des photos avant l'intervention pour validation, puis des photos après pour que vous puissiez constater le résultat, même à distance."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Comment fonctionne le fleurissement ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Le fleurissement peut être ponctuel (anniversaire, Toussaint) ou inclus dans nos formules annuelles. Nous choisissons des fleurs de saison adaptées et les renouvelons selon la formule choisie."
         }
       }
     ]
@@ -341,6 +325,24 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     }
 
+    /* Hero Stats - mini bandeau */
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats span {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .hero-stats strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
     /* Hero Image */
     .hero-visual {
       position: relative;
@@ -434,39 +436,6 @@
       color: var(--text-muted);
       margin-top: 2px;
       display: block;
-    }
-
-    /* ===== TRUST BAR ===== */
-    .trust-bar {
-      background: var(--white);
-      padding: 50px 60px;
-      border-top: 1px solid var(--cream-dark);
-      border-bottom: 1px solid var(--cream-dark);
-    }
-
-    .trust-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-    }
-
-    .trust-item {
-      text-align: center;
-    }
-
-    .trust-number {
-      font-family: 'Libre Baskerville', serif;
-      font-size: clamp(36px, 4vw, 48px);
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .trust-label {
-      font-size: 14px;
-      color: var(--text-muted);
-      font-weight: 500;
     }
 
     /* ===== SERVICES ===== */
@@ -956,168 +925,110 @@
       filter: brightness(1.1);
     }
 
-    /* ===== BANDEAU CONFIANCE (Avis carousel + Zone) ===== */
-    .trust-band {
-      padding: 50px 60px;
+    /* ===== ZONE D'INTERVENTION ===== */
+    .zone-section {
+      padding: 80px 60px;
       background: var(--white);
-      border-top: 1px solid rgba(0,0,0,0.04);
-      border-bottom: 1px solid rgba(0,0,0,0.04);
     }
 
-    .trust-band-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    /* Carousel d'avis */
-    .testimonial-carousel {
-      flex: 1;
-      position: relative;
-      min-height: 80px;
-      overflow: hidden;
-    }
-
-    .testimonial-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.6s ease;
-      display: flex;
-      align-items: center;
+    .zone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+      margin-bottom: 40px;
     }
 
-    .testimonial-slide.active {
-      opacity: 1;
-      transform: translateY(0);
-      position: relative;
-    }
-
-    .testimonial-stars {
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-
-    .testimonial-text {
-      font-size: 15px;
-      color: var(--text);
-      line-height: 1.6;
-      font-style: italic;
-      margin-bottom: 8px;
-    }
-
-    .testimonial-author {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .testimonial-author strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* Indicateurs carousel */
-    .carousel-dots {
-      display: flex;
-      gap: 6px;
-      margin-top: 12px;
-    }
-
-    .carousel-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--cream-dark);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .carousel-dot.active {
-      background: var(--primary);
-      width: 18px;
-      border-radius: 3px;
-    }
-
-    /* Zone cards */
-    .zone-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-    }
-
-    a.zone-card {
+    .zone-card-big {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
       text-decoration: none;
       color: inherit;
+      transition: all 0.3s;
       display: block;
     }
 
-    .zone-card {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(16px) saturate(150%);
-      -webkit-backdrop-filter: blur(16px) saturate(150%);
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 14px;
-      padding: 20px 24px;
-      text-align: center;
-      transition: all 0.3s;
-      min-width: 160px;
-    }
-
-    .zone-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    .zone-card-big:hover {
       background: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(125,139,116,0.25);
     }
 
-    .zone-card:hover h4,
-    .zone-card:hover .zone-card-desc,
-    .zone-card:hover .zone-card-note {
+    .zone-card-big:hover h4,
+    .zone-card-big:hover p,
+    .zone-card-big:hover .zone-note {
       color: white;
     }
 
-    .zone-card:hover .zone-card-icon svg {
+    .zone-card-big:hover .zone-card-icon svg {
       color: white;
     }
 
-    .zone-card-icon {
-      margin-bottom: 10px;
+    .zone-card-big .zone-card-icon {
+      margin-bottom: 12px;
     }
 
-    .zone-card-icon svg {
-      width: 28px;
-      height: 28px;
+    .zone-card-big .zone-card-icon svg {
+      width: 32px;
+      height: 32px;
       color: var(--primary);
+      transition: color 0.3s;
     }
 
-    .zone-card h4 {
-      font-size: 15px;
-      font-weight: 600;
+    .zone-card-big h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      font-weight: 400;
       color: var(--text);
-      margin-bottom: 6px;
-      font-family: 'Source Sans 3', sans-serif;
+      margin-bottom: 8px;
+      transition: color 0.3s;
     }
 
-    .zone-card-desc {
-      font-size: 12px;
+    .zone-card-big p {
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
+      transition: color 0.3s;
     }
 
-    .zone-card-note {
-      margin-top: 8px;
+    .zone-note {
+      display: inline-block;
+      margin-top: 10px;
       font-size: 11px;
       color: var(--primary);
       font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    /* Mini testimonial */
+    .mini-testimonial {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 24px;
+      background: var(--cream);
+      border-radius: 12px;
+    }
+
+    .mini-testimonial .testimonial-stars {
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .mini-testimonial p {
+      font-size: 15px;
+      color: var(--text);
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .mini-testimonial span {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     /* ===== FAQ ===== */
@@ -1549,7 +1460,7 @@
       nav.scrolled { padding: 12px 24px; }
       .nav-links { display: none; }
 
-      .hero, .services, .before-after, .gallery, .pricing, .trust-band, .contact {
+      .hero, .services, .before-after, .gallery, .pricing, .zone-section, .contact {
         padding-left: 24px;
         padding-right: 24px;
       }
@@ -1576,12 +1487,11 @@
 
       .footer-grid { grid-template-columns: 1fr 1fr; }
 
-      .trust-band-inner { flex-direction: column; text-align: center; gap: 50px; }
-      .zone-cards { flex-direction: column; align-items: center; }
+      .zone-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 600px) {
-      .services-grid, .pricing-grid, .footer-grid {
+      .services-grid, .pricing-grid, .footer-grid, .zone-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1589,8 +1499,9 @@
       .ba-slider { max-width: 100%; }
 
       .hero-buttons { flex-direction: column; }
+      .hero-stats { flex-direction: column; gap: 8px; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
-      .trust-band { padding: 40px 24px; }
+      .zone-section { padding: 60px 24px; }
 
       .faq-section { padding: 60px 24px; }
       .faq-question { padding: 20px; font-size: 15px; }
@@ -1631,6 +1542,13 @@
           </a>
           <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
         </div>
+
+        <!-- Mini stats -->
+        <div class="hero-stats reveal reveal-delay-3">
+          <span><strong>500+</strong> tombes rénovées</span>
+          <span><strong>100%</strong> satisfaits</span>
+          <span><strong>24h</strong> réponse</span>
+        </div>
       </div>
 
       <div class="hero-visual reveal">
@@ -1655,27 +1573,6 @@
     </div>
   </section>
 
-  <!-- Trust Bar -->
-  <section class="trust-bar">
-    <div class="trust-grid">
-      <div class="trust-item reveal">
-        <div class="trust-number" data-target="500">0+</div>
-        <div class="trust-label">Tombes rénovées</div>
-      </div>
-      <div class="trust-item reveal reveal-delay-1">
-        <div class="trust-number">100%</div>
-        <div class="trust-label">Clients satisfaits</div>
-      </div>
-      <div class="trust-item reveal reveal-delay-2">
-        <div class="trust-number">9</div>
-        <div class="trust-label">Départements couverts</div>
-      </div>
-      <div class="trust-item reveal reveal-delay-3">
-        <div class="trust-number">24h</div>
-        <div class="trust-label">Délai de réponse</div>
-      </div>
-    </div>
-  </section>
 
   <!-- Services -->
   <section id="services" class="services">
@@ -1822,86 +1719,71 @@
     </div>
   </section>
 
-  <!-- Bandeau Confiance : Avis carousel + Zone -->
-  <section id="zone" class="trust-band">
-    <div class="trust-band-inner">
-      <!-- Carousel d'avis -->
-      <div class="testimonial-carousel reveal" id="testimonialCarousel">
-        <div class="testimonial-slide active">
-          <div>
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"Habitant loin de Paris, je ne pouvais plus entretenir la tombe de mes parents. Renovacieux s'en occupe avec un soin remarquable."</p>
-            <p class="testimonial-author"><strong>Marie D.</strong> — Lyon</p>
-          </div>
-        </div>
-        <div class="testimonial-slide">
-          <div>
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"Service impeccable et très respectueux. La tombe de ma mère au Père Lachaise n'a jamais été aussi belle."</p>
-            <p class="testimonial-author"><strong>Philippe R.</strong> — Bordeaux</p>
-          </div>
-        </div>
-        <div class="testimonial-slide">
-          <div>
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"Expatriée depuis 10 ans, je culpabilisais de ne pas entretenir la sépulture familiale. Merci pour ce service humain."</p>
-            <p class="testimonial-author"><strong>Claire M.</strong> — Londres</p>
-          </div>
-        </div>
-        <div class="carousel-dots">
-          <span class="carousel-dot active" data-index="0"></span>
-          <span class="carousel-dot" data-index="1"></span>
-          <span class="carousel-dot" data-index="2"></span>
-        </div>
+  <!-- Zone d'intervention -->
+  <section id="zone" class="zone-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">Zone d'intervention</span>
+        <h2 class="section-title reveal reveal-delay-1">Où intervenons-nous ?</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Paris, Île-de-France et Côte d'Azur. Cliquez sur votre ville.</p>
       </div>
 
-      <!-- Zone cards -->
-      <div class="zone-cards reveal reveal-delay-1">
-        <a href="/paris/" class="zone-card">
+      <div class="zone-grid reveal">
+        <a href="/paris/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Paris & Île-de-France</h4>
-          <p class="zone-card-desc">Tous les cimetières parisiens et petite couronne</p>
+          <p>Père-Lachaise, Montmartre, Montparnasse, Pantin, Thiais...</p>
         </a>
-        <a href="/nice/" class="zone-card">
+        <a href="/nice/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Nice</h4>
-          <p class="zone-card-desc">Cimetière du Château, Caucade, Cimiez...</p>
+          <p>Cimetière du Château, Caucade, Cimiez, Saint-Barthélémy...</p>
+          <span class="zone-note">+frais de déplacement</span>
         </a>
-        <a href="/cannes/" class="zone-card">
+        <a href="/cannes/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Cannes</h4>
-          <p class="zone-card-desc">Grand Jas, Petit Jas, La Bocca...</p>
+          <p>Grand Jas, Petit Jas, La Bocca, Le Cannet...</p>
+          <span class="zone-note">+frais de déplacement</span>
         </a>
-        <a href="/antibes/" class="zone-card">
+        <a href="/antibes/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Antibes</h4>
-          <p class="zone-card-desc">Rabiac, Juan-les-Pins, Vallauris...</p>
+          <p>Rabiac, Juan-les-Pins, Vallauris, Biot...</p>
+          <span class="zone-note">+frais de déplacement</span>
         </a>
-        <a href="/grasse/" class="zone-card">
+        <a href="/grasse/" class="zone-card-big">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Grasse</h4>
-          <p class="zone-card-desc">Saint-Roch, Mougins, Peymeinade...</p>
-          <div class="zone-card-note">+frais de déplacement</div>
+          <p>Saint-Roch, Mougins, Peymeinade, Cabris...</p>
+          <span class="zone-note">+frais de déplacement</span>
         </a>
+      </div>
+
+      <!-- Mini avis -->
+      <div class="mini-testimonial reveal reveal-delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <p>"Habitant loin de Paris, je ne pouvais plus entretenir la tombe de mes parents. Renovacieux s'en occupe avec un soin remarquable."</p>
+        <span>— Marie D., Lyon</span>
       </div>
     </div>
   </section>
 
-  <!-- FAQ Section -->
+  <!-- FAQ Section - Compact -->
   <section id="faq" class="faq-section">
     <div class="container">
       <span class="section-tag reveal">Questions fréquentes</span>
-      <h2 class="section-title reveal reveal-delay-1">Tout savoir sur le nettoyage de tombes</h2>
+      <h2 class="section-title reveal reveal-delay-1">Vos questions sur le nettoyage de tombes</h2>
 
       <div class="faq-grid">
         <div class="faq-item reveal">
@@ -1910,57 +1792,27 @@
             <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="faq-answer">
-            <p>Le nettoyage ponctuel d'une tombe coûte <strong>à partir de 89€</strong>. Nous proposons aussi des formules d'entretien annuel à partir de <strong>180€/an</strong> (2 passages) ou <strong>420€/an</strong> (4 passages) incluant le nettoyage, désherbage et fleurissement.</p>
+            <p>Le nettoyage ponctuel coûte <strong>à partir de 89€</strong>. Formules annuelles : <strong>180€/an</strong> (2 passages) ou <strong>420€/an</strong> (4 passages) avec nettoyage, désherbage et fleurissement.</p>
           </div>
         </div>
 
         <div class="faq-item reveal reveal-delay-1">
           <button class="faq-question" onclick="toggleFaq(this)">
-            <span>Dans quelles villes intervenez-vous ?</span>
+            <span>Quel délai pour une intervention ?</span>
             <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="faq-answer">
-            <p>Nous intervenons à <strong>Paris et dans toute l'Île-de-France</strong>, ainsi que sur la <strong>Côte d'Azur</strong> : Nice, Cannes, Antibes, Grasse, Mougins, Vallauris, Valbonne, Biot et communes environnantes.</p>
+            <p>Nous intervenons sous <strong>7 à 15 jours</strong> après acceptation du devis. Intervention rapide possible en cas d'urgence (cérémonie, Toussaint).</p>
           </div>
         </div>
 
         <div class="faq-item reveal reveal-delay-2">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            <span>Quel délai pour une intervention de nettoyage ?</span>
-            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Après acceptation du devis, nous intervenons généralement sous <strong>7 à 15 jours</strong> selon la saison. En cas d'urgence (cérémonie, Toussaint), nous faisons notre maximum pour intervenir rapidement.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal">
           <button class="faq-question" onclick="toggleFaq(this)">
             <span>Envoyez-vous des photos avant/après ?</span>
             <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="faq-answer">
-            <p><strong>Oui, systématiquement.</strong> Nous envoyons des photos avant l'intervention pour validation, puis des photos après pour que vous puissiez constater le résultat, même à distance.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal reveal-delay-1">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            <span>Comment fonctionne le fleurissement de tombe ?</span>
-            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Le fleurissement peut être ponctuel (anniversaire, Toussaint) ou inclus dans nos formules annuelles. Nous choisissons des <strong>fleurs de saison</strong> adaptées et les renouvelons selon la formule choisie.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal reveal-delay-2">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            <span>Quels types de sépultures nettoyez-vous ?</span>
-            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Nous intervenons sur tous types de monuments funéraires : <strong>granit, marbre, pierre calcaire</strong>. Nous adaptons nos techniques et produits à chaque matériau pour un résultat optimal sans abîmer la pierre.</p>
+            <p><strong>Oui, systématiquement.</strong> Photos avant pour validation, photos après pour constater le résultat, même à distance.</p>
           </div>
         </div>
       </div>
