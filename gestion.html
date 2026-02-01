@@ -824,48 +824,61 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ===== CONFIG =====
+    // ===== SUPABASE CONFIG =====
+    const SUPABASE_URL = 'https://ujfyvlkmsabinrfylzdr.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnl2bGttc2FiaW5yZnlsemRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NDY0NzcsImV4cCI6MjA4NTUyMjQ3N30.SeDhwjsdOisDO-OTLTbtsvjbXLAc8QT-T8cvfs0tZSQ';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const PASSWORD = 'renovacieux2026';
 
-    // ===== DATA (sera Supabase) =====
-    let clients = [
-      {
-        id: 1,
-        nom: 'Dupont',
-        prenom: 'Marie',
-        tel: '06 12 34 56 78',
-        email: 'marie.dupont@gmail.com',
-        cimetiere: 'Père Lachaise, Paris',
-        formuleInit: 'Sérénité - 2 passages/an',
-        message: 'Ma mère est décédée il y a 2 ans. Je vis maintenant à Lyon et je ne peux plus entretenir sa tombe. J\'aimerais un service régulier.',
-        position: '',
-        facile: '',
-        notes: '',
-        formule: '',
-        statut: 'nouveau',
-        createdAt: new Date()
-      },
-      {
-        id: 2,
-        nom: 'Martin',
-        prenom: 'Philippe',
-        tel: '06 98 76 54 32',
-        email: 'philippe.martin@orange.fr',
-        cimetiere: 'Cimetière de Montparnasse',
-        formuleInit: 'Prestige - 4 passages/an',
-        message: 'Je souhaite un entretien premium pour la tombe de mes parents.',
-        position: 'Division 15, ligne 8, place 24',
-        facile: 'oui',
-        notes: 'Client exigeant mais très sympa. Veut des photos HD après chaque passage. Anniversaire décès : 15 mars.',
-        formule: 'prestige',
-        statut: 'actif',
-        createdAt: new Date(Date.now() - 86400000 * 5)
-      }
-    ];
-
+    let clients = [];
     let currentClientId = null;
     let currentTab = 'nouveaux';
+
+    // ===== SUPABASE FUNCTIONS =====
+    async function loadClients() {
+      const { data, error } = await supabase
+        .from('clients')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Erreur chargement:', error);
+        return;
+      }
+      clients = data || [];
+      renderLists();
+    }
+
+    async function updateClient(id, updates) {
+      const { error } = await supabase
+        .from('clients')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id);
+
+      if (error) {
+        console.error('Erreur update:', error);
+        alert('Erreur lors de la sauvegarde');
+        return false;
+      }
+      return true;
+    }
+
+    async function removeClient(id) {
+      const { error } = await supabase
+        .from('clients')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Erreur delete:', error);
+        alert('Erreur lors de la suppression');
+        return false;
+      }
+      return true;
+    }
 
     // ===== LOGIN =====
     function tryLogin() {
@@ -874,7 +887,7 @@
         document.getElementById('loginScreen').classList.remove('active');
         document.getElementById('appScreen').classList.add('active');
         localStorage.setItem('renovacieux_logged', 'true');
-        renderLists();
+        loadClients();
       } else {
         document.getElementById('loginError').style.display = 'block';
         document.getElementById('loginPassword').style.borderColor = '#DC3545';
@@ -889,7 +902,7 @@
     if (localStorage.getItem('renovacieux_logged') === 'true') {
       document.getElementById('loginScreen').classList.remove('active');
       document.getElementById('appScreen').classList.add('active');
-      renderLists();
+      loadClients();
     }
 
     document.getElementById('loginPassword').addEventListener('keyup', (e) => {
@@ -959,7 +972,7 @@
           </div>
           <div class="client-info">
             <span>📍 ${client.cimetiere || 'Cimetière non renseigné'}</span>
-            <span>📞 ${client.tel}</span>
+            <span>📞 ${client.tel || 'Pas de téléphone'}</span>
           </div>
         </div>
       `;
@@ -971,20 +984,20 @@
       const client = clients.find(c => c.id === id);
       if (!client) return;
 
-      document.getElementById('detail-nom').value = client.nom;
-      document.getElementById('detail-prenom').value = client.prenom;
-      document.getElementById('detail-tel').value = client.tel;
-      document.getElementById('detail-email').value = client.email;
-      document.getElementById('detail-cimetiere').value = client.cimetiere;
-      document.getElementById('detail-formule-init').value = client.formuleInit;
-      document.getElementById('detail-message').value = client.message;
-      document.getElementById('detail-position').value = client.position;
-      document.getElementById('detail-notes').value = client.notes;
-      document.getElementById('detail-formule').value = client.formule;
-      document.getElementById('detail-statut').value = client.statut;
+      document.getElementById('detail-nom').value = client.nom || '';
+      document.getElementById('detail-prenom').value = client.prenom || '';
+      document.getElementById('detail-tel').value = client.tel || '';
+      document.getElementById('detail-email').value = client.email || '';
+      document.getElementById('detail-cimetiere').value = client.cimetiere || '';
+      document.getElementById('detail-formule-init').value = client.formule_demandee || '';
+      document.getElementById('detail-message').value = client.message || '';
+      document.getElementById('detail-position').value = client.position_tombe || '';
+      document.getElementById('detail-notes').value = client.notes || '';
+      document.getElementById('detail-formule').value = client.formule_choisie || '';
+      document.getElementById('detail-statut').value = client.statut || 'nouveau';
 
       document.querySelectorAll('[onclick*="facile"]').forEach(el => {
-        el.classList.toggle('selected', el.dataset.value === client.facile);
+        el.classList.toggle('selected', el.dataset.value === client.facile_trouver);
       });
 
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -996,39 +1009,48 @@
       el.classList.add('selected');
     }
 
-    function saveClient() {
-      const client = clients.find(c => c.id === currentClientId);
-      if (!client) return;
-
-      client.position = document.getElementById('detail-position').value;
-      client.notes = document.getElementById('detail-notes').value;
-      client.formule = document.getElementById('detail-formule').value;
-      client.statut = document.getElementById('detail-statut').value;
-
+    async function saveClient() {
       const facileEl = document.querySelector('[onclick*="facile"].selected');
-      client.facile = facileEl ? facileEl.dataset.value : '';
 
-      localStorage.setItem('renovacieux_clients', JSON.stringify(clients));
+      const updates = {
+        position_tombe: document.getElementById('detail-position').value,
+        notes: document.getElementById('detail-notes').value,
+        formule_choisie: document.getElementById('detail-formule').value,
+        statut: document.getElementById('detail-statut').value,
+        facile_trouver: facileEl ? facileEl.dataset.value : ''
+      };
 
-      // Show success feedback
       const btn = event.target;
       const originalText = btn.innerHTML;
-      btn.innerHTML = '✅ Enregistré !';
-      btn.style.background = 'var(--green)';
+      btn.innerHTML = '⏳ Sauvegarde...';
+      btn.disabled = true;
+
+      const success = await updateClient(currentClientId, updates);
+
+      if (success) {
+        btn.innerHTML = '✅ Enregistré !';
+        btn.style.background = 'var(--green)';
+        await loadClients();
+      } else {
+        btn.innerHTML = '❌ Erreur';
+        btn.style.background = 'var(--red)';
+      }
+
       setTimeout(() => {
         btn.innerHTML = originalText;
         btn.style.background = '';
+        btn.disabled = false;
       }, 1500);
-
-      renderLists();
     }
 
-    function deleteClient() {
+    async function deleteClient() {
       if (!confirm('Supprimer définitivement ce contact ?')) return;
-      clients = clients.filter(c => c.id !== currentClientId);
-      localStorage.setItem('renovacieux_clients', JSON.stringify(clients));
-      goBack();
-      renderLists();
+
+      const success = await removeClient(currentClientId);
+      if (success) {
+        await loadClients();
+        goBack();
+      }
     }
 
     // ===== ACTIONS =====
@@ -1048,14 +1070,6 @@
         window.location.href = 'tel:' + client.tel.replace(/\s/g, '');
       }
     }
-
-    // ===== INIT =====
-    const saved = localStorage.getItem('renovacieux_clients');
-    if (saved) {
-      clients = JSON.parse(saved);
-    }
-
-    renderLists();
   </script>
 
 </body>
