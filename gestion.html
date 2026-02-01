@@ -953,6 +953,11 @@
     }
 
     /* History */
+    .history-container {
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
     .history-item {
       display: flex;
       gap: 12px;
@@ -964,14 +969,23 @@
       border-bottom: none;
     }
 
-    .history-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--primary);
+    .history-icon {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      font-size: 14px;
     }
+
+    .history-icon.devis { background: var(--blue-light); }
+    .history-icon.paiement { background: var(--green-light); }
+    .history-icon.facture { background: var(--green-light); }
+    .history-icon.photos { background: var(--orange-light); }
+    .history-icon.abonnement { background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; }
+    .history-icon.default { background: var(--bg); }
 
     .history-content {
       flex: 1;
@@ -986,6 +1000,29 @@
       font-size: 12px;
       color: var(--text-muted);
       margin-top: 2px;
+    }
+
+    .history-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      margin-right: 8px;
+      padding: 4px 10px;
+      background: var(--bg);
+      border-radius: 6px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .history-link:hover {
+      background: var(--primary);
+      color: white;
     }
 
     /* Info row */
@@ -2430,26 +2467,74 @@
 
       // Add creation event
       const events = [
-        { text: 'Client créé', date: client.created_at },
-        ...history
+        { text: 'Client créé', date: client.created_at, type: 'default' },
+        ...history.map(h => ({
+          ...h,
+          type: getHistoryType(h.text)
+        }))
       ];
-
-      if (client.updated_at && client.updated_at !== client.created_at) {
-        events.push({ text: 'Dernière modification', date: client.updated_at });
-      }
 
       // Sort by date desc
       events.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      container.innerHTML = events.map(e => `
-        <div class="history-item">
-          <div class="history-dot"></div>
-          <div class="history-content">
-            <div class="history-text">${e.text}</div>
-            <div class="history-date">${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-          </div>
+      // Render with scroll container
+      container.innerHTML = `
+        <div class="history-container">
+          ${events.map(e => {
+            const icon = getHistoryIcon(e.type);
+            const links = getHistoryLinks(e, client);
+            return `
+              <div class="history-item">
+                <div class="history-icon ${e.type}">${icon}</div>
+                <div class="history-content">
+                  <div class="history-text">${e.text}</div>
+                  <div class="history-date">${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                  ${links}
+                </div>
+              </div>
+            `;
+          }).join('')}
         </div>
-      `).join('');
+      `;
+    }
+
+    function getHistoryType(text) {
+      if (text.toLowerCase().includes('devis')) return 'devis';
+      if (text.toLowerCase().includes('paiement') || text.toLowerCase().includes('payé')) return 'paiement';
+      if (text.toLowerCase().includes('facture')) return 'facture';
+      if (text.toLowerCase().includes('photo')) return 'photos';
+      if (text.toLowerCase().includes('abonnement')) return 'abonnement';
+      return 'default';
+    }
+
+    function getHistoryIcon(type) {
+      switch(type) {
+        case 'devis': return '📄';
+        case 'paiement': return '💳';
+        case 'facture': return '🧾';
+        case 'photos': return '📷';
+        case 'abonnement': return '🔄';
+        default: return '•';
+      }
+    }
+
+    function getHistoryLinks(event, client) {
+      const links = [];
+      const text = event.text.toLowerCase();
+
+      // Extract devis number from text like "Devis DEV-2026-0003 envoyé"
+      const devisMatch = event.text.match(/(DEV-\d{4}-\d+)/);
+      if (devisMatch && text.includes('devis')) {
+        links.push(`<button class="history-link" onclick="previewDevis()">📄 Voir devis</button>`);
+      }
+
+      // For payments, offer to download facture
+      if (text.includes('paiement') && client.statut === 'actif') {
+        links.push(`<button class="history-link" onclick="downloadFacture()">🧾 Télécharger facture</button>`);
+      }
+
+      if (links.length === 0) return '';
+      return `<div style="margin-top: 6px;">${links.join('')}</div>`;
     }
 
     async function addHistoryEvent(clientId, text) {
