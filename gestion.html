@@ -2269,11 +2269,11 @@
 
         <!-- Facture (visible si client actif) -->
         <div class="detail-card" id="factureSection" style="display: none;">
-          <h3>Facture</h3>
+          <h3>Facture & Abonnement</h3>
           <div style="background: var(--green-light); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="color: var(--green); font-size: 16px;">✓</span>
-              <span style="font-weight: 600; color: var(--green);">Paiement reçu</span>
+              <span style="font-weight: 600; color: var(--green);">Client actif</span>
             </div>
           </div>
           <div class="btn-grid">
@@ -2281,7 +2281,14 @@
               Télécharger PDF
             </button>
             <button class="btn btn-primary btn-small" onclick="sendFactureEmail()" id="btnSendFacture">
-              Envoyer au client
+              Envoyer facture
+            </button>
+          </div>
+
+          <!-- Désabonnement -->
+          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <button class="btn btn-small" onclick="showCancelModal()" style="width: 100%; background: var(--red-light); color: var(--red); border: 1px solid var(--red);">
+              Désabonner le client
             </button>
           </div>
         </div>
@@ -2585,6 +2592,51 @@
     </div>
   </div>
 
+  <!-- CANCEL SUBSCRIPTION MODAL -->
+  <div class="modal-overlay" id="cancelModal">
+    <div class="modal" style="max-width: 450px;">
+      <div class="modal-header" style="background: var(--red-light);">
+        <h2 style="color: var(--red);">Désabonner le client</h2>
+        <button class="modal-close" onclick="closeCancelModal()">×</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <div id="cancelClientInfo" style="margin-bottom: 20px;">
+          <p style="font-weight: 600;" id="cancelClientName">-</p>
+          <p style="color: var(--text-muted); font-size: 14px;" id="cancelClientFormule">-</p>
+        </div>
+
+        <div id="cancelRefundCalc" style="background: var(--bg); border-radius: 10px; padding: 16px; margin-bottom: 20px;">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Calcul du remboursement</p>
+          <p id="cancelPassagesInfo" style="font-size: 14px; margin-bottom: 4px;">-</p>
+          <p id="cancelRefundAmount" style="font-size: 20px; font-weight: 700; color: var(--primary);">-</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="font-size: 13px; color: var(--text-muted);">Raison (optionnel)</label>
+          <select id="cancelReason" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; margin-top: 6px;">
+            <option value="">-- Sélectionner --</option>
+            <option value="Déménagement">Déménagement</option>
+            <option value="Raison financière">Raison financière</option>
+            <option value="Service non satisfaisant">Service non satisfaisant</option>
+            <option value="Décès du proche">Décès du proche</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-outline" onclick="closeCancelModal()" style="flex: 1;">Annuler</button>
+          <button class="btn" onclick="confirmCancel()" style="flex: 1; background: var(--red); color: white;" id="btnConfirmCancel">
+            Confirmer
+          </button>
+        </div>
+
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 16px; text-align: center;">
+          Un email de confirmation sera envoyé au client.
+        </p>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
@@ -2604,8 +2656,8 @@
     // Formules config
     const FORMULES = {
       ponctuel: { name: 'Ponctuel', price: 89, desc: 'Intervention unique' },
-      serenite: { name: 'Sérénité', price: 180, desc: '2 passages par an' },
-      prestige: { name: 'Prestige', price: 420, desc: '4 passages par an' }
+      serenite: { name: 'Sérénité', price: 160, desc: '2 passages par an' },
+      prestige: { name: 'Prestige', price: 320, desc: '4 passages par an' }
     };
 
     // Travaux et prix unitaires (base tombe simple, bon état)
@@ -5440,6 +5492,104 @@
 
       btn.disabled = false;
       btn.textContent = 'Envoyer au client';
+    }
+
+    // ===== DÉSABONNEMENT =====
+    function showCancelModal() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) {
+        showToast('Client introuvable', 'error');
+        return;
+      }
+
+      // Remplir les infos client
+      document.getElementById('cancelClientName').textContent = `${client.prenom || ''} ${client.nom || ''}`.trim();
+      const formuleNom = client.formule_choisie === 'prestige' ? 'Prestige' : 'Sérénité';
+      const formulePrix = client.formule_choisie === 'prestige' ? 320 : 160;
+      document.getElementById('cancelClientFormule').textContent = `Formule ${formuleNom} - ${formulePrix}€/an`;
+
+      // Calculer le remboursement
+      const passagesParAn = client.formule_choisie === 'prestige' ? 4 : 2;
+      let passagesEffectues = 0;
+
+      if (client.dates_intervention) {
+        try {
+          const dates = JSON.parse(client.dates_intervention);
+          const now = new Date();
+          const oneYearAgo = new Date(now);
+          oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+          passagesEffectues = dates.filter(d => {
+            const date = new Date(d);
+            return date <= now && date >= oneYearAgo;
+          }).length;
+        } catch (e) {}
+      }
+
+      const passagesRestants = Math.max(0, passagesParAn - passagesEffectues);
+      const remboursement = passagesRestants > 0 ? Math.round((passagesRestants / passagesParAn) * formulePrix) : 0;
+
+      document.getElementById('cancelPassagesInfo').textContent =
+        `${passagesEffectues}/${passagesParAn} passages effectués → ${passagesRestants} restant(s)`;
+      document.getElementById('cancelRefundAmount').textContent =
+        remboursement > 0 ? `Remboursement: ${remboursement}€` : 'Aucun remboursement';
+      document.getElementById('cancelRefundAmount').style.color =
+        remboursement > 0 ? 'var(--orange)' : 'var(--text-muted)';
+
+      document.getElementById('cancelReason').value = '';
+      document.getElementById('cancelModal').classList.add('active');
+    }
+
+    function closeCancelModal() {
+      document.getElementById('cancelModal').classList.remove('active');
+    }
+
+    async function confirmCancel() {
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      const reason = document.getElementById('cancelReason').value;
+      const btn = document.getElementById('btnConfirmCancel');
+      btn.disabled = true;
+      btn.textContent = 'Traitement...';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/cancel-subscription`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: client.id,
+            reason: reason
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          closeCancelModal();
+          showToast('Client désabonné', 'success');
+
+          if (result.refundAmount > 0) {
+            alert(`⚠️ Remboursement à effectuer: ${result.refundAmount}€\n\n${result.refundDetails}`);
+          }
+
+          await loadClients();
+          // Retour à la liste
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+          document.getElementById('page-list').classList.add('active');
+        } else {
+          showToast(result.error || 'Erreur', 'error');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        showToast('Erreur de connexion', 'error');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Confirmer';
     }
 
     // ===== TOAST =====
