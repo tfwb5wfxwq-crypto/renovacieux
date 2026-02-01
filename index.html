@@ -1050,7 +1050,15 @@
     /* Zone cards */
     .zone-cards {
       display: flex;
+      flex-wrap: wrap;
       gap: 16px;
+      justify-content: center;
+    }
+
+    a.zone-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .zone-card {
@@ -1062,11 +1070,23 @@
       padding: 20px 24px;
       text-align: center;
       transition: all 0.3s;
+      min-width: 160px;
     }
 
     .zone-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      background: var(--primary);
+    }
+
+    .zone-card:hover h4,
+    .zone-card:hover .zone-card-desc,
+    .zone-card:hover .zone-card-note {
+      color: white;
+    }
+
+    .zone-card:hover .zone-card-icon svg {
+      color: white;
     }
 
     .zone-card-icon {
@@ -1837,21 +1857,42 @@
 
       <!-- Zone cards -->
       <div class="zone-cards reveal reveal-delay-1">
-        <div class="zone-card">
+        <a href="/paris/" class="zone-card">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
           <h4>Paris & Île-de-France</h4>
           <p class="zone-card-desc">Tous les cimetières parisiens et petite couronne</p>
-        </div>
-        <div class="zone-card">
+        </a>
+        <a href="/nice/" class="zone-card">
           <div class="zone-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           </div>
-          <h4>Côte d'Azur</h4>
-          <p class="zone-card-desc">Nice · Cannes · Antibes · Grasse · Mougins</p>
+          <h4>Nice</h4>
+          <p class="zone-card-desc">Cimetière du Château, Caucade, Cimiez...</p>
+        </a>
+        <a href="/cannes/" class="zone-card">
+          <div class="zone-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h4>Cannes</h4>
+          <p class="zone-card-desc">Grand Jas, Petit Jas, La Bocca...</p>
+        </a>
+        <a href="/antibes/" class="zone-card">
+          <div class="zone-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h4>Antibes</h4>
+          <p class="zone-card-desc">Rabiac, Juan-les-Pins, Vallauris...</p>
+        </a>
+        <a href="/grasse/" class="zone-card">
+          <div class="zone-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h4>Grasse</h4>
+          <p class="zone-card-desc">Saint-Roch, Mougins, Peymeinade...</p>
           <div class="zone-card-note">+frais de déplacement</div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -2037,10 +2078,11 @@
       <div class="footer-col">
         <h4>Zone</h4>
         <ul>
-          <li><a href="#zone">Paris & Île-de-France</a></li>
-          <li><a href="#zone">Nice, Cannes, Antibes</a></li>
-          <li><a href="#zone">Grasse, Mougins</a></li>
-          <li><a href="#zone">Vallauris, Valbonne, Biot</a></li>
+          <li><a href="/paris/">Paris & Île-de-France</a></li>
+          <li><a href="/nice/">Nice</a></li>
+          <li><a href="/cannes/">Cannes</a></li>
+          <li><a href="/antibes/">Antibes</a></li>
+          <li><a href="/grasse/">Grasse</a></li>
         </ul>
       </div>
       <div class="footer-col">
