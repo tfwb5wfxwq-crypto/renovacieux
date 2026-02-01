@@ -1025,6 +1025,705 @@
       color: white;
     }
 
+    /* Finance page */
+    .finance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .finance-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .finance-period select {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    .finance-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .stat-icon.green { background: var(--green-light); }
+    .stat-icon.orange { background: var(--orange-light); }
+    .stat-icon.blue { background: var(--blue-light); }
+    .stat-icon.primary { background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .payment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .payment-item:last-child {
+      border-bottom: none;
+    }
+
+    .payment-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .payment-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .payment-details h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .payment-details p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .payment-amount {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* Photo section */
+    .photo-date-select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      background: var(--white);
+      min-width: 180px;
+    }
+
+    .photo-upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .photo-box {
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .photo-placeholder:hover {
+      border-color: var(--primary);
+      background: var(--white);
+    }
+
+    .photo-icon {
+      font-size: 32px;
+      opacity: 0.5;
+    }
+
+    .photo-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .photo-url-input {
+      width: 80%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .photo-url-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .photo-preview {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .photo-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .photo-badge.after {
+      background: var(--green);
+    }
+
+    .photo-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .photo-actions .btn {
+      flex: 1;
+    }
+
+    .photos-empty {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+    }
+
+    .photos-empty p {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Photo Upload Modal Zones */
+    .photo-upload-zone {
+      aspect-ratio: 4/3;
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg);
+    }
+
+    .photo-upload-zone:hover {
+      border-color: var(--primary);
+      background: var(--white);
+    }
+
+    .photo-upload-zone.has-photo {
+      border-style: solid;
+      border-color: var(--green);
+    }
+
+    .upload-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-preview {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .upload-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .upload-badge.after {
+      background: var(--green);
+    }
+
+    .upload-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .upload-remove:hover {
+      background: var(--red);
+    }
+
+    .saved-photo-item {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .saved-photo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .saved-photo-date {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .saved-photo-status {
+      font-size: 12px;
+      color: var(--green);
+    }
+
+    .saved-photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .saved-photo-thumb {
+      aspect-ratio: 4/3;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .saved-photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .saved-photo-thumb span {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    /* Quick Alerts */
+    .quick-alerts {
+      margin-bottom: 16px;
+    }
+
+    .quick-alert {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .quick-alert:last-child {
+      margin-bottom: 0;
+    }
+
+    .quick-alert.payment {
+      background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+      border: 2px solid var(--green);
+      color: var(--text);
+    }
+
+    .quick-alert.callback {
+      background: linear-gradient(135deg, #FEF3E0 0%, #FFE8CC 100%);
+      border: 2px solid var(--orange);
+      color: var(--text);
+    }
+
+    .quick-alert .alert-emoji {
+      font-size: 20px;
+    }
+
+    .quick-alert .alert-text {
+      flex: 1;
+    }
+
+    .quick-alert .alert-action {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--text);
+    }
+
+    /* Monthly Dashboard */
+    .monthly-dashboard {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+
+    .dashboard-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      min-width: 180px;
+      text-align: center;
+    }
+
+    .month-nav {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .month-nav:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Month Calendar Grid */
+    .month-calendar {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .calendar-weekdays-mini {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .calendar-weekdays-mini span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 10px;
+      color: var(--text-light);
+      cursor: default;
+    }
+
+    .calendar-day.other-month {
+      color: var(--border);
+    }
+
+    .calendar-day.has-intervention {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .calendar-day.has-intervention:hover {
+      background: var(--primary-dark);
+    }
+
+    .calendar-day.today {
+      border: 2px solid var(--green);
+    }
+
+    .calendar-day.today.has-intervention {
+      background: var(--green);
+      border: none;
+    }
+
+    .calendar-day.has-photos {
+      background: var(--green-light);
+      color: var(--green);
+      border: 2px solid var(--green);
+    }
+
+    /* Month Interventions List */
+    .month-interventions {
+      padding: 16px;
+    }
+
+    .intervention-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      background: var(--bg);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .intervention-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .intervention-item.today {
+      background: linear-gradient(135deg, var(--green-light) 0%, #E8F5E9 100%);
+      border: 2px solid var(--green);
+    }
+
+    .intervention-item.done {
+      opacity: 0.7;
+    }
+
+    .intervention-item .date-box {
+      min-width: 60px;
+      text-align: center;
+      padding: 10px;
+      background: var(--white);
+      border-radius: 12px;
+    }
+
+    .intervention-item.today .date-box {
+      background: var(--green);
+      color: white;
+    }
+
+    .intervention-item .date-box .day {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--primary);
+    }
+
+    .intervention-item.today .date-box .day {
+      color: white;
+    }
+
+    .intervention-item .date-box .weekday {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .intervention-item.today .date-box .weekday {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .intervention-item .client-info {
+      flex: 1;
+    }
+
+    .intervention-item .client-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .intervention-item .client-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .intervention-item .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .intervention-item .status-badge.pending {
+      background: var(--orange-light);
+      color: var(--orange);
+    }
+
+    .intervention-item .status-badge.done {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .intervention-item .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .intervention-item .action-btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .intervention-item .action-btn:active {
+      transform: scale(0.95);
+    }
+
+    .intervention-item .action-btn.photos {
+      background: var(--primary);
+      color: white;
+    }
+
+    .intervention-item .action-btn.call {
+      background: var(--blue);
+      color: white;
+    }
+
+    .intervention-item .action-btn.view {
+      background: var(--white);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .no-interventions-msg {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .no-interventions-msg span {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
     /* Info row */
     .info-row {
       display: flex;
@@ -1206,6 +1905,9 @@
       <button class="tab" data-tab="tous" onclick="switchTab('tous')">
         Tous
       </button>
+      <button class="tab" data-tab="finances" onclick="switchTab('finances')" style="margin-left: auto;">
+        💰 Finances
+      </button>
     </div>
 
     <!-- Content -->
@@ -1213,6 +1915,37 @@
 
       <!-- Page: Nouveaux -->
       <div class="page active" id="page-nouveaux">
+
+        <!-- Quick Alerts Bar -->
+        <div class="quick-alerts" id="quickAlerts" style="display: none;">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Monthly Dashboard -->
+        <div class="monthly-dashboard" id="monthlyDashboard">
+          <!-- Header -->
+          <div class="dashboard-header">
+            <button class="month-nav" onclick="changeViewMonth(-1)">‹</button>
+            <h2 id="dashboardMonthTitle">Février 2026</h2>
+            <button class="month-nav" onclick="changeViewMonth(1)">›</button>
+          </div>
+
+          <!-- Mini Calendar Grid -->
+          <div class="month-calendar" id="monthCalendar">
+            <div class="calendar-weekdays-mini">
+              <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Interventions List -->
+          <div class="month-interventions" id="monthInterventions">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
         <button class="btn btn-primary" onclick="openNewClient()" style="margin-bottom: 20px;">
           + Ajouter un client
         </button>
@@ -1247,6 +1980,72 @@
         <div class="empty-state" id="emptyTous" style="display:none;">
           <div class="empty-state-icon">👥</div>
           <p>Aucun client</p>
+        </div>
+      </div>
+
+      <!-- Page: Finances -->
+      <div class="page" id="page-finances">
+        <div class="finance-header">
+          <h2>Tableau de bord financier</h2>
+          <div class="finance-period">
+            <select id="financePeriod" onchange="updateFinances()">
+              <option value="month">Ce mois</option>
+              <option value="quarter">Ce trimestre</option>
+              <option value="year" selected>Cette année</option>
+              <option value="all">Tout</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="finance-stats">
+          <div class="stat-card">
+            <div class="stat-icon green">💰</div>
+            <div class="stat-content">
+              <div class="stat-value" id="statRevenue">0 €</div>
+              <div class="stat-label">Chiffre d'affaires</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">📊</div>
+            <div class="stat-content">
+              <div class="stat-value" id="statCharges">0 €</div>
+              <div class="stat-label">Cotisations (~22%)</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">✨</div>
+            <div class="stat-content">
+              <div class="stat-value" id="statNet">0 €</div>
+              <div class="stat-label">Net après charges</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon primary">👥</div>
+            <div class="stat-content">
+              <div class="stat-value" id="statClients">0</div>
+              <div class="stat-label">Clients actifs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payments List -->
+        <div class="detail-card" style="margin-top: 24px;">
+          <h3>Historique des paiements</h3>
+          <div id="paymentsList" style="margin-top: 16px;">
+            <!-- Payments rendered here -->
+          </div>
+        </div>
+
+        <!-- Info Auto-entrepreneur -->
+        <div class="detail-card" style="margin-top: 16px; background: var(--blue-light);">
+          <h3 style="color: var(--primary);">ℹ️ Auto-entrepreneur</h3>
+          <p style="font-size: 14px; color: var(--text-light); margin-top: 8px;">
+            <strong>Cotisations sociales :</strong> ~22% du CA pour les prestations de services<br>
+            <strong>Versement libératoire IR :</strong> +2.2% si éligible<br>
+            <strong>CFE :</strong> Variable selon commune (à payer en décembre)<br>
+            <strong>Plafond CA :</strong> 77 700 €/an pour les services
+          </p>
         </div>
       </div>
 
@@ -1434,7 +2233,12 @@
 
         <!-- Dates d'intervention -->
         <div class="detail-card">
-          <h3>Dates d'intervention</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="margin-bottom: 0;">Dates d'intervention</h3>
+            <div id="passageCounter" style="display: none; background: var(--blue-light); color: var(--primary); padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
 
           <!-- Mini calendrier -->
           <div class="mini-calendar" id="miniCalendar">
@@ -1465,42 +2269,59 @@
 
         <!-- Photos Avant/Après -->
         <div class="detail-card" id="photosSection">
-          <h3>Photos Avant / Après</h3>
-          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-            Après chaque intervention, ajoute les photos et envoie au client
-          </p>
-
-          <div id="photosList">
-            <!-- Photos will be rendered here -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3>Photos interventions</h3>
+            <select id="photoInterventionDate" class="photo-date-select">
+              <option value="">Choisir intervention</option>
+            </select>
           </div>
 
-          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
-            <div class="form-group">
-              <label>Date de l'intervention</label>
-              <select id="photoInterventionDate" style="margin-bottom: 12px;">
-                <option value="">Sélectionner une date</option>
-              </select>
-            </div>
-
-            <div class="form-row" style="gap: 12px;">
-              <div class="form-group" style="flex: 1;">
-                <label>Photo Avant</label>
-                <input type="url" id="photoAvant" placeholder="Lien de la photo avant">
+          <!-- Photo upload boxes -->
+          <div class="photo-upload-grid" id="photoUploadGrid" style="display: none;">
+            <div class="photo-box" id="photoBoxAvant">
+              <div class="photo-placeholder" id="placeholderAvant">
+                <span class="photo-icon">📷</span>
+                <span class="photo-label">AVANT</span>
+                <input type="url" id="photoAvant" placeholder="Coller le lien image" class="photo-url-input">
               </div>
-              <div class="form-group" style="flex: 1;">
-                <label>Photo Après</label>
-                <input type="url" id="photoApres" placeholder="Lien de la photo après">
+              <div class="photo-preview" id="previewAvant" style="display: none;">
+                <img id="imgAvant" src="" alt="Avant">
+                <button class="photo-remove" onclick="clearPhoto('avant')">×</button>
+                <span class="photo-badge">AVANT</span>
               </div>
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 12px;">
-              <button class="btn btn-outline" onclick="savePhotos()" style="flex: 1;">
-                Sauvegarder
-              </button>
-              <button class="btn btn-primary" onclick="sendPhotosEmail()" style="flex: 1;">
-                Envoyer au client
-              </button>
+            <div class="photo-box" id="photoBoxApres">
+              <div class="photo-placeholder" id="placeholderApres">
+                <span class="photo-icon">✨</span>
+                <span class="photo-label">APRÈS</span>
+                <input type="url" id="photoApres" placeholder="Coller le lien image" class="photo-url-input">
+              </div>
+              <div class="photo-preview" id="previewApres" style="display: none;">
+                <img id="imgApres" src="" alt="Après">
+                <button class="photo-remove" onclick="clearPhoto('apres')">×</button>
+                <span class="photo-badge after">APRÈS</span>
+              </div>
             </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="photo-actions" id="photoActions" style="display: none;">
+            <button class="btn btn-outline" onclick="savePhotos()">
+              💾 Sauvegarder
+            </button>
+            <button class="btn btn-primary" onclick="sendPhotosEmail()">
+              ✉️ Envoyer au client
+            </button>
+          </div>
+
+          <!-- Saved photos list -->
+          <div id="photosList"></div>
+
+          <!-- Empty state -->
+          <div id="photosEmptyState" class="photos-empty">
+            <span style="font-size: 32px;">📸</span>
+            <p>Sélectionne une date d'intervention<br>pour ajouter des photos</p>
           </div>
         </div>
 
@@ -1590,6 +2411,82 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeCalendarModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTO UPLOAD MODAL -->
+  <div class="modal-overlay" id="photoModal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2>Photos intervention</h2>
+        <button class="modal-close" onclick="closePhotoModal()">×</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <!-- Client info banner -->
+        <div id="photoModalClientInfo" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px 20px; border-radius: 12px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 id="photoModalClientName" style="font-size: 18px; margin-bottom: 4px;">Client</h3>
+              <p id="photoModalCimetiere" style="opacity: 0.8; font-size: 14px;">Cimetière</p>
+            </div>
+            <div id="photoModalDate" style="background: rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 20px; font-size: 14px;">Date</div>
+          </div>
+        </div>
+
+        <!-- Upload zones -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <!-- AVANT -->
+          <div class="photo-upload-zone" id="uploadZoneAvant" onclick="document.getElementById('fileInputAvant').click()">
+            <input type="file" id="fileInputAvant" accept="image/*" style="display: none;" onchange="handlePhotoSelect('avant', this)">
+            <div class="upload-placeholder" id="uploadPlaceholderAvant">
+              <span style="font-size: 40px; margin-bottom: 8px;">📷</span>
+              <span style="font-weight: 600; color: var(--text-muted);">AVANT</span>
+              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cliquer pour choisir</span>
+            </div>
+            <div class="upload-preview" id="uploadPreviewAvant" style="display: none;">
+              <img id="uploadImgAvant" src="">
+              <span class="upload-badge">AVANT</span>
+              <button class="upload-remove" onclick="event.stopPropagation(); clearUpload('avant')">×</button>
+            </div>
+          </div>
+
+          <!-- APRÈS -->
+          <div class="photo-upload-zone" id="uploadZoneApres" onclick="document.getElementById('fileInputApres').click()">
+            <input type="file" id="fileInputApres" accept="image/*" style="display: none;" onchange="handlePhotoSelect('apres', this)">
+            <div class="upload-placeholder" id="uploadPlaceholderApres">
+              <span style="font-size: 40px; margin-bottom: 8px;">✨</span>
+              <span style="font-weight: 600; color: var(--green);">APRÈS</span>
+              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cliquer pour choisir</span>
+            </div>
+            <div class="upload-preview" id="uploadPreviewApres" style="display: none;">
+              <img id="uploadImgApres" src="">
+              <span class="upload-badge after">APRÈS</span>
+              <button class="upload-remove" onclick="event.stopPropagation(); clearUpload('apres')">×</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Or paste URL -->
+        <details style="margin-bottom: 16px;">
+          <summary style="cursor: pointer; color: var(--text-muted); font-size: 13px;">Ou coller des liens URL</summary>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <input type="url" id="urlInputAvant" placeholder="URL photo avant" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px;" oninput="handleUrlInput('avant', this.value)">
+            <input type="url" id="urlInputApres" placeholder="URL photo après" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px;" oninput="handleUrlInput('apres', this.value)">
+          </div>
+        </details>
+
+        <!-- Status message -->
+        <div id="photoUploadStatus" style="display: none; text-align: center; padding: 12px; border-radius: 8px; margin-bottom: 16px;"></div>
+      </div>
+      <div class="modal-footer" style="display: flex; gap: 12px;">
+        <button class="btn btn-outline" onclick="closePhotoModal()" style="flex: 1;">Annuler</button>
+        <button class="btn btn-primary" onclick="savePhotoModal()" id="btnSavePhoto" style="flex: 1;">
+          💾 Sauvegarder
+        </button>
+        <button class="btn btn-accent" onclick="saveAndSendPhoto()" id="btnSendPhoto" style="flex: 1;">
+          ✉️ Sauvegarder et envoyer
+        </button>
       </div>
     </div>
   </div>
@@ -1723,6 +2620,104 @@
       document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + tab).classList.add('active');
+
+      // Update finances if on that tab
+      if (tab === 'finances') {
+        updateFinances();
+      }
+    }
+
+    // ===== FINANCES =====
+    function updateFinances() {
+      const period = document.getElementById('financePeriod').value;
+      const now = new Date();
+
+      // Filter clients by period
+      let startDate;
+      switch(period) {
+        case 'month':
+          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+          break;
+        case 'quarter':
+          const quarter = Math.floor(now.getMonth() / 3);
+          startDate = new Date(now.getFullYear(), quarter * 3, 1);
+          break;
+        case 'year':
+          startDate = new Date(now.getFullYear(), 0, 1);
+          break;
+        default:
+          startDate = new Date(0); // All time
+      }
+
+      // Collect all payments from historique
+      const payments = [];
+      let totalRevenue = 0;
+      let activeClients = 0;
+
+      clients.forEach(client => {
+        if (client.statut === 'actif') activeClients++;
+
+        const history = client.historique ? JSON.parse(client.historique) : [];
+        history.forEach(event => {
+          // Find payment events
+          const match = event.text.match(/Paiement.+?(\d+(?:\.\d+)?)\s*(?:EUR|€)/i);
+          if (match) {
+            const amount = parseFloat(match[1]);
+            const date = new Date(event.date);
+
+            if (date >= startDate) {
+              payments.push({
+                client: client,
+                amount: amount,
+                date: date,
+                text: event.text
+              });
+              totalRevenue += amount;
+            }
+          }
+        });
+      });
+
+      // Sort payments by date (most recent first)
+      payments.sort((a, b) => b.date - a.date);
+
+      // Calculate charges (22% for auto-entrepreneur services)
+      const chargesRate = 0.22;
+      const charges = totalRevenue * chargesRate;
+      const netRevenue = totalRevenue - charges;
+
+      // Update stats
+      document.getElementById('statRevenue').textContent = totalRevenue.toFixed(0) + ' €';
+      document.getElementById('statCharges').textContent = charges.toFixed(0) + ' €';
+      document.getElementById('statNet').textContent = netRevenue.toFixed(0) + ' €';
+      document.getElementById('statClients').textContent = activeClients;
+
+      // Render payments list
+      const container = document.getElementById('paymentsList');
+      if (payments.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun paiement sur cette période</p>';
+        return;
+      }
+
+      container.innerHTML = payments.map(p => {
+        const initials = (p.client.prenom?.[0] || '') + (p.client.nom?.[0] || '');
+        const dateStr = p.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+        const devisMatch = p.text.match(/(DEV-\d{4}-\d+|TEST-\d+)/);
+        const devisNum = devisMatch ? devisMatch[1] : '';
+
+        return `
+          <div class="payment-item">
+            <div class="payment-info">
+              <div class="payment-avatar">${initials.toUpperCase()}</div>
+              <div class="payment-details">
+                <h4>${p.client.prenom} ${p.client.nom}</h4>
+                <p>${dateStr}${devisNum ? ' • ' + devisNum : ''}</p>
+              </div>
+            </div>
+            <div class="payment-amount">+${p.amount} €</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function goBack() {
@@ -1746,6 +2741,9 @@
       renderList('enCoursList', enCours, 'emptyEnCours');
       renderList('actifsList', actifs, 'emptyActifs');
       renderList('tousList', clients, 'emptyTous');
+
+      // Render interventions dashboard
+      renderInterventionsDashboard();
     }
 
     function renderList(containerId, items, emptyId) {
@@ -1759,6 +2757,214 @@
         empty.style.display = 'none';
         container.innerHTML = items.map(c => renderClientCard(c)).join('');
       }
+    }
+
+    // ===== DASHBOARD =====
+    let viewMonth = new Date().getMonth();
+    let viewYear = new Date().getFullYear();
+
+    function changeViewMonth(delta) {
+      viewMonth += delta;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      renderQuickAlerts();
+      renderMonthlyCalendar();
+      renderMonthInterventions();
+    }
+
+    function renderQuickAlerts() {
+      const container = document.getElementById('quickAlerts');
+      const alerts = [];
+
+      // New clients to call back (status = nouveau, older than 1 day)
+      const newClients = clients.filter(c => c.statut === 'nouveau');
+      if (newClients.length > 0) {
+        alerts.push({
+          type: 'callback',
+          emoji: '📞',
+          text: `${newClients.length} nouveau(x) client(s) à rappeler`,
+          action: () => switchTab('nouveaux')
+        });
+      }
+
+      // Recent payments (clients who became actif in last 7 days)
+      const recentPayments = clients.filter(c => {
+        if (c.statut !== 'actif') return false;
+        const history = c.historique ? JSON.parse(c.historique) : [];
+        const paymentEvent = history.find(h => h.text.toLowerCase().includes('paiement'));
+        if (!paymentEvent) return false;
+        const paymentDate = new Date(paymentEvent.date);
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        return paymentDate >= sevenDaysAgo;
+      });
+
+      if (recentPayments.length > 0) {
+        alerts.push({
+          type: 'payment',
+          emoji: '💳',
+          text: `${recentPayments.length} paiement(s) reçu(s) - dates à vérifier`,
+          action: () => { if (recentPayments[0]) openClient(recentPayments[0].id); }
+        });
+      }
+
+      if (alerts.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      container.innerHTML = alerts.map(a => `
+        <div class="quick-alert ${a.type}">
+          <span class="alert-emoji">${a.emoji}</span>
+          <span class="alert-text">${a.text}</span>
+          <button class="alert-action" onclick="${a.type === 'callback' ? "switchTab('nouveaux')" : `openClient(${recentPayments[0]?.id || 0})`}">Voir</button>
+        </div>
+      `).join('');
+    }
+
+    function renderMonthlyCalendar() {
+      const titleEl = document.getElementById('dashboardMonthTitle');
+      const gridEl = document.getElementById('calendarGrid');
+
+      // Update title
+      const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                          'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+      titleEl.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+
+      // Get all interventions for this month
+      const interventionDates = new Map(); // dateStr -> {hasPhotos, clientId}
+      clients.forEach(client => {
+        if (client.statut !== 'actif' || !client.dates_intervention) return;
+        try {
+          const dates = JSON.parse(client.dates_intervention);
+          const photos = client.photos ? JSON.parse(client.photos) : [];
+          dates.forEach(dateStr => {
+            const d = new Date(dateStr);
+            if (d.getMonth() === viewMonth && d.getFullYear() === viewYear) {
+              const hasPhotos = photos.some(p => p.date === dateStr);
+              interventionDates.set(dateStr, { hasPhotos, clientId: client.id, dateStr });
+            }
+          });
+        } catch (e) {}
+      });
+
+      // Build calendar grid
+      const firstDay = new Date(viewYear, viewMonth, 1);
+      const lastDay = new Date(viewYear, viewMonth + 1, 0);
+      const startPadding = (firstDay.getDay() + 6) % 7; // Monday = 0
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+
+      let html = '';
+
+      // Previous month padding
+      const prevMonth = new Date(viewYear, viewMonth, 0);
+      for (let i = startPadding - 1; i >= 0; i--) {
+        html += `<div class="calendar-day other-month">${prevMonth.getDate() - i}</div>`;
+      }
+
+      // Current month days
+      for (let day = 1; day <= lastDay.getDate(); day++) {
+        const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const intervention = interventionDates.get(dateStr);
+        const isToday = dateStr === todayStr;
+
+        let classes = 'calendar-day';
+        if (isToday) classes += ' today';
+        if (intervention) {
+          classes += intervention.hasPhotos ? ' has-photos' : ' has-intervention';
+        }
+
+        const onclick = intervention ? `onclick="openPhotoUpload(${intervention.clientId}, '${intervention.dateStr}')"` : '';
+        html += `<div class="${classes}" ${onclick}>${day}</div>`;
+      }
+
+      // Next month padding
+      const totalCells = startPadding + lastDay.getDate();
+      const remainingCells = (7 - (totalCells % 7)) % 7;
+      for (let i = 1; i <= remainingCells; i++) {
+        html += `<div class="calendar-day other-month">${i}</div>`;
+      }
+
+      gridEl.innerHTML = html;
+    }
+
+    function renderMonthInterventions() {
+      const container = document.getElementById('monthInterventions');
+      const today = new Date();
+      const todayStr = today.toDateString();
+
+      // Get interventions for viewed month
+      let interventions = [];
+      clients.forEach(client => {
+        if (client.statut !== 'actif' || !client.dates_intervention) return;
+        try {
+          const dates = JSON.parse(client.dates_intervention);
+          const photos = client.photos ? JSON.parse(client.photos) : [];
+          dates.forEach(dateStr => {
+            const d = new Date(dateStr);
+            if (d.getMonth() === viewMonth && d.getFullYear() === viewYear) {
+              const hasPhotos = photos.some(p => p.date === dateStr);
+              interventions.push({ client, date: d, dateStr, hasPhotos });
+            }
+          });
+        } catch (e) {}
+      });
+
+      // Sort by date
+      interventions.sort((a, b) => a.date - b.date);
+
+      if (interventions.length === 0) {
+        container.innerHTML = `
+          <div class="no-interventions-msg">
+            <span>📅</span>
+            <p>Aucune intervention ce mois</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = interventions.map(item => {
+        const isToday = item.date.toDateString() === todayStr;
+        const dayNum = item.date.getDate();
+        const weekday = item.date.toLocaleDateString('fr-FR', { weekday: 'short' });
+        const phone = item.client.tel;
+
+        return `
+          <div class="intervention-item ${isToday ? 'today' : ''} ${item.hasPhotos ? 'done' : ''}">
+            <div class="date-box">
+              <div class="day">${dayNum}</div>
+              <div class="weekday">${weekday}</div>
+            </div>
+            <div class="client-info">
+              <h4>${item.client.prenom || ''} ${item.client.nom || ''}</h4>
+              <p>📍 ${item.client.cimetiere || 'Non renseigné'}</p>
+            </div>
+            <span class="status-badge ${item.hasPhotos ? 'done' : 'pending'}">
+              ${item.hasPhotos ? '✓ Fait' : 'À faire'}
+            </span>
+            <div class="action-buttons">
+              ${phone ? `<button class="action-btn call" onclick="window.location.href='tel:${phone}'">📞</button>` : ''}
+              <button class="action-btn photos" onclick="openPhotoUpload(${item.client.id}, '${item.dateStr}')">
+                📷
+              </button>
+              <button class="action-btn view" onclick="openClient(${item.client.id})">
+                →
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Legacy function name for compatibility
+    function renderInterventionsDashboard() {
+      renderDashboard();
     }
 
     function renderClientCard(client) {
@@ -2204,6 +3410,21 @@
     function renderDates(client) {
       clientDates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
       const container = document.getElementById('datesList');
+      const counterEl = document.getElementById('passageCounter');
+
+      // Update passage counter
+      const maxPassages = getMaxPassages(client.formule_choisie);
+      const currentPassages = clientDates.length;
+
+      if (client.formule_choisie && client.statut === 'actif') {
+        counterEl.style.display = 'block';
+        const isOver = currentPassages > maxPassages;
+        counterEl.style.background = isOver ? 'var(--orange-light)' : 'var(--green-light)';
+        counterEl.style.color = isOver ? 'var(--orange)' : 'var(--green)';
+        counterEl.innerHTML = `${currentPassages}/${maxPassages} passages ${isOver ? '⚠️' : '✓'}`;
+      } else {
+        counterEl.style.display = 'none';
+      }
 
       // Render calendar
       renderCalendar();
@@ -2236,6 +3457,13 @@
       }).join('');
     }
 
+    // Get max passages allowed for a formula
+    function getMaxPassages(formule) {
+      if (formule === 'prestige') return 4;
+      if (formule === 'serenite') return 2;
+      return 1; // ponctuel or default
+    }
+
     async function addDate() {
       const input = document.getElementById('newDateInput');
       const dateValue = input.value;
@@ -2252,6 +3480,19 @@
 
       const client = clients.find(c => c.id === currentClientId);
       if (!client) return;
+
+      // Check if client has a formula and validate passage count
+      const maxPassages = getMaxPassages(client.formule_choisie);
+      const currentPassages = clientDates.length;
+
+      if (currentPassages >= maxPassages) {
+        const formule = FORMULES[client.formule_choisie];
+        const formuleName = formule ? formule.name : 'Ponctuel';
+
+        if (!confirm(`⚠️ Attention !\n\nLa formule "${formuleName}" inclut ${maxPassages} passage(s).\nLe client a déjà ${currentPassages} intervention(s) programmée(s).\n\nAjouter quand même cette date supplémentaire ?`)) {
+          return;
+        }
+      }
 
       const dates = [...clientDates, dateValue];
       dates.sort();
@@ -2287,44 +3528,144 @@
       const photos = client.photos ? JSON.parse(client.photos) : [];
       const photosList = document.getElementById('photosList');
       const dateSelect = document.getElementById('photoInterventionDate');
+      const uploadGrid = document.getElementById('photoUploadGrid');
+      const photoActions = document.getElementById('photoActions');
+      const emptyState = document.getElementById('photosEmptyState');
 
       // Get intervention dates for the select
       const dates = client.dates_intervention ? JSON.parse(client.dates_intervention) : [];
 
       // Populate date select
-      dateSelect.innerHTML = '<option value="">Sélectionner une date</option>' +
+      dateSelect.innerHTML = '<option value="">Choisir intervention</option>' +
         dates.map(d => {
           const date = new Date(d);
-          const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+          const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
           const hasPhotos = photos.some(p => p.date === d);
-          return `<option value="${d}" ${hasPhotos ? 'style="color: var(--green);"' : ''}>${label}${hasPhotos ? ' ✓' : ''}</option>`;
+          return `<option value="${d}">${label}${hasPhotos ? ' ✓' : ''}</option>`;
         }).join('');
 
-      // Render existing photos
+      // Setup date select change handler
+      dateSelect.onchange = function() {
+        const selectedDate = this.value;
+        if (selectedDate) {
+          uploadGrid.style.display = 'grid';
+          photoActions.style.display = 'flex';
+          emptyState.style.display = 'none';
+
+          // Load existing photos for this date
+          const existingPhoto = photos.find(p => p.date === selectedDate);
+          if (existingPhoto) {
+            if (existingPhoto.avant) {
+              showPhotoPreview('avant', existingPhoto.avant);
+            } else {
+              clearPhoto('avant');
+            }
+            if (existingPhoto.apres) {
+              showPhotoPreview('apres', existingPhoto.apres);
+            } else {
+              clearPhoto('apres');
+            }
+          } else {
+            clearPhoto('avant');
+            clearPhoto('apres');
+          }
+        } else {
+          uploadGrid.style.display = 'none';
+          photoActions.style.display = 'none';
+          emptyState.style.display = 'block';
+        }
+      };
+
+      // Setup URL input listeners
+      document.getElementById('photoAvant').oninput = function() {
+        if (this.value && isValidUrl(this.value)) {
+          showPhotoPreview('avant', this.value);
+        }
+      };
+      document.getElementById('photoApres').oninput = function() {
+        if (this.value && isValidUrl(this.value)) {
+          showPhotoPreview('apres', this.value);
+        }
+      };
+
+      // Render saved photos
       if (photos.length === 0) {
-        photosList.innerHTML = '<p style="color: var(--text-muted); font-size: 14px; text-align: center;">Aucune photo enregistrée</p>';
-        return;
+        photosList.innerHTML = '';
+      } else {
+        photosList.innerHTML = '<h4 style="font-size: 14px; margin: 20px 0 12px; color: var(--text-muted);">Photos enregistrées</h4>' +
+          photos.map((p, i) => {
+            const date = new Date(p.date);
+            const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+            return `
+              <div class="saved-photo-item">
+                <div class="saved-photo-header">
+                  <span class="saved-photo-date">${label}</span>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    ${p.sent ? '<span class="saved-photo-status">✓ Envoyé</span>' : ''}
+                    <button onclick="deletePhoto(${i})" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">Suppr.</button>
+                  </div>
+                </div>
+                <div class="saved-photo-grid">
+                  ${p.avant ? `
+                    <a href="${p.avant}" target="_blank" class="saved-photo-thumb">
+                      <img src="${p.avant}" alt="Avant" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23eee%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22>Erreur</text></svg>'">
+                      <span>Avant</span>
+                    </a>
+                  ` : '<div class="saved-photo-thumb" style="background: var(--white); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px;">Pas de photo</div>'}
+                  ${p.apres ? `
+                    <a href="${p.apres}" target="_blank" class="saved-photo-thumb">
+                      <img src="${p.apres}" alt="Après" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23eee%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22>Erreur</text></svg>'">
+                      <span style="background: var(--green);">Après</span>
+                    </a>
+                  ` : '<div class="saved-photo-thumb" style="background: var(--white); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px;">Pas de photo</div>'}
+                </div>
+              </div>
+            `;
+          }).join('');
       }
 
-      photosList.innerHTML = photos.map((p, i) => {
-        const date = new Date(p.date);
-        const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-        return `
-          <div style="background: var(--bg); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <strong style="font-size: 14px;">${label}</strong>
-              <div style="display: flex; gap: 8px;">
-                ${p.sent ? '<span style="color: var(--green); font-size: 12px;">✓ Envoyé</span>' : ''}
-                <button onclick="deletePhoto(${i})" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">Suppr.</button>
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              ${p.avant ? `<a href="${p.avant}" target="_blank" style="flex: 1; text-align: center; padding: 8px; background: var(--white); border-radius: 8px; color: var(--primary); text-decoration: none; font-size: 13px;">📷 Voir Avant</a>` : '<span style="flex: 1; text-align: center; padding: 8px; color: var(--text-muted); font-size: 13px;">Pas de photo avant</span>'}
-              ${p.apres ? `<a href="${p.apres}" target="_blank" style="flex: 1; text-align: center; padding: 8px; background: var(--white); border-radius: 8px; color: var(--primary); text-decoration: none; font-size: 13px;">📷 Voir Après</a>` : '<span style="flex: 1; text-align: center; padding: 8px; color: var(--text-muted); font-size: 13px;">Pas de photo après</span>'}
-            </div>
-          </div>
-        `;
-      }).join('');
+      // Show empty state if no date selected and no photos
+      if (dates.length === 0) {
+        emptyState.innerHTML = '<span style="font-size: 32px;">📅</span><p>Ajoute d\'abord des dates<br>d\'intervention</p>';
+        emptyState.style.display = 'block';
+        uploadGrid.style.display = 'none';
+        photoActions.style.display = 'none';
+      } else if (!dateSelect.value) {
+        emptyState.style.display = photos.length > 0 ? 'none' : 'block';
+        uploadGrid.style.display = 'none';
+        photoActions.style.display = 'none';
+      }
+    }
+
+    function isValidUrl(string) {
+      try {
+        new URL(string);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function showPhotoPreview(type, url) {
+      const placeholder = document.getElementById('placeholder' + type.charAt(0).toUpperCase() + type.slice(1));
+      const preview = document.getElementById('preview' + type.charAt(0).toUpperCase() + type.slice(1));
+      const img = document.getElementById('img' + type.charAt(0).toUpperCase() + type.slice(1));
+      const input = document.getElementById('photo' + type.charAt(0).toUpperCase() + type.slice(1));
+
+      img.src = url;
+      input.value = url;
+      placeholder.style.display = 'none';
+      preview.style.display = 'block';
+    }
+
+    function clearPhoto(type) {
+      const placeholder = document.getElementById('placeholder' + type.charAt(0).toUpperCase() + type.slice(1));
+      const preview = document.getElementById('preview' + type.charAt(0).toUpperCase() + type.slice(1));
+      const input = document.getElementById('photo' + type.charAt(0).toUpperCase() + type.slice(1));
+
+      input.value = '';
+      placeholder.style.display = 'flex';
+      preview.style.display = 'none';
     }
 
     async function savePhotos() {
@@ -2460,6 +3801,245 @@
       }
     }
 
+    // ===== PHOTO MODAL =====
+    let photoModalClientId = null;
+    let photoModalDate = null;
+    let photoModalAvant = null;
+    let photoModalApres = null;
+
+    function openPhotoUpload(clientId, dateStr) {
+      photoModalClientId = clientId;
+      photoModalDate = dateStr;
+      photoModalAvant = null;
+      photoModalApres = null;
+
+      const client = clients.find(c => c.id === clientId);
+      if (!client) return;
+
+      // Fill modal header
+      document.getElementById('photoModalClientName').textContent = `${client.prenom || ''} ${client.nom || ''}`;
+      document.getElementById('photoModalCimetiere').textContent = client.cimetiere || 'Cimetière non renseigné';
+
+      const date = new Date(dateStr);
+      document.getElementById('photoModalDate').textContent = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+
+      // Check if photos already exist
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      const existing = photos.find(p => p.date === dateStr);
+
+      // Reset upload zones
+      clearUpload('avant');
+      clearUpload('apres');
+      document.getElementById('urlInputAvant').value = '';
+      document.getElementById('urlInputApres').value = '';
+      document.getElementById('photoUploadStatus').style.display = 'none';
+
+      // Load existing photos
+      if (existing) {
+        if (existing.avant) {
+          photoModalAvant = existing.avant;
+          showUploadPreview('avant', existing.avant);
+          document.getElementById('urlInputAvant').value = existing.avant;
+        }
+        if (existing.apres) {
+          photoModalApres = existing.apres;
+          showUploadPreview('apres', existing.apres);
+          document.getElementById('urlInputApres').value = existing.apres;
+        }
+      }
+
+      document.getElementById('photoModal').classList.add('active');
+    }
+
+    function closePhotoModal() {
+      document.getElementById('photoModal').classList.remove('active');
+      photoModalClientId = null;
+      photoModalDate = null;
+      photoModalAvant = null;
+      photoModalApres = null;
+    }
+
+    function handlePhotoSelect(type, input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      // For now, we'll convert to base64 data URL since we don't have image hosting
+      // In production, you'd upload to Supabase Storage or similar
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (type === 'avant') {
+          photoModalAvant = dataUrl;
+        } else {
+          photoModalApres = dataUrl;
+        }
+        showUploadPreview(type, dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleUrlInput(type, url) {
+      if (url && isValidUrl(url)) {
+        if (type === 'avant') {
+          photoModalAvant = url;
+        } else {
+          photoModalApres = url;
+        }
+        showUploadPreview(type, url);
+      }
+    }
+
+    function showUploadPreview(type, url) {
+      const zone = document.getElementById('uploadZone' + type.charAt(0).toUpperCase() + type.slice(1));
+      const placeholder = document.getElementById('uploadPlaceholder' + type.charAt(0).toUpperCase() + type.slice(1));
+      const preview = document.getElementById('uploadPreview' + type.charAt(0).toUpperCase() + type.slice(1));
+      const img = document.getElementById('uploadImg' + type.charAt(0).toUpperCase() + type.slice(1));
+
+      img.src = url;
+      placeholder.style.display = 'none';
+      preview.style.display = 'block';
+      zone.classList.add('has-photo');
+    }
+
+    function clearUpload(type) {
+      const zone = document.getElementById('uploadZone' + type.charAt(0).toUpperCase() + type.slice(1));
+      const placeholder = document.getElementById('uploadPlaceholder' + type.charAt(0).toUpperCase() + type.slice(1));
+      const preview = document.getElementById('uploadPreview' + type.charAt(0).toUpperCase() + type.slice(1));
+      const fileInput = document.getElementById('fileInput' + type.charAt(0).toUpperCase() + type.slice(1));
+
+      if (type === 'avant') {
+        photoModalAvant = null;
+      } else {
+        photoModalApres = null;
+      }
+
+      fileInput.value = '';
+      placeholder.style.display = 'flex';
+      preview.style.display = 'none';
+      zone.classList.remove('has-photo');
+    }
+
+    async function savePhotoModal() {
+      if (!photoModalClientId || !photoModalDate) return;
+      if (!photoModalAvant && !photoModalApres) {
+        showToast('Ajoute au moins une photo', 'error');
+        return;
+      }
+
+      const client = clients.find(c => c.id === photoModalClientId);
+      if (!client) return;
+
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      const existingIndex = photos.findIndex(p => p.date === photoModalDate);
+
+      const photoEntry = {
+        date: photoModalDate,
+        avant: photoModalAvant || '',
+        apres: photoModalApres || '',
+        sent: false
+      };
+
+      if (existingIndex >= 0) {
+        photos[existingIndex] = { ...photos[existingIndex], ...photoEntry, sent: photos[existingIndex].sent };
+      } else {
+        photos.push(photoEntry);
+      }
+
+      const success = await updateClient(photoModalClientId, { photos: JSON.stringify(photos) });
+      if (success) {
+        await loadClients();
+        closePhotoModal();
+        showToast('Photos sauvegardées', 'success');
+      }
+    }
+
+    async function saveAndSendPhoto() {
+      if (!photoModalClientId || !photoModalDate) return;
+      if (!photoModalAvant && !photoModalApres) {
+        showToast('Ajoute au moins une photo', 'error');
+        return;
+      }
+
+      const client = clients.find(c => c.id === photoModalClientId);
+      if (!client) return;
+
+      if (!client.email) {
+        showToast('Le client n\'a pas d\'email', 'error');
+        return;
+      }
+
+      // Save first
+      const photos = client.photos ? JSON.parse(client.photos) : [];
+      const existingIndex = photos.findIndex(p => p.date === photoModalDate);
+
+      const photoEntry = {
+        date: photoModalDate,
+        avant: photoModalAvant || '',
+        apres: photoModalApres || '',
+        sent: false
+      };
+
+      if (existingIndex >= 0) {
+        photos[existingIndex] = { ...photos[existingIndex], ...photoEntry };
+      } else {
+        photos.push(photoEntry);
+      }
+
+      // Update status
+      const status = document.getElementById('photoUploadStatus');
+      status.style.display = 'block';
+      status.style.background = 'var(--blue-light)';
+      status.style.color = 'var(--primary)';
+      status.textContent = 'Envoi en cours...';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/send-photos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            clientId: photoModalClientId,
+            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientEmail: client.email,
+            cimetiere: client.cimetiere,
+            interventionDate: photoModalDate,
+            photoAvant: photoModalAvant,
+            photoApres: photoModalApres
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // Mark as sent
+          const photoIndex = photos.findIndex(p => p.date === photoModalDate);
+          if (photoIndex >= 0) {
+            photos[photoIndex].sent = true;
+          }
+
+          await updateClient(photoModalClientId, { photos: JSON.stringify(photos) });
+
+          // Add history event
+          await addHistoryEvent(photoModalClientId, `Photos envoyées (${new Date(photoModalDate).toLocaleDateString('fr-FR')})`);
+
+          await loadClients();
+          closePhotoModal();
+          showToast('Photos sauvegardées et envoyées !', 'success');
+        } else {
+          status.style.background = 'var(--red-light)';
+          status.style.color = 'var(--red)';
+          status.textContent = result.error || 'Erreur d\'envoi';
+        }
+      } catch (error) {
+        console.error('Error sending photos:', error);
+        status.style.background = 'var(--red-light)';
+        status.style.color = 'var(--red)';
+        status.textContent = 'Erreur d\'envoi';
+      }
+    }
+
     // ===== HISTORY =====
     function renderHistory(client) {
       const history = client.historique ? JSON.parse(client.historique) : [];
@@ -2551,6 +4131,14 @@
     function previewDevis() {
       const client = clients.find(c => c.id === currentClientId);
       if (!client) return;
+
+      // Block if client already paid
+      if (client.statut === 'actif') {
+        showToast('⚠️ Ce client a déjà payé !', 'error');
+        if (!confirm('Ce client est déjà actif (a payé).\n\nVoulez-vous vraiment créer un nouveau devis ?\n\nCela pourrait être pour :\n- Un service supplémentaire\n- Une prestation ponctuelle en plus')) {
+          return;
+        }
+      }
 
       const formuleKey = client.formule_choisie || document.getElementById('detail-formule').value;
       const formule = FORMULES[formuleKey];
