@@ -2665,6 +2665,14 @@
     // Auth state
     let currentUser = null;
 
+    // XSS Protection - escape HTML in user data
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     let clients = [];
     let currentClientId = null;
     let currentTab = 'nouveaux';
@@ -3019,7 +3027,7 @@
             <div class="payment-info">
               <div class="payment-avatar">${initials.toUpperCase()}</div>
               <div class="payment-details">
-                <h4>${p.client.prenom} ${p.client.nom}</h4>
+                <h4>${escapeHtml(p.client.prenom)} ${escapeHtml(p.client.nom)}</h4>
                 <p>${dateStr}${devisNum ? ' • ' + devisNum : ''}</p>
               </div>
             </div>
@@ -3271,7 +3279,7 @@
               <div class="label">${r.renewalDate.toLocaleDateString('fr-FR', { month: 'short' })}</div>
             </div>
             <div class="card-info">
-              <h4>${r.client.prenom || ''} ${r.client.nom || ''}</h4>
+              <h4>${escapeHtml(r.client.prenom)} ${escapeHtml(r.client.nom)}</h4>
               <p>${formuleText} • dans ${r.daysUntil}j</p>
               <p style="font-size: 11px; margin-top: 2px;">${photoStatus}</p>
             </div>
@@ -3297,8 +3305,8 @@
             <div class="label">${label}</div>
           </div>
           <div class="card-info">
-            <h4>${item.client.prenom || ''} ${item.client.nom || ''}</h4>
-            <p>📍 ${item.client.cimetiere || 'Non renseigné'}</p>
+            <h4>${escapeHtml(item.client.prenom)} ${escapeHtml(item.client.nom)}</h4>
+            <p>📍 ${escapeHtml(item.client.cimetiere) || 'Non renseigné'}</p>
           </div>
           <div class="card-actions">
             ${phone ? `<button class="card-btn call" onclick="window.location.href='tel:${phone}'">📞</button>` : ''}
@@ -3323,13 +3331,13 @@
       return `
         <div class="client-card ${client.statut}" onclick="openClient(${client.id})">
           <div class="client-card-header">
-            <div class="client-name">${client.prenom || ''} ${client.nom || ''}</div>
+            <div class="client-name">${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}</div>
             <div class="client-status ${client.statut}">${statusLabel}</div>
           </div>
           <div class="client-info">
             ${client.tel ? `<div class="client-info-row"><span class="client-phone-big">${formatPhone(client.tel)}</span></div>` : ''}
             <div class="client-info-row">
-              <span>${client.cimetiere || 'Cimetière non renseigné'}</span>
+              <span>${escapeHtml(client.cimetiere) || 'Cimetière non renseigné'}</span>
             </div>
             ${formuleText ? `<div class="client-info-row"><span class="client-formule">${formuleText}</span></div>` : ''}
             <div class="client-info-row"><span class="client-date">${dateStr}</span></div>
@@ -3384,7 +3392,7 @@
       const createdInfo = document.getElementById('clientCreatedInfo');
       if (client.created_at) {
         const dateStr = new Date(client.created_at).toLocaleString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-        createdInfo.innerHTML = `<strong>Reçu le :</strong> ${dateStr}` + (client.formule_demandee ? ` • <strong>Formule demandée :</strong> ${client.formule_demandee}` : '');
+        createdInfo.innerHTML = `<strong>Reçu le :</strong> ${dateStr}` + (client.formule_demandee ? ` • <strong>Formule demandée :</strong> ${escapeHtml(client.formule_demandee)}` : '');
       } else {
         createdInfo.innerHTML = '';
       }
@@ -4620,7 +4628,7 @@
       if (!client) return;
 
       // Fill modal header
-      document.getElementById('photoModalClientName').textContent = `${client.prenom || ''} ${client.nom || ''}`;
+      document.getElementById('photoModalClientName').textContent = `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`;
       document.getElementById('photoModalCimetiere').textContent = client.cimetiere || 'Cimetière non renseigné';
 
       const date = new Date(dateStr);
@@ -4815,7 +4823,7 @@
         return;
       }
 
-      const clientName = `${client.prenom || ''} ${client.nom || ''}`.trim();
+      const clientName = `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`.trim();
       const interventionDate = new Date(photoModalDate).toLocaleDateString('fr-FR', {
         day: 'numeric',
         month: 'long',
@@ -4961,7 +4969,7 @@
           },
           body: JSON.stringify({
             clientId: photoModalClientId,
-            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientName: `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`.trim(),
             clientEmail: client.email,
             cimetiere: client.cimetiere,
             interventionDate: photoModalDate,
@@ -5135,7 +5143,7 @@
 
         <div class="devis-preview-section">
           <h4>Client</h4>
-          <p><strong>${client.prenom || ''} ${client.nom || ''}</strong></p>
+          <p><strong>${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}</strong></p>
           ${client.email ? `<p>${client.email}</p>` : ''}
           ${client.tel ? `<p>${formatPhone(client.tel)}</p>` : ''}
         </div>
@@ -5234,7 +5242,7 @@
       doc.text('CLIENT', 20, 85);
       doc.setTextColor(0);
       doc.setFontSize(12);
-      doc.text(`${client.prenom || ''} ${client.nom || ''}`, 20, 93);
+      doc.text(`${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`, 20, 93);
       if (client.email) doc.text(client.email, 20, 100);
       if (client.tel) doc.text(formatPhone(client.tel), 20, 107);
 
@@ -5422,7 +5430,7 @@
           },
           body: JSON.stringify({
             clientId: client.id,
-            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientName: `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`.trim(),
             clientEmail: client.email,
             clientPhone: client.tel,
             cimetiere: client.cimetiere || 'Non renseigné',
@@ -5528,7 +5536,7 @@
       doc.text('CLIENT', 20, 100);
       doc.setTextColor(0);
       doc.setFontSize(12);
-      doc.text(`${client.prenom || ''} ${client.nom || ''}`, 20, 108);
+      doc.text(`${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`, 20, 108);
       if (client.email) doc.text(client.email, 20, 115);
       if (client.tel) doc.text(formatPhone(client.tel), 20, 122);
 
@@ -5618,7 +5626,7 @@
           },
           body: JSON.stringify({
             clientId: client.id,
-            clientName: `${client.prenom || ''} ${client.nom || ''}`.trim(),
+            clientName: `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`.trim(),
             clientEmail: client.email,
             cimetiere: client.cimetiere || 'Non renseigné',
             formuleName: formuleName,
@@ -5656,7 +5664,7 @@
       }
 
       // Remplir les infos client
-      document.getElementById('cancelClientName').textContent = `${client.prenom || ''} ${client.nom || ''}`.trim();
+      document.getElementById('cancelClientName').textContent = `${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}`.trim();
       const formuleNom = client.formule_choisie === 'prestige' ? 'Prestige' : 'Sérénité';
       const formulePrix = client.formule_choisie === 'prestige' ? 320 : 160;
       document.getElementById('cancelClientFormule').textContent = `Formule ${formuleNom} - ${formulePrix}€/an`;
