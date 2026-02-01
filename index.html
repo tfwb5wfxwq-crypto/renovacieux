@@ -88,7 +88,7 @@
     }
 
     .nav-logo img {
-      height: 55px;
+      height: 85px;
       width: auto;
     }
 
@@ -865,54 +865,68 @@
       filter: brightness(1.1);
     }
 
-    /* ===== TÉMOIGNAGES ===== */
-    .testimonials {
-      padding: 120px 60px;
+    /* ===== CONFIANCE (Avis + Zone combinés) ===== */
+    .trust-section {
+      padding: 100px 60px;
       background: var(--cream);
     }
 
-    .testimonials-grid {
+    .trust-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* Avis clients - colonne gauche */
+    .trust-testimonials h3 {
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .trust-testimonials h3 span {
+      color: var(--gold);
     }
 
     .testimonial-card {
       background: var(--white);
-      border-radius: 20px;
-      padding: 32px;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
       transition: all 0.3s;
+      border: 1px solid rgba(0,0,0,0.04);
     }
 
     .testimonial-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(61, 107, 124, 0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(61, 107, 124, 0.1);
     }
 
     .testimonial-stars {
       color: var(--gold);
-      font-size: 16px;
-      letter-spacing: 2px;
-      margin-bottom: 16px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
     }
 
     .testimonial-text {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text);
-      line-height: 1.8;
-      margin-bottom: 24px;
+      line-height: 1.7;
+      margin-bottom: 16px;
       font-style: italic;
     }
 
     .testimonial-author {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .testimonial-avatar {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: var(--primary);
       display: flex;
@@ -920,98 +934,100 @@
       justify-content: center;
       color: white;
       font-family: 'Libre Baskerville', serif;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .testimonial-name {
       font-weight: 600;
       color: var(--text);
+      font-size: 14px;
     }
 
     .testimonial-location {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
-    /* ===== ZONE ===== */
-    .zone {
-      padding: 120px 60px;
-      background: var(--white);
+    /* Zone intervention - colonne droite */
+    .trust-zone h3 {
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 8px;
     }
 
-    .zone-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
+    .trust-zone-subtitle {
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 24px;
     }
 
     .zone-map {
-      aspect-ratio: 4/3;
-      border-radius: 24px;
+      aspect-ratio: 16/10;
+      border-radius: 16px;
       overflow: hidden;
       background: var(--cream-dark);
       position: relative;
+      margin-bottom: 20px;
     }
 
     .zone-map img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(40%);
+      filter: grayscale(30%);
     }
 
     .zone-map-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(61, 107, 124, 0.88) 0%, rgba(42, 79, 92, 0.92) 100%);
+      background: linear-gradient(135deg, rgba(61, 107, 124, 0.85) 0%, rgba(42, 79, 92, 0.9) 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
       text-align: center;
-      padding: 30px;
+      padding: 24px;
     }
 
     .zone-map-overlay svg {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 16px;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 12px;
       opacity: 0.9;
     }
 
     .zone-map-overlay h4 {
-      font-size: 24px;
-      margin-bottom: 8px;
+      font-size: 20px;
+      margin-bottom: 6px;
       color: white;
     }
 
     .zone-map-overlay p {
-      font-size: 14px;
+      font-size: 13px;
       opacity: 0.85;
     }
 
-    .zone-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 32px;
+    .zone-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .zone-item {
-      padding: 16px 20px;
-      background: var(--cream);
-      border-radius: 12px;
-      font-size: 15px;
+    .zone-tag {
+      padding: 8px 14px;
+      background: var(--white);
+      border-radius: 20px;
+      font-size: 13px;
       font-weight: 500;
+      color: var(--text-light);
+      border: 1px solid rgba(0,0,0,0.06);
       transition: all 0.3s;
-      border: 1px solid transparent;
     }
 
-    .zone-item:hover {
+    .zone-tag:hover {
       border-color: var(--primary);
-      background: rgba(61, 107, 124, 0.08);
+      color: var(--primary);
       transform: translateX(5px);
     }
 
