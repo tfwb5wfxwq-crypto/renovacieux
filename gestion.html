@@ -2053,6 +2053,142 @@
 
           <div class="divider"></div>
 
+          <!-- DÉTAILS TOMBE -->
+          <h4 style="font-size: 14px; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>🪦</span> Détails de la tombe
+          </h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Âge approximatif</label>
+              <select id="detail-tombe-age">
+                <option value="">Non renseigné</option>
+                <option value="recent">Récent (< 10 ans)</option>
+                <option value="moyen">Moyen (10-30 ans)</option>
+                <option value="ancien">Ancien (30-50 ans)</option>
+                <option value="tres_ancien">Très ancien (> 50 ans)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Matériau</label>
+              <select id="detail-tombe-materiau">
+                <option value="">Non renseigné</option>
+                <option value="granit">Granit</option>
+                <option value="marbre">Marbre</option>
+                <option value="pierre">Pierre</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Taille</label>
+              <select id="detail-tombe-taille">
+                <option value="">Non renseigné</option>
+                <option value="simple">Simple (1 place)</option>
+                <option value="double">Double (2 places)</option>
+                <option value="caveau">Caveau familial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>État général</label>
+              <select id="detail-tombe-etat">
+                <option value="">Non renseigné</option>
+                <option value="bon">Bon état</option>
+                <option value="moyen">État moyen</option>
+                <option value="mauvais">Mauvais état</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- TRAVAUX À EFFECTUER -->
+          <h4 style="font-size: 14px; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>🔧</span> Travaux à effectuer
+          </h4>
+          <div class="travaux-checklist" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-nettoyage" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Nettoyage simple</span>
+              <span style="color: var(--primary); font-weight: 600;">40€</span>
+            </label>
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-karcher" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Nettoyage haute pression</span>
+              <span style="color: var(--primary); font-weight: 600;">60€</span>
+            </label>
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-lettres" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Rénovation lettres</span>
+              <span style="color: var(--primary); font-weight: 600;">80€</span>
+            </label>
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-joints" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Joints à refaire</span>
+              <span style="color: var(--primary); font-weight: 600;">40€</span>
+            </label>
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-accessoires" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Remplacement accessoires</span>
+              <span style="color: var(--primary); font-weight: 600;">30€</span>
+            </label>
+            <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer;">
+              <input type="checkbox" id="travail-fleurs" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
+              <span style="flex: 1;">Fleurissement</span>
+              <span style="color: var(--primary); font-weight: 600;">25€</span>
+            </label>
+          </div>
+          <div class="form-row" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label>Nombre de jours estimé</label>
+              <select id="detail-nb-jours" onchange="updatePriceFromTravaux()">
+                <option value="0.5">Demi-journée</option>
+                <option value="1" selected>1 jour</option>
+                <option value="2">2 jours</option>
+                <option value="3">3 jours</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Zone géographique</label>
+              <select id="detail-zone" onchange="toggleZoneOptions()">
+                <option value="idf">Île-de-France</option>
+                <option value="cote-azur">Côte d'Azur (+150€)</option>
+                <option value="paca">PACA autre (+120€)</option>
+                <option value="sud-ouest">Sud-Ouest (+130€)</option>
+                <option value="bretagne">Bretagne (+100€)</option>
+                <option value="normandie">Normandie (+60€)</option>
+                <option value="centre">Centre (+50€)</option>
+              </select>
+            </div>
+          </div>
+          <div id="zone-idf-options" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label>Distance (km depuis La Celle-St-Cloud)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="number" id="detail-distance-km" placeholder="Auto" min="0" style="flex: 1;" onchange="updatePriceFromTravaux()">
+                <button type="button" class="btn btn-outline" onclick="autoDetectDistance()" style="padding: 8px 12px;" title="Détecter depuis cimetière">📍</button>
+              </div>
+            </div>
+          </div>
+          <div id="frais-deplacement" style="display: none; background: var(--orange-light); padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px;">
+            <span style="color: var(--orange);">🚗 Frais déplacement : <strong id="frais-deplacement-montant">0€</strong></span>
+            <span id="frais-deplacement-detail" style="color: var(--text-muted); margin-left: 8px;"></span>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <button type="button" class="btn btn-primary" onclick="applyTravauxToPrice()" style="width: 100%;">
+              📊 Calculer et appliquer au prix final
+            </button>
+          </div>
+          <div id="travaux-total" style="display: none; background: linear-gradient(135deg, var(--green-light) 0%, #D4F0DB 100%); padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--text);">Estimation</span>
+              <span id="travaux-total-prix" style="font-size: 18px; font-weight: 700; color: var(--green);">0€</span>
+            </div>
+            <div id="travaux-detail" style="font-size: 12px; color: var(--text-light); margin-top: 8px;"></div>
+          </div>
+
+          <div class="divider"></div>
+
           <div class="form-row">
             <div class="form-group">
               <label>Formule choisie</label>
@@ -2477,6 +2613,73 @@
       ponctuel: { name: 'Ponctuel', price: 89, desc: 'Intervention unique' },
       serenite: { name: 'Sérénité', price: 180, desc: '2 passages par an' },
       prestige: { name: 'Prestige', price: 420, desc: '4 passages par an' }
+    };
+
+    // Travaux et prix unitaires (base tombe simple)
+    const TRAVAUX_PRIX = {
+      nettoyage: 40,
+      karcher: 60,
+      lettres: 80,
+      joints: 40,
+      accessoires: 30,
+      fleurs: 25
+    };
+
+    // Coefficient selon taille
+    const TAILLE_COEF = {
+      simple: 1,
+      double: 1.5,
+      caveau: 2
+    };
+
+    // Distance depuis La Celle-Saint-Cloud (base) - cimetières courants IDF
+    // + supplément parking/essence pour Paris
+    const CIMETIERES_DISTANCE = {
+      // Yvelines (78) - proche, facile
+      'celle-saint-cloud': { km: 0, parking: 0 },
+      'bougival': { km: 3, parking: 0 },
+      'louveciennes': { km: 4, parking: 0 },
+      'marly-le-roi': { km: 5, parking: 0 },
+      'saint-germain-en-laye': { km: 8, parking: 0 },
+      'versailles': { km: 10, parking: 5 },
+      'le chesnay': { km: 6, parking: 0 },
+      'rueil-malmaison': { km: 6, parking: 0 },
+      // Hauts-de-Seine (92)
+      'nanterre': { km: 8, parking: 5 },
+      'suresnes': { km: 7, parking: 5 },
+      'puteaux': { km: 9, parking: 10 },
+      'courbevoie': { km: 10, parking: 10 },
+      'neuilly-sur-seine': { km: 12, parking: 15 },
+      'boulogne-billancourt': { km: 14, parking: 15 },
+      'issy-les-moulineaux': { km: 16, parking: 10 },
+      // Paris - parking cher + galère
+      'père lachaise': { km: 25, parking: 25 },
+      'montmartre': { km: 22, parking: 25 },
+      'montparnasse': { km: 20, parking: 25 },
+      'passy': { km: 18, parking: 25 },
+      'batignolles': { km: 20, parking: 25 },
+      'pantin': { km: 28, parking: 15 },
+      'thiais': { km: 30, parking: 10 },
+      'bagneux': { km: 22, parking: 10 },
+      // Val-de-Marne (94)
+      'vincennes': { km: 28, parking: 15 },
+      'saint-mandé': { km: 26, parking: 15 },
+      // Défaut
+      'default': { km: 30, parking: 10 }
+    };
+
+    // Frais de déplacement
+    const FRAIS_KM = 0.60; // 0.60€/km (essence + usure)
+    const SEUIL_GRATUIT = 10; // km gratuits
+
+    // Zones hors IDF - frais fixes (transport + hébergement si besoin)
+    const ZONES_LONGUE_DISTANCE = {
+      'cote-azur': { label: 'Côte d\'Azur', frais: 150, desc: 'Train/avion + déplacements locaux' },
+      'paca': { label: 'PACA (autre)', frais: 120, desc: 'Train + déplacements' },
+      'sud-ouest': { label: 'Sud-Ouest', frais: 130, desc: 'Train + déplacements' },
+      'bretagne': { label: 'Bretagne', frais: 100, desc: 'Train + déplacements' },
+      'normandie': { label: 'Normandie', frais: 60, desc: 'Voiture' },
+      'centre': { label: 'Centre', frais: 50, desc: 'Voiture' }
     };
 
     const STATUS_LABELS = {
@@ -2982,6 +3185,24 @@
       document.getElementById('detail-statut').value = client.statut || 'nouveau';
       document.getElementById('detail-paiement').value = client.mode_paiement || '';
 
+      // Tombe details
+      document.getElementById('detail-tombe-age').value = client.tombe_age || '';
+      document.getElementById('detail-tombe-materiau').value = client.tombe_materiau || '';
+      document.getElementById('detail-tombe-taille').value = client.tombe_taille || '';
+      document.getElementById('detail-tombe-etat').value = client.tombe_etat || '';
+
+      // Travaux - parse JSON and set checkboxes
+      const travaux = client.travaux ? JSON.parse(client.travaux) : [];
+      for (const key of Object.keys(TRAVAUX_PRIX)) {
+        const checkbox = document.getElementById('travail-' + key);
+        if (checkbox) checkbox.checked = travaux.includes(key);
+      }
+      document.getElementById('detail-nb-jours').value = client.nb_jours || '1';
+      document.getElementById('detail-zone').value = client.zone || 'idf';
+      document.getElementById('detail-distance-km').value = client.distance_km || '';
+      toggleZoneOptions();
+      updatePriceFromTravaux();
+
       // Facile toggle
       document.querySelectorAll('[onclick*="facile"]').forEach(el => {
         el.classList.toggle('selected', el.dataset.value === client.facile_trouver);
@@ -3103,6 +3324,24 @@
       document.getElementById('detail-statut').value = 'nouveau';
       document.getElementById('detail-paiement').value = '';
 
+      // Clear tombe details
+      document.getElementById('detail-tombe-age').value = '';
+      document.getElementById('detail-tombe-materiau').value = '';
+      document.getElementById('detail-tombe-taille').value = '';
+      document.getElementById('detail-tombe-etat').value = '';
+
+      // Clear travaux checkboxes
+      for (const key of Object.keys(TRAVAUX_PRIX)) {
+        const checkbox = document.getElementById('travail-' + key);
+        if (checkbox) checkbox.checked = false;
+      }
+      document.getElementById('detail-nb-jours').value = '1';
+      document.getElementById('detail-zone').value = 'idf';
+      document.getElementById('detail-distance-km').value = '';
+      document.getElementById('travaux-total').style.display = 'none';
+      document.getElementById('frais-deplacement').style.display = 'none';
+      toggleZoneOptions();
+
       document.querySelectorAll('[onclick*="facile"]').forEach(el => el.classList.remove('selected'));
 
       // Clear dates & history
@@ -3136,6 +3375,198 @@
       if (formuleKey === 'serenite' || formuleKey === 'prestige') {
         suggestDates(formuleKey);
       }
+    }
+
+    function updatePriceFromTravaux() {
+      const totalDiv = document.getElementById('travaux-total');
+      const totalPrix = document.getElementById('travaux-total-prix');
+      const detailDiv = document.getElementById('travaux-detail');
+      const fraisDiv = document.getElementById('frais-deplacement');
+      const fraisMontant = document.getElementById('frais-deplacement-montant');
+      const fraisDetail = document.getElementById('frais-deplacement-detail');
+
+      // Get selected travaux
+      const travaux = [];
+      let basePrix = 0;
+      for (const [key, prix] of Object.entries(TRAVAUX_PRIX)) {
+        const checkbox = document.getElementById('travail-' + key);
+        if (checkbox && checkbox.checked) {
+          travaux.push(key);
+          basePrix += prix;
+        }
+      }
+
+      if (travaux.length === 0) {
+        totalDiv.style.display = 'none';
+        fraisDiv.style.display = 'none';
+        return;
+      }
+
+      // Get taille coefficient
+      const taille = document.getElementById('detail-tombe-taille').value || 'simple';
+      const coef = TAILLE_COEF[taille] || 1;
+
+      // Get number of days
+      const nbJours = parseFloat(document.getElementById('detail-nb-jours').value) || 1;
+
+      // Calculate total: base price * size coefficient * days (if > 1 day)
+      let totalTravaux = basePrix * coef;
+      if (nbJours > 1) {
+        totalTravaux = totalTravaux * nbJours * 0.8; // 20% discount for multi-day
+      } else if (nbJours === 0.5) {
+        totalTravaux = totalTravaux * 0.6; // 40% discount for half-day
+      }
+      totalTravaux = Math.round(totalTravaux);
+
+      // Calculate travel costs
+      let fraisDeplacement = 0;
+      let fraisDetailText = '';
+      const zone = document.getElementById('detail-zone').value;
+
+      if (zone === 'idf') {
+        // IDF - calcul par km
+        let distanceKm = parseFloat(document.getElementById('detail-distance-km').value) || 0;
+        let parking = 0;
+
+        // Try to auto-detect if no manual km
+        if (distanceKm === 0) {
+          const detected = detectDistanceFromCimetiere();
+          if (detected) {
+            distanceKm = detected.km;
+            parking = detected.parking;
+          }
+        }
+
+        if (distanceKm > SEUIL_GRATUIT) {
+          fraisDeplacement = Math.round((distanceKm - SEUIL_GRATUIT) * FRAIS_KM * nbJours);
+        }
+        fraisDeplacement += parking * nbJours;
+
+        let detailParts = [];
+        if (distanceKm > SEUIL_GRATUIT) detailParts.push(`${distanceKm}km`);
+        if (parking > 0) detailParts.push(`parking ${parking}€`);
+        fraisDetailText = detailParts.join(' + ');
+      } else {
+        // Hors IDF - frais fixes
+        const zoneData = ZONES_LONGUE_DISTANCE[zone];
+        if (zoneData) {
+          fraisDeplacement = zoneData.frais;
+          fraisDetailText = zoneData.desc;
+        }
+      }
+
+      // Show frais déplacement
+      if (fraisDeplacement > 0) {
+        fraisDiv.style.display = 'block';
+        fraisMontant.textContent = fraisDeplacement + '€';
+        fraisDetail.textContent = fraisDetailText ? `(${fraisDetailText})` : '';
+      } else {
+        fraisDiv.style.display = 'none';
+      }
+
+      const total = totalTravaux + fraisDeplacement;
+
+      // Show result
+      totalDiv.style.display = 'block';
+      totalPrix.textContent = total + '€';
+
+      // Build detail
+      let detail = `Travaux: ${basePrix}€`;
+      if (coef !== 1) {
+        detail += ` × ${coef} (${taille})`;
+      }
+      if (nbJours !== 1) {
+        detail += ` × ${nbJours}j`;
+      }
+      if (fraisDeplacement > 0) {
+        detail += ` + ${fraisDeplacement}€ déplacement`;
+      }
+      detailDiv.textContent = detail;
+    }
+
+    function detectDistanceFromCimetiere() {
+      const client = clients.find(c => c.id === currentClientId);
+      const cimetiere = client?.cimetiere || document.getElementById('edit-cimetiere')?.value || '';
+      if (!cimetiere) return null;
+
+      const cimLower = cimetiere.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      for (const [key, data] of Object.entries(CIMETIERES_DISTANCE)) {
+        if (key !== 'default' && cimLower.includes(key)) {
+          return data;
+        }
+      }
+      return CIMETIERES_DISTANCE['default'];
+    }
+
+    function autoDetectDistance() {
+      const detected = detectDistanceFromCimetiere();
+      if (detected) {
+        document.getElementById('detail-distance-km').value = detected.km;
+        updatePriceFromTravaux();
+        showToast(`Distance détectée: ${detected.km}km`, 'success');
+      } else {
+        showToast('Cimetière non reconnu, entre la distance manuellement', 'error');
+      }
+    }
+
+    function toggleZoneOptions() {
+      const zone = document.getElementById('detail-zone').value;
+      const idfOptions = document.getElementById('zone-idf-options');
+
+      if (zone === 'idf') {
+        idfOptions.style.display = 'block';
+      } else {
+        idfOptions.style.display = 'none';
+        document.getElementById('detail-distance-km').value = '';
+      }
+      updatePriceFromTravaux();
+    }
+
+    function applyTravauxToPrice() {
+      const totalPrix = document.getElementById('travaux-total-prix');
+      if (!totalPrix || totalPrix.textContent === '0€') {
+        showToast('Sélectionne des travaux d\'abord', 'error');
+        return;
+      }
+
+      const prix = parseInt(totalPrix.textContent);
+      document.getElementById('detail-prix').value = prix;
+      document.getElementById('detail-formule').value = 'custom';
+
+      // Build price note with detail
+      const travaux = [];
+      for (const [key, prixUnit] of Object.entries(TRAVAUX_PRIX)) {
+        const checkbox = document.getElementById('travail-' + key);
+        if (checkbox && checkbox.checked) {
+          const labels = {
+            nettoyage: 'Nettoyage',
+            karcher: 'Karcher',
+            lettres: 'Lettres',
+            joints: 'Joints',
+            accessoires: 'Accessoires',
+            fleurs: 'Fleurs'
+          };
+          travaux.push(labels[key]);
+        }
+      }
+
+      // Build note
+      let noteParts = [travaux.join(' + ')];
+
+      const taille = document.getElementById('detail-tombe-taille').value;
+      if (taille === 'caveau') noteParts.push('caveau');
+      else if (taille === 'double') noteParts.push('double');
+
+      const zone = document.getElementById('detail-zone').value;
+      if (zone !== 'idf') {
+        const zoneData = ZONES_LONGUE_DISTANCE[zone];
+        if (zoneData) noteParts.push(zoneData.label);
+      }
+
+      document.getElementById('detail-prix-note').value = noteParts.filter(p => p).join(' • ');
+
+      showToast('Prix appliqué: ' + prix + '€', 'success');
     }
 
     function suggestDates(formuleKey) {
@@ -3204,7 +3635,17 @@
         prix_note: document.getElementById('detail-prix-note').value,
         statut: document.getElementById('detail-statut').value,
         mode_paiement: document.getElementById('detail-paiement').value,
-        facile_trouver: facileEl ? facileEl.dataset.value : ''
+        facile_trouver: facileEl ? facileEl.dataset.value : '',
+        // Tombe details
+        tombe_age: document.getElementById('detail-tombe-age').value,
+        tombe_materiau: document.getElementById('detail-tombe-materiau').value,
+        tombe_taille: document.getElementById('detail-tombe-taille').value,
+        tombe_etat: document.getElementById('detail-tombe-etat').value,
+        // Travaux
+        travaux: JSON.stringify(Object.keys(TRAVAUX_PRIX).filter(key => document.getElementById('travail-' + key)?.checked)),
+        nb_jours: document.getElementById('detail-nb-jours').value,
+        zone: document.getElementById('detail-zone').value,
+        distance_km: document.getElementById('detail-distance-km').value ? parseFloat(document.getElementById('detail-distance-km').value) : null
       };
 
       let success;

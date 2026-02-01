@@ -35,6 +35,16 @@ ALTER TABLE clients ADD COLUMN IF NOT EXISTS stripe_subscription_id TEXT;
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS photos TEXT;
 
+-- Nouveaux champs pour devis détaillé
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS tombe_age TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS tombe_materiau TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS tombe_taille TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS tombe_etat TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS travaux TEXT;  -- JSON array of work types
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS nb_jours TEXT;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS zone TEXT DEFAULT 'idf';
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS distance_km DECIMAL;
+
 -- Activer RLS (Row Level Security)
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
 
