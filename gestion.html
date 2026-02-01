@@ -2108,59 +2108,57 @@
             <label class="travail-item" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; cursor: pointer; transition: all 0.2s;">
               <input type="checkbox" id="travail-fleurs" onchange="updatePriceFromTravaux()" style="width: 18px; height: 18px;">
               <span style="flex: 1;">Fleurissement</span>
-              <span style="color: var(--primary); font-weight: 600;">30€</span>
+              <span style="color: var(--primary); font-weight: 600;">50€</span>
             </label>
           </div>
 
-          <!-- SÉLECTION OFFRE -->
-          <div id="offre-selection" style="display: none; margin-bottom: 16px;">
-
-            <!-- Option 1: Intervention seule -->
-            <div id="offre-intervention" onclick="selectOffre('intervention')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; border: 3px solid transparent; transition: all 0.2s;">
+          <!-- SÉLECTION OFFRE - INTERVENTION (si travaux cochés) -->
+          <div id="offre-intervention-section" style="display: none; margin-bottom: 16px;">
+            <div id="offre-intervention" onclick="selectOffre('intervention')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px 20px; border-radius: 12px; border: 3px solid transparent; transition: all 0.2s;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                  <div style="font-size: 14px; font-weight: 600;">🔧 Intervention seule</div>
+                  <div style="font-size: 14px; font-weight: 600;">🔧 Remise en état seule</div>
                   <div id="prix-detail-lignes" style="font-size: 11px; opacity: 0.7; margin-top: 4px;"></div>
                 </div>
                 <span id="prix-ponctuel" style="font-size: 28px; font-weight: 700;">0€</span>
               </div>
             </div>
+          </div>
 
-            <!-- Option 2: Intervention + Formule -->
-            <div id="offre-formule-section" style="background: linear-gradient(135deg, var(--green) 0%, #2D8A47 100%); color: white; padding: 16px 20px; border-radius: 12px; border: 3px solid transparent; transition: all 0.2s;">
-              <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">🌿 Intervention + Entretien annuel <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px;">-10%</span></div>
+          <!-- SÉLECTION OFFRE - FORMULES (toujours visible) -->
+          <div id="offre-formule-section" style="background: linear-gradient(135deg, var(--green) 0%, #2D8A47 100%); color: white; padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; border: 3px solid transparent; transition: all 0.2s;">
+            <div id="formule-titre" style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">🌿 Entretien annuel</div>
 
-              <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-                <button type="button" onclick="selectOffre('serenite')" id="btn-serenite" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
-                  <div style="font-size: 13px; font-weight: 600;">Sérénité</div>
-                  <div style="font-size: 11px; opacity: 0.8;">2 passages/an</div>
-                  <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Intervention + <span id="prix-serenite-base">180€</span></div>
-                  <div id="prix-serenite-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">0€</div>
-                </button>
-                <button type="button" onclick="selectOffre('prestige')" id="btn-prestige" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
-                  <div style="font-size: 13px; font-weight: 600;">Prestige</div>
-                  <div style="font-size: 11px; opacity: 0.8;">4 passages/an</div>
-                  <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">Intervention + <span id="prix-prestige-base">380€</span></div>
-                  <div id="prix-prestige-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">0€</div>
-                </button>
-              </div>
-
-              <label style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; font-size: 12px;">
-                <input type="checkbox" id="formule-fleurs" onchange="updateOffrePrices()" style="width: 14px; height: 14px;">
-                <span style="flex: 1;">💐 Fleurs à chaque passage</span>
-                <span style="opacity: 0.8;">+30€/passage</span>
-              </label>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <button type="button" onclick="selectOffre('serenite')" id="btn-serenite" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <div style="font-size: 13px; font-weight: 600;">Sérénité</div>
+                <div style="font-size: 11px; opacity: 0.8;">2 passages/an</div>
+                <div id="prix-serenite-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">180€</div>
+                <div id="prix-serenite-detail" style="font-size: 10px; opacity: 0.7;"></div>
+              </button>
+              <button type="button" onclick="selectOffre('prestige')" id="btn-prestige" style="flex: 1; padding: 10px 8px; border: 2px solid rgba(255,255,255,0.3); background: transparent; color: white; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <div style="font-size: 13px; font-weight: 600;">Prestige</div>
+                <div style="font-size: 11px; opacity: 0.8;">4 passages/an</div>
+                <div id="prix-prestige-total" style="font-size: 18px; font-weight: 700; margin-top: 4px;">420€</div>
+                <div id="prix-prestige-detail" style="font-size: 10px; opacity: 0.7;"></div>
+              </button>
             </div>
 
-            <!-- Récap sélection -->
-            <div id="offre-recap" style="display: none; margin-top: 12px; padding: 12px 16px; background: var(--bg); border: 2px solid var(--primary); border-radius: 10px;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <span style="font-size: 12px; color: var(--text-muted);">Offre sélectionnée</span>
-                  <div id="offre-recap-nom" style="font-weight: 600; color: var(--text);"></div>
-                </div>
-                <div id="offre-recap-prix" style="font-size: 24px; font-weight: 700; color: var(--primary);"></div>
+            <label style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; font-size: 12px;">
+              <input type="checkbox" id="formule-fleurs" onchange="updateOffrePrices()" style="width: 14px; height: 14px;">
+              <span style="flex: 1;">💐 Fleurs à chaque passage</span>
+              <span style="opacity: 0.8;">+50€/passage</span>
+            </label>
+          </div>
+
+          <!-- Récap sélection -->
+          <div id="offre-recap" style="display: none; margin-bottom: 16px; padding: 12px 16px; background: var(--bg); border: 2px solid var(--primary); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 12px; color: var(--text-muted);">Offre sélectionnée</span>
+                <div id="offre-recap-nom" style="font-weight: 600; color: var(--text);"></div>
               </div>
+              <div id="offre-recap-prix" style="font-size: 24px; font-weight: 700; color: var(--primary);"></div>
             </div>
           </div>
 
@@ -2616,7 +2614,7 @@
       karcher: 60,        // Haute pression
       lettres: 80,        // Redorure / peinture lettres
       joints: 50,         // Réfection joints
-      fleurs: 30          // Fleurissement
+      fleurs: 50          // Fleurissement
     };
 
     // Coefficient selon état (vieille tombe = plus de travail/risque)
@@ -3231,6 +3229,11 @@
       document.getElementById('detail-zone').value = client.zone || 'idf';
       document.getElementById('detail-distance-km').value = client.distance_km || '';
       toggleZoneOptions();
+
+      // Reset offre selection when opening new client
+      selectedOffre = null;
+      selectedUpsell = null;
+      window.currentInterventionTotal = 0;
       updatePriceFromTravaux();
 
       // Facile toggle
@@ -3415,7 +3418,6 @@
     let selectedUpsell = null; // for compatibility
 
     function updatePriceFromTravaux() {
-      const offreSection = document.getElementById('offre-selection');
       const prixPonctuelSpan = document.getElementById('prix-ponctuel');
       const prixDetailLignes = document.getElementById('prix-detail-lignes');
       const fraisDiv = document.getElementById('frais-deplacement');
@@ -3436,13 +3438,30 @@
         }
       }
 
+      // Get intervention section
+      const interventionSection = document.getElementById('offre-intervention-section');
+
       if (travaux.length === 0) {
-        if (offreSection) offreSection.style.display = 'none';
+        // Pas de travaux - cacher intervention, mais formule toujours dispo
+        if (interventionSection) interventionSection.style.display = 'none';
         if (fraisDiv) fraisDiv.style.display = 'none';
-        selectedOffre = null;
-        updateOffreRecap();
+
+        // Reset intervention price but keep formule selection possible
+        window.currentInterventionTotal = 0;
+
+        // If intervention was selected, deselect it
+        if (selectedOffre === 'intervention') {
+          selectedOffre = null;
+          updateOffreRecap();
+        }
+
+        // Update formule prices (sans intervention)
+        updateOffrePrices();
         return;
       }
+
+      // Show intervention section when travaux selected
+      if (interventionSection) interventionSection.style.display = 'block';
 
       // Get coefficients
       const taille = document.getElementById('detail-tombe-taille').value || 'simple';
@@ -3553,10 +3572,6 @@
         lignesDetail.push(coefExplain.join(' • '));
       }
 
-      // Show offre selection
-      if (offreSection) {
-        offreSection.style.display = 'block';
-      }
       if (prixPonctuelSpan) {
         prixPonctuelSpan.textContent = total + '€';
       }
@@ -3577,7 +3592,7 @@
     // Prix de base des formules
     const FORMULE_BASE = { serenite: 180, prestige: 380 };
     const FORMULE_PASSAGES = { serenite: 2, prestige: 4 };
-    const FLEURS_PAR_PASSAGE = 30;
+    const FLEURS_PAR_PASSAGE = 50;
 
     function getFormulePrix(formule) {
       const avecFleurs = document.getElementById('formule-fleurs')?.checked || false;
@@ -3594,18 +3609,32 @@
       const prixSereniteBase = FORMULE_BASE.serenite + (avecFleurs ? FLEURS_PAR_PASSAGE * FORMULE_PASSAGES.serenite : 0);
       const prixPrestigeBase = FORMULE_BASE.prestige + (avecFleurs ? FLEURS_PAR_PASSAGE * FORMULE_PASSAGES.prestige : 0);
 
-      // Prix combinés avec -10%
-      const prixSereniteTot = Math.round((intervention + prixSereniteBase) * 0.9);
-      const prixPrestigeTot = Math.round((intervention + prixPrestigeBase) * 0.9);
+      // Prix affichés : combiné -10% si intervention, sinon juste formule
+      let prixSereniteTot, prixPrestigeTot;
+      const formuleTitre = document.getElementById('formule-titre');
+      const elSereniteDetail = document.getElementById('prix-serenite-detail');
+      const elPrestigeDetail = document.getElementById('prix-prestige-detail');
+
+      if (intervention > 0) {
+        // Combiné avec -10%
+        prixSereniteTot = Math.round((intervention + prixSereniteBase) * 0.9);
+        prixPrestigeTot = Math.round((intervention + prixPrestigeBase) * 0.9);
+        if (formuleTitre) formuleTitre.textContent = '🌿 Combinez avec formule (-10%)';
+        if (elSereniteDetail) elSereniteDetail.textContent = `Intervention + formule`;
+        if (elPrestigeDetail) elPrestigeDetail.textContent = `Intervention + formule`;
+      } else {
+        // Formule seule (pas de réduction)
+        prixSereniteTot = prixSereniteBase;
+        prixPrestigeTot = prixPrestigeBase;
+        if (formuleTitre) formuleTitre.textContent = '🌿 Entretien annuel';
+        if (elSereniteDetail) elSereniteDetail.textContent = '';
+        if (elPrestigeDetail) elPrestigeDetail.textContent = '';
+      }
 
       // Mettre à jour affichage
-      const elSereniteBase = document.getElementById('prix-serenite-base');
-      const elPrestigeBase = document.getElementById('prix-prestige-base');
       const elSereniteTot = document.getElementById('prix-serenite-total');
       const elPrestigeTot = document.getElementById('prix-prestige-total');
 
-      if (elSereniteBase) elSereniteBase.textContent = prixSereniteBase + '€';
-      if (elPrestigeBase) elPrestigeBase.textContent = prixPrestigeBase + '€';
       if (elSereniteTot) elSereniteTot.textContent = prixSereniteTot + '€';
       if (elPrestigeTot) elPrestigeTot.textContent = prixPrestigeTot + '€';
     }
@@ -3662,8 +3691,17 @@
       } else {
         const formulePrix = getFormulePrix(selectedOffre);
         const formuleNom = selectedOffre === 'serenite' ? 'Sérénité' : 'Prestige';
-        prix = Math.round((intervention + formulePrix) * 0.9);
-        nom = `Intervention + ${formuleNom}${avecFleurs ? ' + Fleurs' : ''} (-10%)`;
+        const passages = selectedOffre === 'serenite' ? '2 passages' : '4 passages';
+
+        if (intervention > 0) {
+          // Combiné avec -10%
+          prix = Math.round((intervention + formulePrix) * 0.9);
+          nom = `Intervention + ${formuleNom}${avecFleurs ? ' + Fleurs' : ''} (-10%)`;
+        } else {
+          // Formule seule
+          prix = formulePrix;
+          nom = `Formule ${formuleNom} (${passages}/an)${avecFleurs ? ' + Fleurs' : ''}`;
+        }
       }
 
       recapDiv.style.display = 'block';
