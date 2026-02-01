@@ -2672,24 +2672,31 @@
       'cote-azur': { label: 'Côte d\'Azur', fraisTransport: 150, desc: 'Train/avion A/R' }
     };
 
-    // Cimetières Côte d'Azur - distances depuis Nice (base)
+    // Cimetières Côte d'Azur - distances depuis Biot (base)
     const CIMETIERES_COTE_AZUR = {
-      'nice': { km: 5, parking: 5 },
-      'nice caucade': { km: 8, parking: 5 },
-      'nice cimiez': { km: 6, parking: 5 },
-      'cannes': { km: 35, parking: 10 },
-      'antibes': { km: 25, parking: 8 },
-      'grasse': { km: 40, parking: 5 },
-      'menton': { km: 30, parking: 8 },
-      'monaco': { km: 20, parking: 20 },
-      'cagnes-sur-mer': { km: 15, parking: 5 },
-      'saint-laurent-du-var': { km: 10, parking: 5 },
-      'vence': { km: 25, parking: 5 },
-      'mougins': { km: 30, parking: 5 },
-      'frejus': { km: 65, parking: 5 },
-      'saint-tropez': { km: 100, parking: 15 },
-      'toulon': { km: 150, parking: 10 },
-      'default': { km: 40, parking: 10 }
+      'biot': { km: 0, parking: 0 },
+      'antibes': { km: 5, parking: 5 },
+      'villeneuve-loubet': { km: 8, parking: 5 },
+      'cagnes-sur-mer': { km: 10, parking: 5 },
+      'saint-laurent-du-var': { km: 12, parking: 5 },
+      'vence': { km: 12, parking: 5 },
+      'nice': { km: 20, parking: 10 },
+      'nice caucade': { km: 22, parking: 10 },
+      'nice cimiez': { km: 18, parking: 10 },
+      'cannes': { km: 15, parking: 10 },
+      'mougins': { km: 8, parking: 5 },
+      'grasse': { km: 15, parking: 5 },
+      'vallauris': { km: 5, parking: 5 },
+      'juan-les-pins': { km: 8, parking: 8 },
+      'le cannet': { km: 12, parking: 5 },
+      'mandelieu': { km: 20, parking: 5 },
+      'menton': { km: 45, parking: 8 },
+      'monaco': { km: 35, parking: 20 },
+      'frejus': { km: 45, parking: 5 },
+      'saint-raphael': { km: 50, parking: 5 },
+      'saint-tropez': { km: 80, parking: 15 },
+      'toulon': { km: 130, parking: 10 },
+      'default': { km: 25, parking: 8 }
     };
 
     const STATUS_LABELS = {
@@ -3539,7 +3546,7 @@
       if (detected) {
         document.getElementById('detail-distance-km').value = detected.km;
         updatePriceFromTravaux();
-        const base = zone === 'idf' ? 'La Celle-St-Cloud' : 'Nice';
+        const base = zone === 'idf' ? 'La Celle-St-Cloud' : 'Biot';
         showToast(`Distance détectée: ${detected.km}km depuis ${base}`, 'success');
       } else {
         showToast('Cimetière non reconnu, entre la distance manuellement', 'error');
@@ -3556,7 +3563,7 @@
       if (zone === 'idf') {
         distanceLabel.textContent = 'Distance (km depuis La Celle-St-Cloud)';
       } else if (zone === 'cote-azur') {
-        distanceLabel.textContent = 'Distance (km depuis Nice)';
+        distanceLabel.textContent = 'Distance (km depuis Biot)';
       }
       updatePriceFromTravaux();
     }
