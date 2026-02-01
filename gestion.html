@@ -1295,6 +1295,13 @@
       background: var(--white);
     }
 
+    .photo-upload-zone.dragover {
+      border-color: var(--primary);
+      border-width: 3px;
+      background: linear-gradient(135deg, var(--blue-light) 0%, #D4E5F7 100%);
+      transform: scale(1.03);
+    }
+
     .photo-upload-zone.has-photo {
       border-style: solid;
       border-color: var(--green);
@@ -1465,221 +1472,129 @@
       color: var(--text);
     }
 
-    /* Monthly Dashboard */
-    .monthly-dashboard {
-      background: var(--white);
-      border-radius: 24px;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
+    /* Actions Dashboard */
+    .actions-dashboard {
       margin-bottom: 24px;
     }
 
-    .dashboard-header {
+    .action-section {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .section-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-    }
-
-    .dashboard-header h2 {
-      font-size: 20px;
-      font-weight: 700;
-      min-width: 180px;
-      text-align: center;
-    }
-
-    .month-nav {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .month-nav:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    /* Month Calendar Grid */
-    .month-calendar {
+      gap: 10px;
       padding: 16px 20px;
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
     }
 
-    .calendar-weekdays-mini {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .calendar-weekdays-mini span {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-
-    .calendar-day {
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 10px;
-      color: var(--text-light);
-      cursor: default;
-    }
-
-    .calendar-day.other-month {
-      color: var(--border);
-    }
-
-    .calendar-day.has-intervention {
-      background: var(--primary);
+    .section-header.today {
+      background: linear-gradient(135deg, var(--green) 0%, #2E7D32 100%);
       color: white;
+    }
+
+    .section-header.warning {
+      background: linear-gradient(135deg, var(--orange) 0%, #E65100 100%);
+      color: white;
+    }
+
+    .section-icon {
+      font-size: 20px;
+    }
+
+    .section-header h3 {
+      font-size: 15px;
       font-weight: 700;
-      cursor: pointer;
+      flex: 1;
     }
 
-    .calendar-day.has-intervention:hover {
-      background: var(--primary-dark);
+    .section-content {
+      padding: 12px;
     }
 
-    .calendar-day.today {
-      border: 2px solid var(--green);
-    }
-
-    .calendar-day.today.has-intervention {
-      background: var(--green);
-      border: none;
-    }
-
-    .calendar-day.has-photos {
-      background: var(--green-light);
-      color: var(--green);
-      border: 2px solid var(--green);
-    }
-
-    /* Month Interventions List */
-    .month-interventions {
-      padding: 16px;
-    }
-
-    .intervention-item {
+    /* Action Card */
+    .action-card {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px;
+      padding: 14px 16px;
       background: var(--bg);
-      border-radius: 16px;
-      margin-bottom: 12px;
+      border-radius: 14px;
+      margin-bottom: 10px;
       transition: all 0.2s;
     }
 
-    .intervention-item:last-child {
+    .action-card:last-child {
       margin-bottom: 0;
     }
 
-    .intervention-item.today {
+    .action-card.urgent {
       background: linear-gradient(135deg, var(--green-light) 0%, #E8F5E9 100%);
       border: 2px solid var(--green);
     }
 
-    .intervention-item.done {
-      opacity: 0.7;
-    }
-
-    .intervention-item .date-box {
-      min-width: 60px;
+    .action-card .date-badge {
+      min-width: 55px;
       text-align: center;
-      padding: 10px;
+      padding: 8px 10px;
       background: var(--white);
       border-radius: 12px;
     }
 
-    .intervention-item.today .date-box {
+    .action-card.urgent .date-badge {
       background: var(--green);
       color: white;
     }
 
-    .intervention-item .date-box .day {
-      font-size: 24px;
+    .action-card .date-badge .day {
+      font-size: 22px;
       font-weight: 800;
       line-height: 1;
       color: var(--primary);
     }
 
-    .intervention-item.today .date-box .day {
+    .action-card.urgent .date-badge .day {
       color: white;
     }
 
-    .intervention-item .date-box .weekday {
-      font-size: 11px;
+    .action-card .date-badge .label {
+      font-size: 10px;
       color: var(--text-muted);
       text-transform: uppercase;
       margin-top: 2px;
     }
 
-    .intervention-item.today .date-box .weekday {
+    .action-card.urgent .date-badge .label {
       color: rgba(255,255,255,0.8);
     }
 
-    .intervention-item .client-info {
+    .action-card .card-info {
       flex: 1;
     }
 
-    .intervention-item .client-info h4 {
-      font-size: 16px;
+    .action-card .card-info h4 {
+      font-size: 15px;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
-    .intervention-item .client-info p {
+    .action-card .card-info p {
       font-size: 13px;
       color: var(--text-muted);
     }
 
-    .intervention-item .status-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .intervention-item .status-badge.pending {
-      background: var(--orange-light);
-      color: var(--orange);
-    }
-
-    .intervention-item .status-badge.done {
-      background: var(--green-light);
-      color: var(--green);
-    }
-
-    .intervention-item .action-buttons {
+    .action-card .card-actions {
       display: flex;
       gap: 8px;
     }
 
-    .intervention-item .action-btn {
+    .action-card .card-btn {
       padding: 10px 14px;
       border: none;
       border-radius: 10px;
@@ -1689,39 +1604,39 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
 
-    .intervention-item .action-btn:active {
+    .action-card .card-btn:active {
       transform: scale(0.95);
     }
 
-    .intervention-item .action-btn.photos {
+    .action-card .card-btn.primary {
       background: var(--primary);
       color: white;
     }
 
-    .intervention-item .action-btn.call {
+    .action-card .card-btn.call {
       background: var(--blue);
       color: white;
     }
 
-    .intervention-item .action-btn.view {
+    .action-card .card-btn.secondary {
       background: var(--white);
       color: var(--text);
       border: 1px solid var(--border);
     }
 
-    .no-interventions-msg {
+    .no-actions-msg {
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 20px;
       color: var(--text-muted);
     }
 
-    .no-interventions-msg span {
-      font-size: 40px;
+    .no-actions-msg span {
+      font-size: 36px;
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     /* Info row */
@@ -1921,28 +1836,39 @@
           <!-- Rendered by JS -->
         </div>
 
-        <!-- Monthly Dashboard -->
-        <div class="monthly-dashboard" id="monthlyDashboard">
-          <!-- Header -->
-          <div class="dashboard-header">
-            <button class="month-nav" onclick="changeViewMonth(-1)">‹</button>
-            <h2 id="dashboardMonthTitle">Février 2026</h2>
-            <button class="month-nav" onclick="changeViewMonth(1)">›</button>
-          </div>
-
-          <!-- Mini Calendar Grid -->
-          <div class="month-calendar" id="monthCalendar">
-            <div class="calendar-weekdays-mini">
-              <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+        <!-- Actions Dashboard -->
+        <div class="actions-dashboard" id="actionsDashboard">
+          <!-- Today Section -->
+          <div class="action-section today-section" id="todaySection" style="display: none;">
+            <div class="section-header today">
+              <span class="section-icon">🔥</span>
+              <h3>Aujourd'hui</h3>
             </div>
-            <div class="calendar-grid" id="calendarGrid">
+            <div class="section-content" id="todayList">
               <!-- Rendered by JS -->
             </div>
           </div>
 
-          <!-- Interventions List -->
-          <div class="month-interventions" id="monthInterventions">
-            <!-- Rendered by JS -->
+          <!-- This Week Section -->
+          <div class="action-section week-section" id="weekSection" style="display: none;">
+            <div class="section-header">
+              <span class="section-icon">📅</span>
+              <h3>Cette semaine</h3>
+            </div>
+            <div class="section-content" id="weekList">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Missing Photos Section -->
+          <div class="action-section photos-section" id="photosSection" style="display: none;">
+            <div class="section-header warning">
+              <span class="section-icon">📸</span>
+              <h3>Photos manquantes</h3>
+            </div>
+            <div class="section-content" id="missingPhotosList">
+              <!-- Rendered by JS -->
+            </div>
           </div>
         </div>
 
@@ -2434,15 +2360,19 @@
           </div>
         </div>
 
-        <!-- Upload zones -->
+        <!-- Upload zones with drag & drop -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
           <!-- AVANT -->
-          <div class="photo-upload-zone" id="uploadZoneAvant" onclick="document.getElementById('fileInputAvant').click()">
+          <div class="photo-upload-zone" id="uploadZoneAvant"
+               onclick="document.getElementById('fileInputAvant').click()"
+               ondragover="handleDragOver(event, 'avant')"
+               ondragleave="handleDragLeave(event, 'avant')"
+               ondrop="handleDrop(event, 'avant')">
             <input type="file" id="fileInputAvant" accept="image/*" style="display: none;" onchange="handlePhotoSelect('avant', this)">
             <div class="upload-placeholder" id="uploadPlaceholderAvant">
               <span style="font-size: 40px; margin-bottom: 8px;">📷</span>
               <span style="font-weight: 600; color: var(--text-muted);">AVANT</span>
-              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cliquer pour choisir</span>
+              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Glisser ou cliquer</span>
             </div>
             <div class="upload-preview" id="uploadPreviewAvant" style="display: none;">
               <img id="uploadImgAvant" src="">
@@ -2452,12 +2382,16 @@
           </div>
 
           <!-- APRÈS -->
-          <div class="photo-upload-zone" id="uploadZoneApres" onclick="document.getElementById('fileInputApres').click()">
+          <div class="photo-upload-zone" id="uploadZoneApres"
+               onclick="document.getElementById('fileInputApres').click()"
+               ondragover="handleDragOver(event, 'apres')"
+               ondragleave="handleDragLeave(event, 'apres')"
+               ondrop="handleDrop(event, 'apres')">
             <input type="file" id="fileInputApres" accept="image/*" style="display: none;" onchange="handlePhotoSelect('apres', this)">
             <div class="upload-placeholder" id="uploadPlaceholderApres">
               <span style="font-size: 40px; margin-bottom: 8px;">✨</span>
               <span style="font-weight: 600; color: var(--green);">APRÈS</span>
-              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cliquer pour choisir</span>
+              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Glisser ou cliquer</span>
             </div>
             <div class="upload-preview" id="uploadPreviewApres" style="display: none;">
               <img id="uploadImgApres" src="">
@@ -2484,9 +2418,40 @@
         <button class="btn btn-primary" onclick="savePhotoModal()" id="btnSavePhoto" style="flex: 1;">
           💾 Sauvegarder
         </button>
-        <button class="btn btn-accent" onclick="saveAndSendPhoto()" id="btnSendPhoto" style="flex: 1;">
-          ✉️ Sauvegarder et envoyer
+        <button class="btn btn-accent" onclick="showEmailPreview()" id="btnSendPhoto" style="flex: 1;">
+          ✉️ Prévisualiser l'email
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL PREVIEW MODAL -->
+  <div class="modal-overlay" id="emailPreviewModal">
+    <div class="modal" style="max-width: 650px;">
+      <div class="modal-header">
+        <h2>📧 Aperçu de l'email</h2>
+        <button class="modal-close" onclick="closeEmailPreview()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 0; max-height: 70vh; overflow-y: auto;">
+        <!-- Email preview container -->
+        <div id="emailPreviewContent" style="background: #f5f5f5; padding: 16px;">
+          <!-- Email will be rendered here -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; gap: 12px; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--blue-light); border-radius: 8px;">
+          <span style="font-size: 20px;">📬</span>
+          <div style="flex: 1;">
+            <div style="font-weight: 600; color: var(--text);">Destinataire</div>
+            <div id="emailPreviewRecipient" style="color: var(--primary); font-size: 14px;">email@example.com</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-outline" onclick="closeEmailPreview()" style="flex: 1;">Modifier</button>
+          <button class="btn btn-accent" onclick="confirmSendEmail()" id="btnConfirmSend" style="flex: 1;">
+            ✉️ Envoyer maintenant
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2772,24 +2737,14 @@
 
     function renderDashboard() {
       renderQuickAlerts();
-      renderMonthlyCalendar();
-      renderMonthInterventions();
+      renderTodaySection();
+      renderWeekSection();
+      renderMissingPhotosSection();
     }
 
     function renderQuickAlerts() {
       const container = document.getElementById('quickAlerts');
       const alerts = [];
-
-      // New clients to call back (status = nouveau, older than 1 day)
-      const newClients = clients.filter(c => c.statut === 'nouveau');
-      if (newClients.length > 0) {
-        alerts.push({
-          type: 'callback',
-          emoji: '📞',
-          text: `${newClients.length} nouveau(x) client(s) à rappeler`,
-          action: () => switchTab('nouveaux')
-        });
-      }
 
       // Recent payments (clients who became actif in last 7 days)
       const recentPayments = clients.filter(c => {
@@ -2807,8 +2762,8 @@
         alerts.push({
           type: 'payment',
           emoji: '💳',
-          text: `${recentPayments.length} paiement(s) reçu(s) - dates à vérifier`,
-          action: () => { if (recentPayments[0]) openClient(recentPayments[0].id); }
+          text: `${recentPayments.length} paiement(s) reçu(s) - vérifier les dates`,
+          clientId: recentPayments[0].id
         });
       }
 
@@ -2822,22 +2777,16 @@
         <div class="quick-alert ${a.type}">
           <span class="alert-emoji">${a.emoji}</span>
           <span class="alert-text">${a.text}</span>
-          <button class="alert-action" onclick="${a.type === 'callback' ? "switchTab('nouveaux')" : `openClient(${recentPayments[0]?.id || 0})`}">Voir</button>
+          <button class="alert-action" onclick="openClient(${a.clientId})">Voir</button>
         </div>
       `).join('');
     }
 
-    function renderMonthlyCalendar() {
-      const titleEl = document.getElementById('dashboardMonthTitle');
-      const gridEl = document.getElementById('calendarGrid');
+    function getAllInterventions() {
+      let interventions = [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-      // Update title
-      const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-                          'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-      titleEl.textContent = `${monthNames[viewMonth]} ${viewYear}`;
-
-      // Get all interventions for this month
-      const interventionDates = new Map(); // dateStr -> {hasPhotos, clientId}
       clients.forEach(client => {
         if (client.statut !== 'actif' || !client.dates_intervention) return;
         try {
@@ -2845,121 +2794,100 @@
           const photos = client.photos ? JSON.parse(client.photos) : [];
           dates.forEach(dateStr => {
             const d = new Date(dateStr);
-            if (d.getMonth() === viewMonth && d.getFullYear() === viewYear) {
-              const hasPhotos = photos.some(p => p.date === dateStr);
-              interventionDates.set(dateStr, { hasPhotos, clientId: client.id, dateStr });
-            }
+            d.setHours(0, 0, 0, 0);
+            const hasPhotos = photos.some(p => p.date === dateStr);
+            interventions.push({ client, date: d, dateStr, hasPhotos });
           });
         } catch (e) {}
       });
 
-      // Build calendar grid
-      const firstDay = new Date(viewYear, viewMonth, 1);
-      const lastDay = new Date(viewYear, viewMonth + 1, 0);
-      const startPadding = (firstDay.getDay() + 6) % 7; // Monday = 0
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
-
-      let html = '';
-
-      // Previous month padding
-      const prevMonth = new Date(viewYear, viewMonth, 0);
-      for (let i = startPadding - 1; i >= 0; i--) {
-        html += `<div class="calendar-day other-month">${prevMonth.getDate() - i}</div>`;
-      }
-
-      // Current month days
-      for (let day = 1; day <= lastDay.getDate(); day++) {
-        const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const intervention = interventionDates.get(dateStr);
-        const isToday = dateStr === todayStr;
-
-        let classes = 'calendar-day';
-        if (isToday) classes += ' today';
-        if (intervention) {
-          classes += intervention.hasPhotos ? ' has-photos' : ' has-intervention';
-        }
-
-        const onclick = intervention ? `onclick="openPhotoUpload(${intervention.clientId}, '${intervention.dateStr}')"` : '';
-        html += `<div class="${classes}" ${onclick}>${day}</div>`;
-      }
-
-      // Next month padding
-      const totalCells = startPadding + lastDay.getDate();
-      const remainingCells = (7 - (totalCells % 7)) % 7;
-      for (let i = 1; i <= remainingCells; i++) {
-        html += `<div class="calendar-day other-month">${i}</div>`;
-      }
-
-      gridEl.innerHTML = html;
+      return interventions;
     }
 
-    function renderMonthInterventions() {
-      const container = document.getElementById('monthInterventions');
+    function renderTodaySection() {
+      const section = document.getElementById('todaySection');
+      const container = document.getElementById('todayList');
       const today = new Date();
-      const todayStr = today.toDateString();
+      today.setHours(0, 0, 0, 0);
 
-      // Get interventions for viewed month
-      let interventions = [];
-      clients.forEach(client => {
-        if (client.statut !== 'actif' || !client.dates_intervention) return;
-        try {
-          const dates = JSON.parse(client.dates_intervention);
-          const photos = client.photos ? JSON.parse(client.photos) : [];
-          dates.forEach(dateStr => {
-            const d = new Date(dateStr);
-            if (d.getMonth() === viewMonth && d.getFullYear() === viewYear) {
-              const hasPhotos = photos.some(p => p.date === dateStr);
-              interventions.push({ client, date: d, dateStr, hasPhotos });
-            }
-          });
-        } catch (e) {}
-      });
+      const todayInterventions = getAllInterventions().filter(i =>
+        i.date.getTime() === today.getTime()
+      );
 
-      // Sort by date
-      interventions.sort((a, b) => a.date - b.date);
-
-      if (interventions.length === 0) {
-        container.innerHTML = `
-          <div class="no-interventions-msg">
-            <span>📅</span>
-            <p>Aucune intervention ce mois</p>
-          </div>
-        `;
+      if (todayInterventions.length === 0) {
+        section.style.display = 'none';
         return;
       }
 
-      container.innerHTML = interventions.map(item => {
-        const isToday = item.date.toDateString() === todayStr;
-        const dayNum = item.date.getDate();
-        const weekday = item.date.toLocaleDateString('fr-FR', { weekday: 'short' });
-        const phone = item.client.tel;
+      section.style.display = 'block';
+      container.innerHTML = todayInterventions.map(item => renderActionCard(item, true)).join('');
+    }
 
-        return `
-          <div class="intervention-item ${isToday ? 'today' : ''} ${item.hasPhotos ? 'done' : ''}">
-            <div class="date-box">
-              <div class="day">${dayNum}</div>
-              <div class="weekday">${weekday}</div>
-            </div>
-            <div class="client-info">
-              <h4>${item.client.prenom || ''} ${item.client.nom || ''}</h4>
-              <p>📍 ${item.client.cimetiere || 'Non renseigné'}</p>
-            </div>
-            <span class="status-badge ${item.hasPhotos ? 'done' : 'pending'}">
-              ${item.hasPhotos ? '✓ Fait' : 'À faire'}
-            </span>
-            <div class="action-buttons">
-              ${phone ? `<button class="action-btn call" onclick="window.location.href='tel:${phone}'">📞</button>` : ''}
-              <button class="action-btn photos" onclick="openPhotoUpload(${item.client.id}, '${item.dateStr}')">
-                📷
-              </button>
-              <button class="action-btn view" onclick="openClient(${item.client.id})">
-                →
-              </button>
-            </div>
+    function renderWeekSection() {
+      const section = document.getElementById('weekSection');
+      const container = document.getElementById('weekList');
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const endOfWeek = new Date(today);
+      endOfWeek.setDate(endOfWeek.getDate() + 7);
+
+      const weekInterventions = getAllInterventions()
+        .filter(i => i.date > today && i.date <= endOfWeek)
+        .sort((a, b) => a.date - b.date);
+
+      if (weekInterventions.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      container.innerHTML = weekInterventions.map(item => renderActionCard(item, false)).join('');
+    }
+
+    function renderMissingPhotosSection() {
+      const section = document.getElementById('photosSection');
+      const container = document.getElementById('missingPhotosList');
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const missingPhotos = getAllInterventions()
+        .filter(i => i.date < today && !i.hasPhotos)
+        .sort((a, b) => b.date - a.date) // Most recent first
+        .slice(0, 5); // Limit to 5
+
+      if (missingPhotos.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      container.innerHTML = missingPhotos.map(item => renderActionCard(item, false, true)).join('');
+    }
+
+    function renderActionCard(item, isUrgent, isMissing = false) {
+      const dayNum = item.date.getDate();
+      const label = isMissing
+        ? `il y a ${Math.floor((new Date() - item.date) / (1000 * 60 * 60 * 24))}j`
+        : item.date.toLocaleDateString('fr-FR', { weekday: 'short' });
+      const phone = item.client.tel;
+
+      return `
+        <div class="action-card ${isUrgent ? 'urgent' : ''}">
+          <div class="date-badge">
+            <div class="day">${dayNum}</div>
+            <div class="label">${label}</div>
           </div>
-        `;
-      }).join('');
+          <div class="card-info">
+            <h4>${item.client.prenom || ''} ${item.client.nom || ''}</h4>
+            <p>📍 ${item.client.cimetiere || 'Non renseigné'}</p>
+          </div>
+          <div class="card-actions">
+            ${phone ? `<button class="card-btn call" onclick="window.location.href='tel:${phone}'">📞</button>` : ''}
+            <button class="card-btn primary" onclick="openPhotoUpload(${item.client.id}, '${item.dateStr}')">📷</button>
+            <button class="card-btn secondary" onclick="openClient(${item.client.id})">→</button>
+          </div>
+        </div>
+      `;
     }
 
     // Legacy function name for compatibility
@@ -3919,6 +3847,49 @@
       zone.classList.remove('has-photo');
     }
 
+    // ===== DRAG & DROP =====
+    function handleDragOver(event, type) {
+      event.preventDefault();
+      event.stopPropagation();
+      const zone = document.getElementById('uploadZone' + type.charAt(0).toUpperCase() + type.slice(1));
+      zone.classList.add('dragover');
+    }
+
+    function handleDragLeave(event, type) {
+      event.preventDefault();
+      event.stopPropagation();
+      const zone = document.getElementById('uploadZone' + type.charAt(0).toUpperCase() + type.slice(1));
+      zone.classList.remove('dragover');
+    }
+
+    function handleDrop(event, type) {
+      event.preventDefault();
+      event.stopPropagation();
+      const zone = document.getElementById('uploadZone' + type.charAt(0).toUpperCase() + type.slice(1));
+      zone.classList.remove('dragover');
+
+      const files = event.dataTransfer.files;
+      if (files.length === 0) return;
+
+      const file = files[0];
+      if (!file.type.startsWith('image/')) {
+        showToast('Le fichier doit être une image', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (type === 'avant') {
+          photoModalAvant = dataUrl;
+        } else {
+          photoModalApres = dataUrl;
+        }
+        showUploadPreview(type, dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+
     async function savePhotoModal() {
       if (!photoModalClientId || !photoModalDate) return;
       if (!photoModalAvant && !photoModalApres) {
@@ -3951,6 +3922,120 @@
         closePhotoModal();
         showToast('Photos sauvegardées', 'success');
       }
+    }
+
+    // ===== EMAIL PREVIEW =====
+    function showEmailPreview() {
+      if (!photoModalClientId || !photoModalDate) return;
+      if (!photoModalAvant && !photoModalApres) {
+        showToast('Ajoute au moins une photo', 'error');
+        return;
+      }
+
+      const client = clients.find(c => c.id === photoModalClientId);
+      if (!client) return;
+
+      if (!client.email) {
+        showToast('Le client n\'a pas d\'email', 'error');
+        return;
+      }
+
+      const clientName = `${client.prenom || ''} ${client.nom || ''}`.trim();
+      const interventionDate = new Date(photoModalDate).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
+      // Build photos HTML
+      let photosHtml = '';
+      if (photoModalAvant && photoModalApres) {
+        photosHtml = `
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin: 24px 0;">
+            <tr>
+              <td width="48%" style="padding-right: 8px; vertical-align: top;">
+                <div style="background: #F7F9FA; border-radius: 12px; padding: 16px; text-align: center;">
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: #8A9AAA; text-transform: uppercase; letter-spacing: 1px;">AVANT</p>
+                  <img src="${photoModalAvant}" alt="Photo avant" style="max-width: 100%; border-radius: 8px; display: block;">
+                </div>
+              </td>
+              <td width="48%" style="padding-left: 8px; vertical-align: top;">
+                <div style="background: #F7F9FA; border-radius: 12px; padding: 16px; text-align: center;">
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: #7D8B74; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">APRES</p>
+                  <img src="${photoModalApres}" alt="Photo apres" style="max-width: 100%; border-radius: 8px; display: block;">
+                </div>
+              </td>
+            </tr>
+          </table>
+        `;
+      } else if (photoModalApres) {
+        photosHtml = `
+          <div style="background: #F7F9FA; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
+            <p style="margin: 0 0 12px 0; font-size: 14px; color: #7D8B74; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">RESULTAT DE L'INTERVENTION</p>
+            <img src="${photoModalApres}" alt="Photo apres intervention" style="max-width: 100%; max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">
+          </div>
+        `;
+      } else if (photoModalAvant) {
+        photosHtml = `
+          <div style="background: #F7F9FA; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
+            <p style="margin: 0 0 12px 0; font-size: 14px; color: #8A9AAA; text-transform: uppercase; letter-spacing: 1px;">ETAT INITIAL</p>
+            <img src="${photoModalAvant}" alt="Photo avant intervention" style="max-width: 100%; max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">
+          </div>
+        `;
+      }
+
+      const emailHtml = `
+        <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div style="text-align: center; margin-bottom: 32px;">
+            <div style="font-size: 28px; font-weight: bold; color: #7D8B74;">RENOVACIEUX</div>
+            <p style="color: #8A9AAA; margin: 4px 0;">Renovation et entretien de sepultures</p>
+            <div style="display: inline-block; background: linear-gradient(135deg, #7D8B74 0%, #5F6B57 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 600; margin: 16px 0; font-size: 14px;">✓ INTERVENTION REALISEE</div>
+          </div>
+
+          <p style="color: #1A2632; line-height: 1.6;">Bonjour ${clientName},</p>
+          <p style="color: #1A2632; line-height: 1.6;">Nous avons le plaisir de vous informer que l'intervention sur la sepulture a ete realisee avec succes.</p>
+
+          <div style="background: #FFFFFF; border: 1px solid #E0E7ED; border-radius: 16px; padding: 24px; margin: 24px 0;">
+            <div style="display: flex; margin-bottom: 8px;">
+              <span style="color: #8A9AAA; font-size: 13px; min-width: 100px;">Date</span>
+              <span style="color: #1A2632; font-weight: 500;">${interventionDate}</span>
+            </div>
+            <div style="display: flex;">
+              <span style="color: #8A9AAA; font-size: 13px; min-width: 100px;">Lieu</span>
+              <span style="color: #1A2632; font-weight: 500;">${client.cimetiere || 'Non precise'}</span>
+            </div>
+          </div>
+
+          ${photosHtml}
+
+          <p style="color: #1A2632; line-height: 1.6;">Nous esperons que le resultat vous satisfait pleinement.</p>
+          <p style="color: #1A2632; line-height: 1.6;">N'hesitez pas a nous contacter si vous avez des questions.</p>
+
+          <p style="margin-top: 24px; color: #1A2632; line-height: 1.6;">Cordialement,<br><strong>Dimitri</strong><br>Renovacieux</p>
+
+          <div style="text-align: center; font-size: 12px; color: #8A9AAA; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E7ED;">
+            <p>Renovacieux - Renovation et entretien de sepultures</p>
+            <p>Paris, Ile-de-France & Cote d'Azur</p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('emailPreviewContent').innerHTML = emailHtml;
+      document.getElementById('emailPreviewRecipient').textContent = client.email;
+      document.getElementById('emailPreviewModal').classList.add('active');
+    }
+
+    function closeEmailPreview() {
+      document.getElementById('emailPreviewModal').classList.remove('active');
+    }
+
+    async function confirmSendEmail() {
+      document.getElementById('btnConfirmSend').disabled = true;
+      document.getElementById('btnConfirmSend').textContent = 'Envoi en cours...';
+      closeEmailPreview();
+      await saveAndSendPhoto();
+      document.getElementById('btnConfirmSend').disabled = false;
+      document.getElementById('btnConfirmSend').textContent = '✉️ Envoyer maintenant';
     }
 
     async function saveAndSendPhoto() {
