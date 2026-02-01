@@ -109,7 +109,7 @@
       R
     </text>
 
-    <!-- 5. SPONGE - Simple version on top of R -->
+    <!-- 5. SPONGE - On top of R with bubbles -->
     <g opacity="0">
       <animate attributeName="opacity"
         values="0;0;1;1;0;0"
@@ -137,6 +137,20 @@
         <circle cx="-4" cy="-2" r="2" fill="#D0B030"/>
         <circle cx="3" cy="1" r="1.5" fill="#D0B030"/>
         <circle cx="-2" cy="3" r="1.5" fill="#D0B030"/>
+
+        <!-- Small bubbles -->
+        <g opacity="0.7">
+          <circle cx="-12" cy="-2" r="2.5" fill="#E8F8FF" stroke="#B0E0F0" stroke-width="0.5">
+            <animate attributeName="cy" values="-2;-10;-2" dur="0.7s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.2;0.7" dur="0.7s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="12" cy="0" r="2" fill="#E8F8FF" stroke="#B0E0F0" stroke-width="0.5">
+            <animate attributeName="cy" values="0;-7;0" dur="0.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="0" cy="-10" r="1.5" fill="#E8F8FF" stroke="#B0E0F0" stroke-width="0.5">
+            <animate attributeName="cy" values="-10;-16;-10" dur="0.6s" repeatCount="indefinite"/>
+          </circle>
+        </g>
       </g>
     </g>
 
@@ -163,47 +177,63 @@
       <circle cx="30" cy="48" r="2" fill="#FFD700"/>
     </g>
 
-    <!-- 8. MULTIPLE SMALL FLOWERS -->
-    <!-- Flower 1 - left -->
-    <g transform="translate(52, 50)">
-      <line x1="0" y1="8" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
+    <!-- 8. FLOWERS - LEFT SIDE -->
+    <!-- Flower left 1 -->
+    <g transform="translate(-2, 52)">
+      <line x1="0" y1="6" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
         <animate attributeName="opacity" values="1;1;0.5;0;0;0;0;1" keyTimes="0;0.05;0.10;0.16;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
       </line>
       <g>
         <animate attributeName="opacity" values="1;1;0.4;0;0;0;0;1" keyTimes="0;0.04;0.10;0.16;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
-        <circle cx="-2" cy="-1" r="2.5" fill="#E89090"/>
-        <circle cx="2" cy="-1" r="2.5" fill="#E89090"/>
-        <circle cx="0" cy="-3" r="2.5" fill="#E89090"/>
-        <circle cx="0" cy="1" r="2" fill="#E89090"/>
-        <circle cx="0" cy="-1" r="1.5" fill="#FFE060"/>
+        <animate attributeName="transform" values="translate(0,0);translate(0,0);translate(0,0);translate(0,20)" keyTimes="0;0.10;0.14;0.18" dur="16s" repeatCount="indefinite"/>
+        <circle cx="-2" cy="-1" r="2" fill="#E89090"/>
+        <circle cx="2" cy="-1" r="2" fill="#E89090"/>
+        <circle cx="0" cy="-3" r="2" fill="#E89090"/>
+        <circle cx="0" cy="-1" r="1.2" fill="#FFE060"/>
       </g>
     </g>
-    <!-- Flower 2 - center -->
-    <g transform="translate(58, 48)">
-      <line x1="0" y1="10" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
+    <!-- Flower left 2 -->
+    <g transform="translate(4, 50)">
+      <line x1="0" y1="8" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
         <animate attributeName="opacity" values="1;1;0.5;0;0;0;0;1" keyTimes="0;0.06;0.11;0.17;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
       </line>
       <g>
         <animate attributeName="opacity" values="1;1;0.4;0;0;0;0;1" keyTimes="0;0.05;0.11;0.17;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
-        <circle cx="-2.5" cy="-1" r="3" fill="#F0A0A0"/>
-        <circle cx="2.5" cy="-1" r="3" fill="#F0A0A0"/>
-        <circle cx="0" cy="-4" r="3" fill="#F0A0A0"/>
-        <circle cx="0" cy="2" r="2.5" fill="#F0A0A0"/>
-        <circle cx="0" cy="-1" r="2" fill="#FFE060"/>
+        <animate attributeName="transform" values="translate(0,0);translate(0,0);translate(0,0);translate(0,22)" keyTimes="0;0.11;0.15;0.19" dur="16s" repeatCount="indefinite"/>
+        <circle cx="-2" cy="-1" r="2.5" fill="#F0A0A0"/>
+        <circle cx="2" cy="-1" r="2.5" fill="#F0A0A0"/>
+        <circle cx="0" cy="-3.5" r="2.5" fill="#F0A0A0"/>
+        <circle cx="0" cy="-1" r="1.5" fill="#FFE060"/>
       </g>
     </g>
-    <!-- Flower 3 - right -->
-    <g transform="translate(64, 51)">
+
+    <!-- 8. FLOWERS - RIGHT SIDE -->
+    <!-- Flower right 1 -->
+    <g transform="translate(56, 51)">
       <line x1="0" y1="7" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
+        <animate attributeName="opacity" values="1;1;0.5;0;0;0;0;1" keyTimes="0;0.05;0.10;0.16;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
+      </line>
+      <g>
+        <animate attributeName="opacity" values="1;1;0.4;0;0;0;0;1" keyTimes="0;0.04;0.10;0.16;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="transform" values="translate(0,0);translate(0,0);translate(0,0);translate(0,20)" keyTimes="0;0.10;0.14;0.18" dur="16s" repeatCount="indefinite"/>
+        <circle cx="-2" cy="-1" r="2" fill="#D08080"/>
+        <circle cx="2" cy="-1" r="2" fill="#D08080"/>
+        <circle cx="0" cy="-3" r="2" fill="#D08080"/>
+        <circle cx="0" cy="-1" r="1.2" fill="#FFE060"/>
+      </g>
+    </g>
+    <!-- Flower right 2 -->
+    <g transform="translate(62, 49)">
+      <line x1="0" y1="9" x2="0" y2="0" stroke="#4A8A4A" stroke-width="1.5" stroke-linecap="round">
         <animate attributeName="opacity" values="1;1;0.5;0;0;0;0;1" keyTimes="0;0.07;0.12;0.18;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
       </line>
       <g>
         <animate attributeName="opacity" values="1;1;0.4;0;0;0;0;1" keyTimes="0;0.06;0.12;0.18;0.50;0.95;0.98;1" dur="16s" repeatCount="indefinite"/>
-        <circle cx="-2" cy="-1" r="2" fill="#D08080"/>
-        <circle cx="2" cy="-1" r="2" fill="#D08080"/>
-        <circle cx="0" cy="-3" r="2" fill="#D08080"/>
-        <circle cx="0" cy="1" r="1.5" fill="#D08080"/>
-        <circle cx="0" cy="-1" r="1.2" fill="#FFE060"/>
+        <animate attributeName="transform" values="translate(0,0);translate(0,0);translate(0,0);translate(0,24)" keyTimes="0;0.12;0.16;0.20" dur="16s" repeatCount="indefinite"/>
+        <circle cx="-2.5" cy="-1" r="2.5" fill="#E89090"/>
+        <circle cx="2.5" cy="-1" r="2.5" fill="#E89090"/>
+        <circle cx="0" cy="-4" r="2.5" fill="#E89090"/>
+        <circle cx="0" cy="-1" r="1.5" fill="#FFE060"/>
       </g>
     </g>
   </g>
