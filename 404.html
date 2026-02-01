@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page introuvable | Renovacieux</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F8F9F6;
+      --white: #FFFFFF;
+      --primary: #7D8B74;
+      --primary-dark: #5F6B57;
+      --text: #2C3029;
+      --text-light: #5A6356;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .container {
+      max-width: 500px;
+    }
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 32px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+    h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 400;
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    p {
+      font-size: 17px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 8px 25px rgba(125,139,116,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: var(--white);
+      color: var(--text);
+      border: 2px solid #ECEEE8;
+    }
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .links {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid #ECEEE8;
+    }
+    .links p {
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      margin: 0 12px;
+      font-size: 14px;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4M12 16h.01"/>
+      </svg>
+    </div>
+    <h1>Page introuvable</h1>
+    <p>Cette page n'existe pas ou a été déplacée. Pas d'inquiétude, vous pouvez retrouver votre chemin.</p>
+    <div class="buttons">
+      <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+      <a href="/#contact" class="btn btn-secondary">Nous contacter</a>
+    </div>
+    <div class="links">
+      <p>Ou consultez nos pages :</p>
+      <a href="/paris/">Paris</a>
+      <a href="/nice/">Nice</a>
+      <a href="/cannes/">Cannes</a>
+      <a href="/antibes/">Antibes</a>
+      <a href="/grasse/">Grasse</a>
+    </div>
+  </div>
+</body>
+</html>
