@@ -12,7 +12,7 @@
 
 - HTML/CSS/JS statique
 - GitHub Pages
-- Supabase (Auth + DB)
+- Supabase (Auth + DB) - **CLI lié, utiliser `supabase db push` pour migrations**
 - Stripe (paiements)
 
 ## Tarifs
