@@ -39,6 +39,21 @@
 
 ## Ce qui a été fait
 
+### Session 02/02/2026 soir
+- **Système de rappels complet**:
+  - Champ `date_rappel` ajouté dans Supabase
+  - Section "Rappels du jour" sur dashboard
+  - Section "Rappels en retard" sur dashboard
+  - Popup "Quand rappeler ?" avec boutons rapides (1h, demain matin, demain aprem, lundi)
+  - Déclenchement auto du popup quand statut → à_rappeler
+  - Bouton "Programmer rappel" dans fiche client
+- **Recherche clients**: Barre de recherche (nom, prénom, tel, cimetière)
+- **Boutons post-appel**:
+  - "Pas répondu" → reprogramme rappel demain 10h auto
+  - "Intéressé" → statut en_discussion
+  - "Veut devis" → statut devis_envoye
+  - "Perdu" → statut perdu
+
 ### Session 02/02/2026
 - Footer simplifié: "© 2026 Renovacieux | CGU"
 - Enlevé "Responsable: Dimitri" des CGU (juste "Dimitri")
@@ -67,22 +82,22 @@
 - `robots.txt` - bloque gestion.html
 - `sitemap.xml` - toutes les pages
 
-## TODO - Améliorations CRM (Session 02/02/2026 soir)
+## TODO - Améliorations CRM
 
-### A. Système de Rappels (PRIORITÉ 1)
-- [ ] Ajouter champ `date_rappel` dans table clients (Supabase)
-- [ ] Section "Rappels du jour" sur dashboard (avec numéros visibles)
-- [ ] Section "Rappels en retard"
-- [ ] Popup "Quand rappeler ?" quand statut = à_rappeler
-- [ ] Boutons rapides : "Dans 1h", "Demain matin", "Lundi prochain"
-- [ ] Ajouter rappels au feed iCal
+### A. Système de Rappels ✅ FAIT
+- [x] Champ `date_rappel` dans table clients (Supabase)
+- [x] Section "Rappels du jour" sur dashboard
+- [x] Section "Rappels en retard"
+- [x] Popup "Quand rappeler ?" quand statut = à_rappeler
+- [x] Boutons rapides : "Dans 1h", "Demain matin", "Lundi prochain"
+- [ ] Ajouter rappels au feed iCal (optionnel)
 
-### B. Recherche clients (PRIORITÉ 2)
-- [ ] Barre de recherche (nom, tel, cimetière)
+### B. Recherche clients ✅ FAIT
+- [x] Barre de recherche (nom, tel, cimetière)
 
-### C. Workflow post-appel
-- [ ] Boutons rapides après appel : "Pas répondu", "Intéressé", "Veut devis", "Perdu"
-- [ ] "Pas répondu" → reprogramme rappel +1 jour auto
+### C. Workflow post-appel ✅ FAIT
+- [x] Boutons rapides : "Pas répondu", "Intéressé", "Veut devis", "Perdu"
+- [x] "Pas répondu" → reprogramme rappel +1 jour auto
 
 ### D. Workflow Interventions (à définir)
 - [ ] Quand client paie → programmer date intervention
