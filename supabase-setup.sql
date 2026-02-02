@@ -45,6 +45,12 @@ ALTER TABLE clients ADD COLUMN IF NOT EXISTS nb_jours TEXT;
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS zone TEXT DEFAULT 'idf';
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS distance_km DECIMAL;
 
+-- Champ pour système de rappels
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS date_rappel TIMESTAMPTZ;
+
+-- Index pour les rappels
+CREATE INDEX IF NOT EXISTS idx_clients_date_rappel ON clients(date_rappel);
+
 -- Activer RLS (Row Level Security)
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
 

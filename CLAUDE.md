@@ -67,8 +67,35 @@
 - `robots.txt` - bloque gestion.html
 - `sitemap.xml` - toutes les pages
 
-## TODO
+## TODO - Améliorations CRM (Session 02/02/2026 soir)
+
+### A. Système de Rappels (PRIORITÉ 1)
+- [ ] Ajouter champ `date_rappel` dans table clients (Supabase)
+- [ ] Section "Rappels du jour" sur dashboard (avec numéros visibles)
+- [ ] Section "Rappels en retard"
+- [ ] Popup "Quand rappeler ?" quand statut = à_rappeler
+- [ ] Boutons rapides : "Dans 1h", "Demain matin", "Lundi prochain"
+- [ ] Ajouter rappels au feed iCal
+
+### B. Recherche clients (PRIORITÉ 2)
+- [ ] Barre de recherche (nom, tel, cimetière)
+
+### C. Workflow post-appel
+- [ ] Boutons rapides après appel : "Pas répondu", "Intéressé", "Veut devis", "Perdu"
+- [ ] "Pas répondu" → reprogramme rappel +1 jour auto
+
+### D. Workflow Interventions (à définir)
+- [ ] Quand client paie → programmer date intervention
+- [ ] Sync avec Calendar de Dym (iPad)
+- [ ] Gestion multi-passages (Sérénité 2/an, Prestige 4/an)
+
+### E. Infos manquantes
 - Ajouter vrai numéro téléphone Dimitri
 - Ajouter SIRET quand disponible
 - Créer og-image.png (1200×630px)
 - Google Business Profile (quand photos dispo)
+
+## Contexte Dym
+- Travaille sur **iPad**
+- Appelle avec son **téléphone** séparé (pas depuis l'iPad)
+- Donc : numéro bien visible + bouton copier, pas besoin de tel: link

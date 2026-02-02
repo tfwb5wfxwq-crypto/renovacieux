@@ -303,6 +303,65 @@
       display: block;
     }
 
+    /* ===== SEARCH BAR ===== */
+    .search-bar {
+      padding: 12px 24px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      max-width: 400px;
+    }
+
+    .search-input-wrapper svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 14px 12px 44px;
+      font-size: 15px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(61, 107, 124, 0.1);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-results-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      display: none;
+    }
+
+    .search-results-count.visible {
+      display: block;
+    }
+
     /* ===== CLIENT CARDS ===== */
     .client-card {
       background: var(--white);
@@ -503,6 +562,51 @@
 
     .phone-highlight-copy.copied {
       background: var(--green);
+    }
+
+    /* Boutons post-appel */
+    .post-call-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: var(--bg-light);
+      border-radius: 12px;
+    }
+
+    .post-call-btn {
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .post-call-btn:hover {
+      transform: scale(1.03);
+    }
+
+    .post-call-btn.interested {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .post-call-btn.quote {
+      background: var(--green-light);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .post-call-btn.lost {
+      background: var(--red-light);
+      border-color: var(--red);
+      color: var(--red);
     }
 
     .form-group {
@@ -1826,6 +1930,17 @@
       </button>
     </div>
 
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <div class="search-input-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Rechercher (nom, tel, cimetière...)" oninput="filterClients()">
+      </div>
+      <div class="search-results-count" id="searchResultsCount"></div>
+    </div>
+
     <!-- Content -->
     <div class="content">
 
@@ -1839,6 +1954,29 @@
 
         <!-- Actions Dashboard -->
         <div class="actions-dashboard" id="actionsDashboard">
+
+          <!-- RAPPELS DU JOUR - Priority #1 -->
+          <div class="action-section rappels-section" id="rappelsSection" style="display: none;">
+            <div class="section-header" style="background: linear-gradient(135deg, #4285F4 0%, #2563EB 100%); color: white;">
+              <span class="section-icon">📞</span>
+              <h3>Rappels du jour</h3>
+            </div>
+            <div class="section-content" id="rappelsList">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Rappels en retard -->
+          <div class="action-section rappels-retard-section" id="rappelsRetardSection" style="display: none;">
+            <div class="section-header" style="background: linear-gradient(135deg, #DC3545 0%, #B91C1C 100%); color: white;">
+              <span class="section-icon">⚠️</span>
+              <h3>Rappels en retard</h3>
+            </div>
+            <div class="section-content" id="rappelsRetardList">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
           <!-- Today Section -->
           <div class="action-section today-section" id="todaySection" style="display: none;">
             <div class="section-header today">
@@ -2002,6 +2140,23 @@
           <div class="phone-highlight-number" id="phoneNumber">-</div>
           <button class="phone-highlight-copy" onclick="copyPhone()">
             <span id="copyBtnText">Copier</span>
+          </button>
+        </div>
+
+        <!-- Boutons post-appel -->
+        <div class="post-call-buttons" id="postCallButtons">
+          <span style="font-size: 12px; color: var(--text-muted); margin-right: 8px;">Après l'appel :</span>
+          <button class="post-call-btn" onclick="postCall('no_answer')" title="Reprogramme rappel demain">
+            📵 Pas répondu
+          </button>
+          <button class="post-call-btn interested" onclick="postCall('interested')">
+            👍 Intéressé
+          </button>
+          <button class="post-call-btn quote" onclick="postCall('wants_quote')">
+            📝 Veut devis
+          </button>
+          <button class="post-call-btn lost" onclick="postCall('lost')">
+            ❌ Perdu
           </button>
         </div>
 
@@ -2242,6 +2397,16 @@
                 <option value="virement">Virement</option>
                 <option value="cheque">Chèque</option>
               </select>
+            </div>
+          </div>
+
+          <!-- Bouton rappel manuel -->
+          <div id="rappelSection" style="margin-top: 12px;">
+            <button class="btn btn-outline btn-small" onclick="openRappelModal(currentClientId)" style="width: 100%;">
+              📞 Programmer un rappel
+            </button>
+            <div id="rappelInfo" style="display: none; margin-top: 8px; padding: 10px 14px; background: var(--orange-light); border-radius: 8px; font-size: 13px;">
+              <span style="color: var(--orange);">⏰ Rappel prévu : <strong id="rappelDate">-</strong></span>
             </div>
           </div>
         </div>
@@ -2488,6 +2653,51 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeCalendarModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAPPEL MODAL -->
+  <div class="modal-overlay" id="rappelModal">
+    <div class="modal" style="max-width: 400px;">
+      <div class="modal-header">
+        <h2>📞 Quand rappeler ?</h2>
+        <button class="modal-close" onclick="closeRappelModal()">×</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <div id="rappelClientInfo" style="background: var(--bg); padding: 12px 16px; border-radius: 10px; margin-bottom: 20px;">
+          <div style="font-weight: 600;" id="rappelClientName">Client</div>
+          <div style="font-size: 13px; color: var(--text-muted);" id="rappelClientTel">Téléphone</div>
+        </div>
+
+        <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">Choisis quand rappeler ce client :</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+          <button class="btn btn-outline" onclick="setRappel('1h')" style="padding: 14px;">
+            <span style="font-size: 18px;">⏰</span><br>Dans 1h
+          </button>
+          <button class="btn btn-outline" onclick="setRappel('demain-matin')" style="padding: 14px;">
+            <span style="font-size: 18px;">🌅</span><br>Demain 9h
+          </button>
+          <button class="btn btn-outline" onclick="setRappel('demain-aprem')" style="padding: 14px;">
+            <span style="font-size: 18px;">☀️</span><br>Demain 14h
+          </button>
+          <button class="btn btn-outline" onclick="setRappel('lundi')" style="padding: 14px;">
+            <span style="font-size: 18px;">📅</span><br>Lundi 9h
+          </button>
+        </div>
+
+        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Ou choisir une date/heure :</p>
+          <div style="display: flex; gap: 10px;">
+            <input type="datetime-local" id="rappelCustomDate" style="flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px;">
+            <button class="btn btn-primary" onclick="setRappelCustom()" style="padding: 12px 20px;">OK</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeRappelModal()">Annuler</button>
+        <button class="btn" onclick="setRappel('aucun')" style="background: var(--text-muted); color: white;">Pas de rappel</button>
       </div>
     </div>
   </div>
@@ -3042,22 +3252,63 @@
     }
 
     // ===== RENDER =====
-    function renderLists() {
-      const nouveaux = clients.filter(c => c.statut === 'nouveau');
-      const enCours = clients.filter(c => ['a_rappeler', 'en_discussion', 'devis_envoye', 'attente_paiement'].includes(c.statut));
-      const actifs = clients.filter(c => c.statut === 'actif');
+    // ===== SEARCH/FILTER =====
+    let searchQuery = '';
 
-      // Update badges
-      document.getElementById('newCount').textContent = nouveaux.length;
-      document.getElementById('newCount').style.display = nouveaux.length > 0 ? 'inline-flex' : 'none';
-      document.getElementById('enCoursCount').textContent = enCours.length;
-      document.getElementById('enCoursCount').style.display = enCours.length > 0 ? 'inline-flex' : 'none';
+    function filterClients() {
+      const input = document.getElementById('searchInput');
+      searchQuery = input.value.toLowerCase().trim();
+      renderLists();
+
+      // Show results count when searching
+      const countEl = document.getElementById('searchResultsCount');
+      if (searchQuery) {
+        const filtered = getFilteredClients();
+        countEl.textContent = `${filtered.length} résultat${filtered.length > 1 ? 's' : ''} pour "${input.value}"`;
+        countEl.classList.add('visible');
+      } else {
+        countEl.classList.remove('visible');
+      }
+    }
+
+    function getFilteredClients() {
+      if (!searchQuery) return clients;
+      return clients.filter(c => {
+        const nom = (c.nom || '').toLowerCase();
+        const prenom = (c.prenom || '').toLowerCase();
+        const tel = (c.tel || '').replace(/\s/g, '');
+        const cimetiere = (c.cimetiere || '').toLowerCase();
+        const email = (c.email || '').toLowerCase();
+        const searchClean = searchQuery.replace(/\s/g, '');
+        return nom.includes(searchQuery) ||
+               prenom.includes(searchQuery) ||
+               tel.includes(searchClean) ||
+               cimetiere.includes(searchQuery) ||
+               email.includes(searchQuery) ||
+               `${prenom} ${nom}`.includes(searchQuery) ||
+               `${nom} ${prenom}`.includes(searchQuery);
+      });
+    }
+
+    function renderLists() {
+      const filtered = getFilteredClients();
+      const nouveaux = filtered.filter(c => c.statut === 'nouveau');
+      const enCours = filtered.filter(c => ['a_rappeler', 'en_discussion', 'devis_envoye', 'attente_paiement'].includes(c.statut));
+      const actifs = filtered.filter(c => c.statut === 'actif');
+
+      // Update badges (show total, not filtered)
+      const allNouveaux = clients.filter(c => c.statut === 'nouveau');
+      const allEnCours = clients.filter(c => ['a_rappeler', 'en_discussion', 'devis_envoye', 'attente_paiement'].includes(c.statut));
+      document.getElementById('newCount').textContent = allNouveaux.length;
+      document.getElementById('newCount').style.display = allNouveaux.length > 0 ? 'inline-flex' : 'none';
+      document.getElementById('enCoursCount').textContent = allEnCours.length;
+      document.getElementById('enCoursCount').style.display = allEnCours.length > 0 ? 'inline-flex' : 'none';
 
       // Render lists
       renderList('newClientsList', nouveaux, 'emptyNew');
       renderList('enCoursList', enCours, 'emptyEnCours');
       renderList('actifsList', actifs, 'emptyActifs');
-      renderList('tousList', clients, 'emptyTous');
+      renderList('tousList', filtered, 'emptyTous');
 
       // Render interventions dashboard
       renderInterventionsDashboard();
@@ -3088,11 +3339,75 @@
     }
 
     function renderDashboard() {
+      renderRappelsSection();  // Priority #1
       renderQuickAlerts();
       renderTodaySection();
       renderWeekSection();
       renderMissingPhotosSection();
       renderRenewalsSection();
+    }
+
+    function renderRappelsSection() {
+      const sectionToday = document.getElementById('rappelsSection');
+      const containerToday = document.getElementById('rappelsList');
+      const sectionRetard = document.getElementById('rappelsRetardSection');
+      const containerRetard = document.getElementById('rappelsRetardList');
+
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayEnd = new Date(todayStart);
+      todayEnd.setDate(todayEnd.getDate() + 1);
+
+      // Rappels du jour
+      const rappelsToday = clients.filter(c => {
+        if (!c.date_rappel) return false;
+        const rappelDate = new Date(c.date_rappel);
+        return rappelDate >= todayStart && rappelDate < todayEnd;
+      }).sort((a, b) => new Date(a.date_rappel) - new Date(b.date_rappel));
+
+      // Rappels en retard (avant aujourd'hui)
+      const rappelsRetard = clients.filter(c => {
+        if (!c.date_rappel) return false;
+        const rappelDate = new Date(c.date_rappel);
+        return rappelDate < todayStart && c.statut !== 'actif' && c.statut !== 'perdu';
+      }).sort((a, b) => new Date(b.date_rappel) - new Date(a.date_rappel));
+
+      // Render rappels du jour
+      if (rappelsToday.length === 0) {
+        sectionToday.style.display = 'none';
+      } else {
+        sectionToday.style.display = 'block';
+        containerToday.innerHTML = rappelsToday.map(c => renderRappelCard(c, false)).join('');
+      }
+
+      // Render rappels en retard
+      if (rappelsRetard.length === 0) {
+        sectionRetard.style.display = 'none';
+      } else {
+        sectionRetard.style.display = 'block';
+        containerRetard.innerHTML = rappelsRetard.map(c => renderRappelCard(c, true)).join('');
+      }
+    }
+
+    function renderRappelCard(client, isRetard) {
+      const rappelDate = new Date(client.date_rappel);
+      const timeStr = rappelDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      const dateStr = isRetard ? rappelDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '';
+
+      return `
+        <div class="action-card rappel-card" style="cursor: pointer;" onclick="openClient(${client.id})">
+          <div class="date-badge" style="background: ${isRetard ? 'var(--red)' : 'var(--blue)'}; color: white; min-width: 50px;">
+            ${isRetard ? `<div style="font-size: 11px;">${dateStr}</div>` : `<div class="time" style="font-size: 16px; font-weight: 700;">${timeStr}</div>`}
+          </div>
+          <div class="card-info">
+            <div class="card-title">${escapeHtml(client.prenom)} ${escapeHtml(client.nom)}</div>
+            <div class="card-subtitle">${escapeHtml(client.cimetiere) || 'Cimetière ?'}</div>
+          </div>
+          <div class="card-phone" style="font-family: 'SF Mono', Monaco, monospace; font-size: 14px; font-weight: 600; color: var(--primary); background: var(--blue-light); padding: 6px 10px; border-radius: 8px;">
+            ${client.tel ? formatPhone(client.tel) : 'Pas de tel'}
+          </div>
+        </div>
+      `;
     }
 
     function renderQuickAlerts() {
@@ -3379,6 +3694,7 @@
       const phone = formatPhone(client.tel);
       document.getElementById('phoneNumber').textContent = phone || 'Pas de numéro';
       document.getElementById('phoneHighlight').style.display = client.tel ? 'block' : 'none';
+      document.getElementById('postCallButtons').style.display = client.tel ? 'flex' : 'none';
 
       // Fill all editable fields
       document.getElementById('edit-prenom').value = client.prenom || '';
@@ -3452,6 +3768,17 @@
       // Show facture section if client is actif (has paid)
       document.getElementById('factureSection').style.display = client.statut === 'actif' ? 'block' : 'none';
 
+      // Show rappel info if exists
+      const rappelInfo = document.getElementById('rappelInfo');
+      const rappelDate = document.getElementById('rappelDate');
+      if (client.date_rappel) {
+        const d = new Date(client.date_rappel);
+        rappelDate.textContent = d.toLocaleString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+        rappelInfo.style.display = 'block';
+      } else {
+        rappelInfo.style.display = 'none';
+      }
+
       // Show detail page
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-detail').classList.add('active');
@@ -3521,8 +3848,9 @@
     function openNewClient() {
       currentClientId = null;
 
-      // Hide phone highlight for new client
+      // Hide phone highlight and post-call buttons for new client
       document.getElementById('phoneHighlight').style.display = 'none';
+      document.getElementById('postCallButtons').style.display = 'none';
 
       // Hide missing info alert
       document.getElementById('missingInfoAlert').style.display = 'none';
@@ -4112,18 +4440,30 @@
 
       if (success) {
         showToast('Enregistré !', 'success');
+
+        // Check if status changed to "a_rappeler" and no rappel date set
+        const newStatus = updates.statut;
+        const client = clients.find(c => c.id === currentClientId);
+        const hadRappelBefore = client?.date_rappel;
+
         await loadClients();
 
         // Update displays after save
-        const client = clients.find(c => c.id === currentClientId);
-        if (client) {
-          // Update phone display
-          if (client.tel) {
-            document.getElementById('phoneNumber').textContent = formatPhone(client.tel);
+        const updatedClient = clients.find(c => c.id === currentClientId);
+        if (updatedClient) {
+          // Update phone display and post-call buttons
+          if (updatedClient.tel) {
+            document.getElementById('phoneNumber').textContent = formatPhone(updatedClient.tel);
             document.getElementById('phoneHighlight').style.display = 'block';
+            document.getElementById('postCallButtons').style.display = 'flex';
           }
           // Refresh missing info alert
-          checkMissingInfo(client);
+          checkMissingInfo(updatedClient);
+
+          // Open rappel modal if status changed to "a_rappeler" and no rappel set
+          if (newStatus === 'a_rappeler' && !hadRappelBefore) {
+            openRappelModal(currentClientId);
+          }
         }
       }
     }
@@ -4151,6 +4491,89 @@
           document.getElementById('copyBtnText').textContent = 'Copier';
         }, 2000);
       });
+    }
+
+    // ===== POST-CALL ACTIONS =====
+    async function postCall(action) {
+      if (!currentClientId) return;
+
+      const client = clients.find(c => c.id === currentClientId);
+      if (!client) return;
+
+      let updates = {};
+      let historyEvent = '';
+      let toastMsg = '';
+
+      const now = new Date();
+
+      switch (action) {
+        case 'no_answer':
+          // Reprogrammer rappel demain à 10h
+          const tomorrow = new Date(now);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          tomorrow.setHours(10, 0, 0, 0);
+          updates.date_rappel = tomorrow.toISOString();
+          updates.statut = 'a_rappeler';
+          historyEvent = 'Appel sans réponse - rappel programmé demain 10h';
+          toastMsg = 'Rappel programmé pour demain 10h';
+          break;
+
+        case 'interested':
+          updates.statut = 'en_discussion';
+          historyEvent = 'Appel - client intéressé';
+          toastMsg = 'Statut mis à jour : En discussion';
+          break;
+
+        case 'wants_quote':
+          updates.statut = 'devis_envoye';
+          historyEvent = 'Appel - client veut un devis';
+          toastMsg = 'Prêt à envoyer le devis';
+          break;
+
+        case 'lost':
+          updates.statut = 'perdu';
+          updates.date_rappel = null;
+          historyEvent = 'Appel - client pas intéressé';
+          toastMsg = 'Client marqué comme perdu';
+          break;
+      }
+
+      // Add history event
+      let history = client.historique ? JSON.parse(client.historique) : [];
+      history.unshift({
+        date: now.toISOString(),
+        event: historyEvent
+      });
+      updates.historique = JSON.stringify(history);
+
+      // Update in Supabase
+      const { error } = await supabase
+        .from('clients')
+        .update(updates)
+        .eq('id', currentClientId);
+
+      if (error) {
+        showToast('Erreur: ' + error.message, 'error');
+        return;
+      }
+
+      // Update local data
+      Object.assign(client, updates);
+
+      // Update UI
+      document.getElementById('detail-statut').value = updates.statut;
+      if (updates.date_rappel) {
+        const d = new Date(updates.date_rappel);
+        document.getElementById('rappelDate').textContent = d.toLocaleString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('rappelInfo').style.display = 'block';
+      } else if (action === 'lost') {
+        document.getElementById('rappelInfo').style.display = 'none';
+      }
+
+      // Refresh history
+      renderHistory(client);
+
+      showToast(toastMsg, 'success');
     }
 
     // ===== CALENDAR & DATES =====
@@ -5187,6 +5610,89 @@
 
     function closeCalendarModal() {
       document.getElementById('calendarModal').classList.remove('active');
+    }
+
+    // ===== RAPPEL MODAL =====
+    let rappelClientId = null;
+
+    function openRappelModal(clientId) {
+      rappelClientId = clientId;
+      const client = clients.find(c => c.id === clientId);
+      if (!client) return;
+
+      document.getElementById('rappelClientName').textContent = `${client.prenom || ''} ${client.nom || ''}`.trim() || 'Client';
+      document.getElementById('rappelClientTel').textContent = client.tel ? formatPhone(client.tel) : 'Pas de téléphone';
+
+      // Set default datetime to tomorrow 9am
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(9, 0, 0, 0);
+      document.getElementById('rappelCustomDate').value = tomorrow.toISOString().slice(0, 16);
+
+      document.getElementById('rappelModal').classList.add('active');
+    }
+
+    function closeRappelModal() {
+      document.getElementById('rappelModal').classList.remove('active');
+      rappelClientId = null;
+    }
+
+    async function setRappel(option) {
+      if (!rappelClientId) return;
+
+      let rappelDate = null;
+      const now = new Date();
+
+      switch (option) {
+        case '1h':
+          rappelDate = new Date(now.getTime() + 60 * 60 * 1000);
+          break;
+        case 'demain-matin':
+          rappelDate = new Date(now);
+          rappelDate.setDate(rappelDate.getDate() + 1);
+          rappelDate.setHours(9, 0, 0, 0);
+          break;
+        case 'demain-aprem':
+          rappelDate = new Date(now);
+          rappelDate.setDate(rappelDate.getDate() + 1);
+          rappelDate.setHours(14, 0, 0, 0);
+          break;
+        case 'lundi':
+          rappelDate = new Date(now);
+          const daysUntilMonday = (8 - rappelDate.getDay()) % 7 || 7;
+          rappelDate.setDate(rappelDate.getDate() + daysUntilMonday);
+          rappelDate.setHours(9, 0, 0, 0);
+          break;
+        case 'aucun':
+          rappelDate = null;
+          break;
+      }
+
+      await updateClient(rappelClientId, { date_rappel: rappelDate ? rappelDate.toISOString() : null });
+      await loadClients();
+      renderDashboard();
+      closeRappelModal();
+
+      if (rappelDate) {
+        const dateStr = rappelDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+        showToast(`Rappel programmé : ${dateStr}`, 'success');
+      } else {
+        showToast('Rappel supprimé', 'success');
+      }
+    }
+
+    async function setRappelCustom() {
+      const input = document.getElementById('rappelCustomDate');
+      if (!input.value || !rappelClientId) return;
+
+      const rappelDate = new Date(input.value);
+      await updateClient(rappelClientId, { date_rappel: rappelDate.toISOString() });
+      await loadClients();
+      renderDashboard();
+      closeRappelModal();
+
+      const dateStr = rappelDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+      showToast(`Rappel programmé : ${dateStr}`, 'success');
     }
 
     function copyCalendarUrl() {
