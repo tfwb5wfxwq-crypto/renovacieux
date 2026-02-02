@@ -104,14 +104,14 @@
 - [ ] Sync avec Calendar de Dym (iPad)
 - [ ] Gestion multi-passages (Sérénité 2/an, Prestige 4/an)
 
-### E. Sécurité RLS ⚠️ À RÉGLER
-- **Problème identifié** : Policies RLS créées via CLI mais pas prises en compte par PostgREST (cache?)
-- **État actuel** : RLS désactivé pour que le formulaire contact fonctionne
-- **À faire** : Réactiver RLS via le Dashboard Supabase (pas CLI) avec ces policies :
-  - `insert_clients` : FOR INSERT TO public WITH CHECK (true)
-  - `select_for_auth` : FOR SELECT TO authenticated USING (true)
-  - `update_for_auth` : FOR UPDATE TO authenticated USING (true)
-  - `delete_for_auth` : FOR DELETE TO authenticated USING (true)
+### E. Sécurité RLS ✅ FAIT
+- **RLS activé** via Dashboard Supabase
+- **Policies** : `anon_insert` + `auth_all`
+- **Solution** : Fonction RPC `insert_client()` avec SECURITY DEFINER pour le formulaire contact
+- **Résultat** :
+  - Anon ne peut PAS lire les données (retourne `[]`)
+  - Anon PEUT insérer via RPC (formulaire contact)
+  - Authenticated peut tout faire (CRM gestion.html)
 - **Outil installé** : supabase-pentest-skills (24 skills) pour futurs audits
 
 ### F. Infos manquantes
