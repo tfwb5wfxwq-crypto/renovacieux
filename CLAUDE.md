@@ -39,6 +39,20 @@
 
 ## Ce qui a été fait
 
+### Session 03/02/2026
+- **Système de Planning intelligent** (refonte complète):
+  - Nouvelle table `zones` : IDF Nord, IDF Sud, IDF Ouest, Côte d'Azur (avec couleurs)
+  - Nouvelle table `interventions` : chaque passage = 1 ligne (remplace dates_intervention JSON)
+  - Vue calendrier semaine avec navigation
+  - Filtrage par zone (chips colorés)
+  - Stats en temps réel (semaine, mois, à venir)
+  - Liste détaillée des interventions de la semaine
+  - Actions rapides : marquer effectué, reporter
+  - Auto-assignation zone basée sur le cimetière
+  - Algorithme de suggestion de dates (périodes idéales par formule)
+  - Migration des données existantes vers nouvelle structure
+- **Onglet Planning** ajouté dans gestion.html (entre Tous et Finances)
+
 ### Session 02/02/2026 soir
 - **Système de rappels complet**:
   - Champ `date_rappel` ajouté dans Supabase
@@ -99,10 +113,15 @@
 - [x] Boutons rapides : "Pas répondu", "Intéressé", "Veut devis", "Perdu"
 - [x] "Pas répondu" → reprogramme rappel +1 jour auto
 
-### D. Workflow Interventions (à définir)
-- [ ] Quand client paie → programmer date intervention
-- [ ] Sync avec Calendar de Dym (iPad)
-- [ ] Gestion multi-passages (Sérénité 2/an, Prestige 4/an)
+### D. Workflow Interventions ✅ FAIT
+- [x] Table `interventions` avec statuts (planifie, confirme, effectue, reporte, annule)
+- [x] Table `zones` pour groupage géographique (IDF Nord/Sud/Ouest, Côte d'Azur)
+- [x] Vue calendrier semaine avec navigation
+- [x] Filtrage par zone
+- [x] Actions : marquer effectué, reporter
+- [x] Gestion multi-passages (Sérénité 2/an, Prestige 4/an)
+- [x] Auto-création interventions quand client actif (fonction `createInterventionsForClient`)
+- [ ] Sync avec Calendar de Dym (iCal feed existe déjà)
 
 ### E. Sécurité RLS ✅ FAIT
 - **RLS activé** via Dashboard Supabase

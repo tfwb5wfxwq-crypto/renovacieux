@@ -1858,6 +1858,411 @@
     .calendar-day.past {
       color: var(--text-muted);
     }
+
+    /* ===== PLANNING STYLES ===== */
+    .planning-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .planning-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .planning-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .planning-nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+
+    .planning-nav-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--blue-light);
+    }
+
+    .planning-period {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .planning-today-btn {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .planning-today-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Zone filter */
+    .zone-filter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .zone-filter-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .zone-chip {
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-light);
+    }
+
+    .zone-chip:hover {
+      border-color: var(--zone-color, var(--primary));
+      background: color-mix(in srgb, var(--zone-color, var(--primary)) 10%, white);
+    }
+
+    .zone-chip.active {
+      background: var(--zone-color, var(--primary));
+      color: white;
+      border-color: var(--zone-color, var(--primary));
+    }
+
+    /* Planning stats */
+    .planning-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .planning-stat {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 100px;
+    }
+
+    .planning-stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .planning-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Planning calendar (week view) */
+    .planning-calendar {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .planning-week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      min-width: 700px;
+    }
+
+    .planning-day {
+      min-height: 120px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .planning-day.today {
+      border-color: var(--primary);
+      background: var(--blue-light);
+    }
+
+    .planning-day.weekend {
+      background: #fafafa;
+    }
+
+    .planning-day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .planning-day-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .planning-day-date {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .planning-day.today .planning-day-date {
+      color: var(--primary);
+    }
+
+    .planning-day-count {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .planning-day-count.green { background: var(--green-light); color: var(--green); }
+    .planning-day-count.orange { background: var(--orange-light); color: var(--orange); }
+    .planning-day-count.red { background: var(--red-light); color: var(--red); }
+
+    .planning-day-events {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .planning-event {
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid var(--zone-color, var(--primary));
+      background: var(--white);
+    }
+
+    .planning-event:hover {
+      transform: translateX(2px);
+      box-shadow: var(--shadow);
+    }
+
+    .planning-event-client {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .planning-event-info {
+      color: var(--text-muted);
+      font-size: 10px;
+    }
+
+    .planning-event.effectue {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+
+    /* Planning list section */
+    .planning-list-section {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .planning-list-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .planning-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .planning-list-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 4px solid var(--zone-color, var(--primary));
+    }
+
+    .planning-list-item:hover {
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .planning-list-date {
+      text-align: center;
+      min-width: 50px;
+    }
+
+    .planning-list-day {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .planning-list-month {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .planning-list-content {
+      flex: 1;
+    }
+
+    .planning-list-client {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .planning-list-details {
+      font-size: 13px;
+      color: var(--text-light);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .planning-list-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .planning-list-badge.planifie { background: var(--blue-light); color: var(--blue); }
+    .planning-list-badge.confirme { background: var(--green-light); color: var(--green); }
+    .planning-list-badge.effectue { background: var(--text-muted); color: white; }
+    .planning-list-badge.reporte { background: var(--orange-light); color: var(--orange); }
+
+    .planning-list-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .planning-action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .planning-action-btn:hover {
+      background: var(--bg);
+    }
+
+    .planning-action-btn.done:hover {
+      background: var(--green-light);
+      border-color: var(--green);
+    }
+
+    .planning-action-btn.reschedule:hover {
+      background: var(--orange-light);
+      border-color: var(--orange);
+    }
+
+    .planning-empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+
+    .planning-empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    /* Modal planification intervention */
+    .planning-modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .planning-modal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .planning-stats {
+        flex-wrap: wrap;
+      }
+
+      .planning-stat {
+        flex: 1;
+        min-width: 80px;
+      }
+
+      .zone-filter {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1925,7 +2330,10 @@
       <button class="tab" data-tab="tous" onclick="switchTab('tous')">
         Tous
       </button>
-      <button class="tab" data-tab="finances" onclick="switchTab('finances')" style="margin-left: auto;">
+      <button class="tab" data-tab="planning" onclick="switchTab('planning')" style="margin-left: auto;">
+        📅 Planning
+      </button>
+      <button class="tab" data-tab="finances" onclick="switchTab('finances')">
         💰 Finances
       </button>
     </div>
@@ -2059,6 +2467,66 @@
         <div class="empty-state" id="emptyTous" style="display:none;">
           <div class="empty-state-icon">👥</div>
           <p>Aucun client</p>
+        </div>
+      </div>
+
+      <!-- Page: Planning -->
+      <div class="page" id="page-planning">
+        <div class="planning-header">
+          <h2>📅 Planning des interventions</h2>
+          <div class="planning-controls">
+            <button class="planning-nav-btn" onclick="planningPrevWeek()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <span class="planning-period" id="planningPeriod">Semaine du 3 février 2026</span>
+            <button class="planning-nav-btn" onclick="planningNextWeek()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+            <button class="planning-today-btn" onclick="planningGoToday()">Aujourd'hui</button>
+          </div>
+        </div>
+
+        <!-- Zone Filter -->
+        <div class="zone-filter">
+          <span class="zone-filter-label">Zones:</span>
+          <button class="zone-chip active" data-zone="all" onclick="filterZone('all')">Toutes</button>
+          <button class="zone-chip" data-zone="1" onclick="filterZone(1)" style="--zone-color: #3b82f6;">🔵 IDF Nord</button>
+          <button class="zone-chip" data-zone="2" onclick="filterZone(2)" style="--zone-color: #10b981;">🟢 IDF Sud</button>
+          <button class="zone-chip" data-zone="3" onclick="filterZone(3)" style="--zone-color: #8b5cf6;">🟣 IDF Ouest</button>
+          <button class="zone-chip" data-zone="4" onclick="filterZone(4)" style="--zone-color: #f59e0b;">🟠 Côte d'Azur</button>
+        </div>
+
+        <!-- Stats rapides -->
+        <div class="planning-stats">
+          <div class="planning-stat">
+            <span class="planning-stat-value" id="statSemaine">0</span>
+            <span class="planning-stat-label">cette semaine</span>
+          </div>
+          <div class="planning-stat">
+            <span class="planning-stat-value" id="statMois">0</span>
+            <span class="planning-stat-label">ce mois</span>
+          </div>
+          <div class="planning-stat">
+            <span class="planning-stat-value" id="statAVenir">0</span>
+            <span class="planning-stat-label">à venir</span>
+          </div>
+        </div>
+
+        <!-- Calendrier semaine -->
+        <div class="planning-calendar" id="planningCalendar">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Liste des interventions de la semaine -->
+        <div class="planning-list-section">
+          <h3>Détail de la semaine</h3>
+          <div class="planning-list" id="planningList">
+            <!-- Rendered by JS -->
+          </div>
         </div>
       </div>
 
@@ -3148,9 +3616,323 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + tab).classList.add('active');
 
-      // Update finances if on that tab
+      // Update specific tabs
       if (tab === 'finances') {
         updateFinances();
+      } else if (tab === 'planning') {
+        loadPlanning();
+      }
+    }
+
+    // ===== PLANNING =====
+    let planningWeekStart = getMonday(new Date());
+    let planningZoneFilter = 'all';
+    let interventionsCache = [];
+    let zonesCache = [];
+
+    function getMonday(d) {
+      const date = new Date(d);
+      const day = date.getDay();
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(date.setDate(diff));
+    }
+
+    async function loadPlanning() {
+      // Load zones if not cached
+      if (zonesCache.length === 0) {
+        const { data: zones } = await db.from('zones').select('*').order('ordre');
+        if (zones) zonesCache = zones;
+      }
+
+      // Load interventions
+      await loadInterventions();
+      renderPlanningCalendar();
+      renderPlanningList();
+      updatePlanningStats();
+      updatePlanningPeriodLabel();
+    }
+
+    async function loadInterventions() {
+      const weekEnd = new Date(planningWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      // Get all interventions (not just this week for stats)
+      let query = db.from('interventions')
+        .select(`
+          *,
+          clients!inner(nom, prenom, tel, cimetiere, formule_choisie)
+        `)
+        .neq('statut', 'annule')
+        .order('date_planifiee', { ascending: true });
+
+      if (planningZoneFilter !== 'all') {
+        query = query.eq('zone_id', planningZoneFilter);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error loading interventions:', error);
+        interventionsCache = [];
+      } else {
+        interventionsCache = data || [];
+      }
+    }
+
+    function updatePlanningPeriodLabel() {
+      const weekEnd = new Date(planningWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      const options = { day: 'numeric', month: 'long' };
+      const startStr = planningWeekStart.toLocaleDateString('fr-FR', options);
+      const endStr = weekEnd.toLocaleDateString('fr-FR', { ...options, year: 'numeric' });
+
+      document.getElementById('planningPeriod').textContent = `${startStr} - ${endStr}`;
+    }
+
+    function planningPrevWeek() {
+      planningWeekStart.setDate(planningWeekStart.getDate() - 7);
+      loadPlanning();
+    }
+
+    function planningNextWeek() {
+      planningWeekStart.setDate(planningWeekStart.getDate() + 7);
+      loadPlanning();
+    }
+
+    function planningGoToday() {
+      planningWeekStart = getMonday(new Date());
+      loadPlanning();
+    }
+
+    function filterZone(zoneId) {
+      planningZoneFilter = zoneId;
+      document.querySelectorAll('.zone-chip').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.zone-chip[data-zone="${zoneId}"]`).classList.add('active');
+      loadPlanning();
+    }
+
+    function renderPlanningCalendar() {
+      const calendar = document.getElementById('planningCalendar');
+      const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let html = '<div class="planning-week">';
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(planningWeekStart);
+        date.setDate(date.getDate() + i);
+
+        const isToday = date.getTime() === today.getTime();
+        const isWeekend = i >= 5;
+        const dateStr = date.toISOString().split('T')[0];
+
+        // Get interventions for this day
+        const dayInterventions = interventionsCache.filter(int =>
+          int.date_planifiee === dateStr
+        );
+
+        const count = dayInterventions.length;
+        let countClass = 'green';
+        if (count >= 3) countClass = 'red';
+        else if (count >= 2) countClass = 'orange';
+
+        html += `
+          <div class="planning-day ${isToday ? 'today' : ''} ${isWeekend ? 'weekend' : ''}">
+            <div class="planning-day-header">
+              <span class="planning-day-name">${days[i]}</span>
+              <span class="planning-day-date">${date.getDate()}</span>
+              ${count > 0 ? `<span class="planning-day-count ${countClass}">${count}</span>` : ''}
+            </div>
+            <div class="planning-day-events">
+        `;
+
+        dayInterventions.slice(0, 3).forEach(int => {
+          const zone = zonesCache.find(z => z.id === int.zone_id);
+          const zoneColor = zone?.couleur || '#6366f1';
+          const clientName = int.clients ? `${int.clients.prenom || ''} ${int.clients.nom || ''}`.trim() : 'Client';
+
+          html += `
+            <div class="planning-event ${int.statut}" style="--zone-color: ${zoneColor}" onclick="openClientDetail(${int.client_id})">
+              <div class="planning-event-client">${escapeHtml(clientName)}</div>
+              <div class="planning-event-info">${escapeHtml(int.cimetiere || '')}</div>
+            </div>
+          `;
+        });
+
+        if (dayInterventions.length > 3) {
+          html += `<div class="planning-event-info" style="text-align: center; padding: 4px;">+${dayInterventions.length - 3} autres</div>`;
+        }
+
+        html += '</div></div>';
+      }
+
+      html += '</div>';
+      calendar.innerHTML = html;
+    }
+
+    function renderPlanningList() {
+      const list = document.getElementById('planningList');
+      const weekEnd = new Date(planningWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      const weekStartStr = planningWeekStart.toISOString().split('T')[0];
+      const weekEndStr = weekEnd.toISOString().split('T')[0];
+
+      const weekInterventions = interventionsCache.filter(int =>
+        int.date_planifiee >= weekStartStr && int.date_planifiee <= weekEndStr
+      );
+
+      if (weekInterventions.length === 0) {
+        list.innerHTML = `
+          <div class="planning-empty">
+            <div class="planning-empty-icon">📅</div>
+            <p>Aucune intervention cette semaine</p>
+          </div>
+        `;
+        return;
+      }
+
+      const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+
+      let html = '';
+      weekInterventions.forEach(int => {
+        const date = new Date(int.date_planifiee + 'T00:00:00');
+        const zone = zonesCache.find(z => z.id === int.zone_id);
+        const zoneColor = zone?.couleur || '#6366f1';
+        const clientName = int.clients ? `${int.clients.prenom || ''} ${int.clients.nom || ''}`.trim() : 'Client';
+        const travaux = int.travaux ? (Array.isArray(int.travaux) ? int.travaux.join(', ') : int.travaux) : '';
+
+        html += `
+          <div class="planning-list-item" style="--zone-color: ${zoneColor}" onclick="openClientDetail(${int.client_id})">
+            <div class="planning-list-date">
+              <div class="planning-list-day">${date.getDate()}</div>
+              <div class="planning-list-month">${months[date.getMonth()]}</div>
+            </div>
+            <div class="planning-list-content">
+              <div class="planning-list-client">${escapeHtml(clientName)}</div>
+              <div class="planning-list-details">
+                <span>📍 ${escapeHtml(int.cimetiere || 'Non défini')}</span>
+                ${int.creneau ? `<span>🕐 ${int.creneau}</span>` : ''}
+                ${travaux ? `<span>🔧 ${escapeHtml(travaux)}</span>` : ''}
+                ${int.formule ? `<span>📋 ${int.formule} (${int.numero_passage || 1}/${int.formule === 'prestige' ? 4 : 2})</span>` : ''}
+              </div>
+            </div>
+            <span class="planning-list-badge ${int.statut}">${int.statut}</span>
+            <div class="planning-list-actions" onclick="event.stopPropagation()">
+              <button class="planning-action-btn done" onclick="markInterventionDone(${int.id})" title="Marquer effectué">✓</button>
+              <button class="planning-action-btn reschedule" onclick="rescheduleIntervention(${int.id})" title="Reporter">↻</button>
+            </div>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+    }
+
+    function updatePlanningStats() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayStr = today.toISOString().split('T')[0];
+
+      const weekEnd = new Date(planningWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      const weekStartStr = planningWeekStart.toISOString().split('T')[0];
+      const weekEndStr = weekEnd.toISOString().split('T')[0];
+
+      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+      const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      const monthStartStr = monthStart.toISOString().split('T')[0];
+      const monthEndStr = monthEnd.toISOString().split('T')[0];
+
+      // Filter interventions
+      const weekCount = interventionsCache.filter(i =>
+        i.date_planifiee >= weekStartStr && i.date_planifiee <= weekEndStr && i.statut !== 'effectue'
+      ).length;
+
+      const monthCount = interventionsCache.filter(i =>
+        i.date_planifiee >= monthStartStr && i.date_planifiee <= monthEndStr
+      ).length;
+
+      const futureCount = interventionsCache.filter(i =>
+        i.date_planifiee >= todayStr && i.statut !== 'effectue'
+      ).length;
+
+      document.getElementById('statSemaine').textContent = weekCount;
+      document.getElementById('statMois').textContent = monthCount;
+      document.getElementById('statAVenir').textContent = futureCount;
+    }
+
+    async function markInterventionDone(interventionId) {
+      if (!confirm('Marquer cette intervention comme effectuée ?')) return;
+
+      const { error } = await db.from('interventions')
+        .update({
+          statut: 'effectue',
+          date_effectuee: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', interventionId);
+
+      if (error) {
+        alert('Erreur: ' + error.message);
+      } else {
+        loadPlanning();
+      }
+    }
+
+    async function rescheduleIntervention(interventionId) {
+      const newDate = prompt('Nouvelle date (YYYY-MM-DD):');
+      if (!newDate) return;
+
+      // Validate date format
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(newDate)) {
+        alert('Format de date invalide. Utilisez YYYY-MM-DD');
+        return;
+      }
+
+      const { error } = await db.from('interventions')
+        .update({
+          date_planifiee: newDate,
+          statut: 'planifie'
+        })
+        .eq('id', interventionId);
+
+      if (error) {
+        alert('Erreur: ' + error.message);
+      } else {
+        loadPlanning();
+      }
+    }
+
+    // Fonction pour créer des interventions automatiquement quand un client devient actif
+    async function createInterventionsForClient(clientId, formule, cimetiere, zoneId, travaux) {
+      const nbPassages = formule === 'prestige' ? 4 : (formule === 'serenite' ? 2 : 1);
+      const year = new Date().getFullYear();
+
+      // Périodes idéales
+      const periods = nbPassages === 4
+        ? [{ month: 2, day: 15 }, { month: 5, day: 15 }, { month: 8, day: 15 }, { month: 10, day: 15 }]
+        : nbPassages === 2
+          ? [{ month: 3, day: 15 }, { month: 9, day: 15 }]
+          : [{ month: new Date().getMonth() + 1, day: new Date().getDate() + 7 }];
+
+      const interventions = periods.map((p, idx) => ({
+        client_id: clientId,
+        date_planifiee: `${year}-${String(p.month).padStart(2, '0')}-${String(p.day).padStart(2, '0')}`,
+        creneau: 'matin',
+        cimetiere: cimetiere,
+        zone_id: zoneId,
+        travaux: travaux || [],
+        formule: formule,
+        numero_passage: idx + 1,
+        annee: year,
+        statut: 'planifie'
+      }));
+
+      const { error } = await db.from('interventions').insert(interventions);
+      if (error) {
+        console.error('Error creating interventions:', error);
       }
     }
 
