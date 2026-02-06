@@ -212,12 +212,39 @@
       display: flex;
       align-items: center;
       text-decoration: none;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .nav-logo img {
-      height: 60px;
+    .nav-logo-icon {
+      height: 52px;
       width: auto;
+      animation: logoEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      filter: drop-shadow(0 2px 6px rgba(41, 45, 60, 0.15));
+      transition: filter 0.3s, transform 0.3s;
+    }
+
+    .nav-logo:hover .nav-logo-icon {
+      filter: drop-shadow(0 4px 12px rgba(41, 45, 60, 0.25));
+      transform: translateY(-1px);
+    }
+
+    /* Shimmer on the R letter */
+    .nav-logo-icon .r-letter {
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes logoEntrance {
+      0% { opacity: 0; transform: scale(0.7) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    nav.scrolled .nav-logo-icon {
+      height: 44px;
     }
 
     .nav-logo-text {
@@ -225,6 +252,7 @@
       font-weight: 700;
       color: #1a3c34;
       letter-spacing: -0.02em;
+      animation: logoEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
     }
 
     .nav-links {
@@ -1554,7 +1582,34 @@
   <!-- Navigation -->
   <nav id="navbar">
     <a href="#" class="nav-logo">
-      <img src="logo-animated-new.svg" alt="Renovacieux">
+      <svg class="nav-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 297.44 314.69">
+        <defs>
+          <linearGradient id="ng1" x1="240.25" y1="361.44" x2="104.74" y2="225.94" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="ng2" x1="262.48" y1="335.64" x2="34.96" y2="204.28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="ng3" x1="216.82" y1="325.43" x2="103.51" y2="212.12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="ng4" x1="241.49" y1="314.96" x2="43.18" y2="200.46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="ng5" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="ng6" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".15" stop-color="#918a7e"/><stop offset=".38" stop-color="#7e7972"/><stop offset=".64" stop-color="#5f5d5e"/><stop offset=".93" stop-color="#343743"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+        </defs>
+        <g>
+          <g>
+            <polygon fill="url(#ng1)" stroke="url(#ng1)" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93 296.74 304.94"/>
+            <polygon fill="url(#ng2)" stroke="url(#ng2)" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08 .19 264.49"/>
+            <polygon fill="#2a283d" stroke="#2a283d" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65 50.25 314.22"/>
+          </g>
+          <polygon fill="url(#ng3)" stroke="url(#ng3)" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29 272.28 269.96"/>
+          <polygon fill="url(#ng4)" stroke="url(#ng4)" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02 11.89 254.65"/>
+          <polygon fill="#2a283d" stroke="#2a283d" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91 50.25 279.12"/>
+          <path fill="url(#ng5)" stroke="url(#ng5)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+          <path fill="#2a283d" stroke="#2a283d" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+          <g style="isolation:isolate">
+            <g style="mix-blend-mode:multiply;opacity:.45">
+              <path fill="#1d1d1b" d="M194.84,215.47c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.44-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.22,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.12,10.57,7.07,17.53,19.76,17.53,37.36,0,24.51-13.84,40.55-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM132.77,152.52c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.45,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+            </g>
+            <path class="r-letter" fill="url(#ng6)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+          </g>
+        </g>
+      </svg>
       <span class="nav-logo-text">Renovacieux</span>
     </a>
     <ul class="nav-links">
