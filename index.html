@@ -230,15 +230,12 @@
     .nav-logo-icon .tomb-base {
       animation: baseReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
     }
-    .nav-logo-icon .r-shadow {
-      animation: rAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
-    }
     .nav-logo-icon .r-letter {
-      animation: rAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+      animation: rGlow 2s ease-in-out 1s both;
     }
     .nav-logo-icon .shine-rect {
       opacity: 0;
-      animation: shinePass 1s ease-in-out 1.4s both;
+      animation: shinePass 1s ease-in-out 1.2s both;
     }
 
     @keyframes baseReveal {
@@ -250,9 +247,10 @@
       60% { opacity: 1; filter: saturate(0.5) brightness(0.85); }
       100% { opacity: 1; filter: saturate(1) brightness(1); }
     }
-    @keyframes rAppear {
-      0% { opacity: 0; transform: translateY(8px) scale(0.92); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes rGlow {
+      0% { filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0)); }
+      50% { filter: drop-shadow(0 0 10px rgba(152, 145, 131, 0.7)); }
+      100% { filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0)); }
     }
     @keyframes shinePass {
       0% { opacity: 0; transform: translateX(-100px); }
@@ -260,7 +258,7 @@
       100% { opacity: 0; transform: translateX(320px); }
     }
 
-    /* --- Hover: polished stone shine sweep --- */
+    /* --- Hover: polished stone shine sweep + R glow --- */
     .nav-logo:hover .nav-logo-icon {
       filter: drop-shadow(0 4px 14px rgba(41, 45, 60, 0.3));
       transform: translateY(-2px);
@@ -268,19 +266,13 @@
     .nav-logo:hover .nav-logo-icon .shine-rect {
       animation: hoverShine 0.8s ease-in-out both;
     }
+    .nav-logo:hover .nav-logo-icon .r-letter {
+      animation: rGlow 1.2s ease-in-out both;
+    }
     @keyframes hoverShine {
       0% { opacity: 0; transform: translateX(-100px); }
       40% { opacity: 0.55; }
       100% { opacity: 0; transform: translateX(320px); }
-    }
-
-    /* Subtle continuous glow on R letter after entrance */
-    .nav-logo-icon .r-letter {
-      filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0));
-      transition: filter 0.4s;
-    }
-    .nav-logo:hover .nav-logo-icon .r-letter {
-      filter: drop-shadow(0 0 6px rgba(152, 145, 131, 0.5));
     }
 
     nav.scrolled .nav-logo-icon {
