@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview carte de visite — Renovacieux</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #1a1a1a;
+      color: #ccc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .sub { font-size: 14px; color: #666; margin-bottom: 40px; }
+
+    /* Cards container */
+    .cards-preview {
+      display: flex;
+      gap: 60px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+
+    .card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #555;
+    }
+
+    /* ===== CARD 85x55mm at ~2x scale for screen ===== */
+    .card {
+      width: 340px;
+      height: 220px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+      cursor: default;
+    }
+
+    /* ==================== RECTO ==================== */
+    .card-front {
+      background: linear-gradient(145deg, #1a3c34 0%, #2d5a4e 40%, #1a3c34 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+    }
+
+    .front-logo-wrap {
+      position: relative;
+      width: 80px;
+    }
+
+    .front-logo {
+      width: 80px;
+      height: auto;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Simulated spot UV shine effect on logo */
+    .front-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(255,255,255,0.15) 45%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0.15) 55%,
+        transparent 65%,
+        transparent 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+      transform: translateX(-120%);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 4px;
+    }
+
+    .card-front:hover .front-logo-wrap::after {
+      transform: translateX(120%);
+    }
+
+    .front-brand-wrap {
+      position: relative;
+    }
+
+    .front-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #F8F9F6;
+      letter-spacing: 1.2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Spot UV on brand text */
+    .front-brand-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -4px -8px;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(255,255,255,0.12) 45%,
+        rgba(255,255,255,0.25) 50%,
+        rgba(255,255,255,0.12) 55%,
+        transparent 65%,
+        transparent 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+      transform: translateX(-150%);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+    }
+
+    .card-front:hover .front-brand-wrap::after {
+      transform: translateX(150%);
+    }
+
+    .front-line {
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #C4A962, transparent);
+    }
+
+    .front-tagline {
+      font-size: 7px;
+      color: rgba(248,249,246,0.55);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+    }
+
+    .front-zones {
+      font-size: 6.5px;
+      color: rgba(248,249,246,0.3);
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    /* Matte texture overlay on front */
+    .card-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==================== VERSO ==================== */
+    .card-back {
+      background: #F8F9F6;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 24px;
+      position: relative;
+    }
+
+    .card-back::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #C4A962, #D9C48A, #C4A962);
+    }
+
+    .back-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-logo-small {
+      width: 32px;
+      height: auto;
+      opacity: 0.85;
+    }
+
+    .back-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      color: #1a3c34;
+    }
+
+    .back-title {
+      font-size: 8px;
+      color: #7D8B74;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+    }
+
+    .back-divider {
+      height: 1px;
+      background: #ECEEE8;
+    }
+
+    .back-infos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .back-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-info-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1a3c34;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .back-info-dot svg {
+      width: 10px;
+      height: 10px;
+      fill: white;
+    }
+
+    .back-info-text {
+      font-size: 11px;
+      color: #2C3029;
+      font-weight: 500;
+    }
+    .back-info-text.big {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a3c34;
+    }
+
+    .back-zones {
+      font-size: 7px;
+      color: #8A9184;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ===== LEGEND ===== */
+    .legend {
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .legend h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .effects {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .effect {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .effect-swatch {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .swatch-mat {
+      background: #2d5a4e;
+      position: relative;
+    }
+    .swatch-mat::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='1.5' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    .swatch-vernis {
+      background: linear-gradient(135deg, #2d5a4e 40%, #4a8a7a 50%, #2d5a4e 60%);
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.15);
+    }
+
+    .swatch-gold {
+      background: linear-gradient(135deg, #C4A962, #D9C48A, #C4A962);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.3);
+    }
+
+    .swatch-paper {
+      background: #F8F9F6;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .effect-text h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .effect-text p {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.5;
+    }
+
+    .effect-text .price {
+      font-size: 11px;
+      color: #C4A962;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .tip {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 24px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Preview carte de visite Renovacieux</h1>
+  <p class="sub">Passe ta souris sur le recto pour voir l'effet vernis brillant</p>
+
+  <div class="cards-preview">
+    <!-- RECTO -->
+    <div class="card-wrap">
+      <div class="card-label">Recto</div>
+      <div class="card card-front">
+        <div class="front-logo-wrap">
+          <svg class="front-logo" viewBox="0 0 297.44 314.69" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pg1" x1="240.25" y1="361.44" x2="104.74" y2="225.94" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c0b0"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+              <linearGradient id="pg2" x1="262.48" y1="335.64" x2="34.96" y2="204.28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c0b0"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+              <linearGradient id="pg3" x1="216.82" y1="325.43" x2="103.51" y2="212.12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c0b0"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+              <linearGradient id="pg4" x1="241.49" y1="314.96" x2="43.18" y2="200.46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c0b0"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+              <linearGradient id="pg5" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d8d4cc"/><stop offset="1" stop-color="#f0ece6"/></linearGradient>
+              <linearGradient id="pg6" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f5f0e8"/><stop offset=".38" stop-color="#e0dbd2"/><stop offset="1" stop-color="#a8a498"/></linearGradient>
+            </defs>
+            <g><polygon fill="url(#pg1)" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/><polygon fill="url(#pg2)" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/><polygon fill="#8a8a96" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/></g>
+            <polygon fill="url(#pg3)" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/><polygon fill="url(#pg4)" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/><polygon fill="#8a8a96" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+            <path fill="url(#pg5)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+            <path fill="#8a8a96" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+            <g style="isolation:isolate"><g style="mix-blend-mode:multiply;opacity:.3"><path fill="#666" d="M194.84,215.47c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.44-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.22,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.12,10.57,7.07,17.53,19.76,17.53,37.36,0,24.51-13.84,40.55-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM132.77,152.52c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.45,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/></g>
+            <path fill="url(#pg6)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/></g>
+          </svg>
+        </div>
+        <div class="front-brand-wrap">
+          <span class="front-brand">Renovacieux</span>
+        </div>
+        <div class="front-line"></div>
+        <div class="front-tagline">NETTOYAGE & RÉNOVATION DE SÉPULTURES</div>
+        <div class="front-zones">PARIS · ÎLE-DE-FRANCE · CÔTE D'AZUR</div>
+      </div>
+    </div>
+
+    <!-- VERSO -->
+    <div class="card-wrap">
+      <div class="card-label">Verso</div>
+      <div class="card card-back">
+        <div class="back-top">
+          <svg class="back-logo-small" viewBox="0 0 297.44 314.69" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg1" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+              <linearGradient id="bg2" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".38" stop-color="#7e7972"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+            </defs>
+            <polygon fill="#bbb" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/><polygon fill="#bbb" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/><polygon fill="#666" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/>
+            <polygon fill="#bbb" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/><polygon fill="#bbb" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/><polygon fill="#666" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+            <path fill="url(#bg1)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+            <path fill="#555" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+            <path fill="url(#bg2)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+          </svg>
+          <div>
+            <div class="back-name">Dimitri</div>
+            <div class="back-title">FONDATEUR</div>
+          </div>
+        </div>
+        <div class="back-divider"></div>
+        <div class="back-infos">
+          <div class="back-info">
+            <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg></div>
+            <span class="back-info-text big">07 57 81 06 02</span>
+          </div>
+          <div class="back-info">
+            <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <span class="back-info-text">dimitri@renovacieux.com</span>
+          </div>
+          <div class="back-info">
+            <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 17.93A8 8 0 014 12c0-.34.03-.67.07-1h2.43v2h2v3h2v1.93zM17.93 13H16v-2h-2V9h-2V7.07A8 8 0 0120 12c0 .34-.03.67-.07 1z"/></svg></div>
+            <span class="back-info-text big">renovacieux.com</span>
+          </div>
+        </div>
+        <div class="back-zones">PARIS · ÎLE-DE-FRANCE · CÔTE D'AZUR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <h2>Les finitions</h2>
+    <div class="effects">
+      <div class="effect">
+        <div class="effect-swatch swatch-mat"></div>
+        <div class="effect-text">
+          <h3>Pelliculage mat</h3>
+          <p>Toute la carte est recouverte d'un film mat. Toucher doux, sobre, pas de reflet. Le fond vert foncé sera mat et velours au toucher.</p>
+          <div class="price">Inclus dans le prix de base</div>
+        </div>
+      </div>
+      <div class="effect">
+        <div class="effect-swatch swatch-vernis"></div>
+        <div class="effect-text">
+          <h3>Vernis sélectif (spot UV) sur le logo + "Renovacieux"</h3>
+          <p>Le logo R et le texte "Renovacieux" sont recouverts d'un vernis brillant par-dessus le mat. Quand tu inclines la carte sous la lumière, ces zones brillent. Le reste reste mat. C'est l'effet que tu vois au hover sur la preview.</p>
+          <div class="price">~+15-25€ pour 500 cartes</div>
+        </div>
+      </div>
+      <div class="effect">
+        <div class="effect-swatch swatch-gold"></div>
+        <div class="effect-text">
+          <h3>Option : dorure à chaud sur la ligne</h3>
+          <p>La petite ligne dorée entre le nom et le tagline serait en vraie dorure métallique. Brillante, luxe, effet waouh. Optionnel mais très classe pour le funéraire.</p>
+          <div class="price">~+30-50€ pour 500 cartes</div>
+        </div>
+      </div>
+      <div class="effect">
+        <div class="effect-swatch swatch-paper"></div>
+        <div class="effect-text">
+          <h3>Papier 400g couché</h3>
+          <p>Carte épaisse, rigide, impression de qualité. Se tient bien en main, ne se plie pas facilement. C'est le standard pour les cartes de visite pro.</p>
+          <div class="price">Standard — ~40-60€ les 500 cartes</div>
+        </div>
+      </div>
+    </div>
+    <p class="tip">Passe la souris sur le recto pour simuler l'effet vernis sélectif sous la lumière</p>
+  </div>
+</body>
+</html>
