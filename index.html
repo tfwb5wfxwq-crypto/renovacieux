@@ -715,8 +715,8 @@
 
     .ba-slider .ba-before {
       z-index: 1;
-      clip-path: inset(0 50% 0 0);
-      object-position: 60% center; /* Décale pour centrer la tombe */
+      clip-path: inset(0 15% 0 0);
+      object-position: 60% center;
     }
 
     .ba-slider .ba-after {
@@ -728,7 +728,7 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 50%;
+      left: 85%;
       width: 3px;
       background: rgba(255, 255, 255, 0.8);
       z-index: 10;
@@ -2190,39 +2190,87 @@
 
     if (slider && handle && beforeImg) {
       let isDragging = false;
+      let hasAnimated = false;
+      let isAnimating = false;
 
-      const updateSlider = (x) => {
-        const rect = slider.getBoundingClientRect();
-        let pos = (x - rect.left) / rect.width * 100;
+      const setSliderPos = (pos) => {
         pos = Math.max(5, Math.min(95, pos));
         handle.style.left = pos + '%';
         beforeImg.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
       };
 
-      slider.addEventListener('mousedown', (e) => {
+      const updateSlider = (x) => {
+        const rect = slider.getBoundingClientRect();
+        const pos = (x - rect.left) / rect.width * 100;
+        setSliderPos(pos);
+      };
+
+      // Smooth animation helper
+      const animateTo = (from, to, duration) => {
+        return new Promise(resolve => {
+          const start = performance.now();
+          const tick = (now) => {
+            const t = Math.min((now - start) / duration, 1);
+            // Ease in-out cubic
+            const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            setSliderPos(from + (to - from) * ease);
+            if (t < 1) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+      };
+
+      // Auto-demo on scroll into view
+      const demoAnimation = async () => {
+        if (hasAnimated || isAnimating) return;
+        hasAnimated = true;
+        isAnimating = true;
+
+        // Start: show "avant" (handle far right)
+        setSliderPos(85);
+        await new Promise(r => setTimeout(r, 600));
+
+        // Slide to reveal "après" (handle moves left)
+        await animateTo(85, 15, 1200);
+        await new Promise(r => setTimeout(r, 500));
+
+        // Come back to middle
+        await animateTo(15, 50, 800);
+        isAnimating = false;
+      };
+
+      // Observe when slider enters viewport
+      const sliderObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setTimeout(demoAnimation, 300);
+            sliderObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.4 });
+      sliderObserver.observe(slider);
+
+      // Manual drag (cancels animation)
+      const startDrag = (x) => {
         isDragging = true;
-        updateSlider(e.clientX);
-      });
+        isAnimating = false;
+        hasAnimated = true;
+        updateSlider(x);
+      };
 
-      window.addEventListener('mousemove', (e) => {
-        if (isDragging) updateSlider(e.clientX);
-      });
-
+      slider.addEventListener('mousedown', (e) => startDrag(e.clientX));
+      window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
       window.addEventListener('mouseup', () => isDragging = false);
 
       // Touch support
-      slider.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        updateSlider(e.touches[0].clientX);
-      });
-
+      slider.addEventListener('touchstart', (e) => startDrag(e.touches[0].clientX));
       slider.addEventListener('touchmove', (e) => {
         if (isDragging) {
           e.preventDefault();
           updateSlider(e.touches[0].clientX);
         }
       });
-
       slider.addEventListener('touchend', () => isDragging = false);
     }
 
