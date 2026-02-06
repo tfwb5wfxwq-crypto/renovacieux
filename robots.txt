@@ -7,3 +7,5 @@ Sitemap: https://renovation-tombe.com/sitemap.xml
 
 # Block admin/gestion page from indexing
 Disallow: /gestion.html
+Disallow: /preview-d7k9/
+Disallow: /print/

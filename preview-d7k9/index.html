@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renovacieux — Preview imprimés</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #111;
+      color: #ccc;
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .page-header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      font-size: 15px;
+      color: #666;
+    }
+
+    /* Section blocks */
+    .section {
+      max-width: 900px;
+      margin: 0 auto 80px;
+    }
+    .section-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: white;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* ============================================================
+       CARTE DE VISITE
+       ============================================================ */
+    .cards-preview {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #555;
+    }
+
+    .card {
+      width: 340px;
+      height: 220px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+    }
+
+    /* RECTO */
+    .card-front {
+      background: linear-gradient(145deg, #1a3c34 0%, #2d5a4e 40%, #1a3c34 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+    }
+    .card-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .front-logo-wrap {
+      position: relative;
+      width: 80px;
+    }
+    .front-logo {
+      width: 80px;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+      position: relative;
+      z-index: 1;
+    }
+    .front-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      background: linear-gradient(115deg, transparent 0%, transparent 35%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 55%, transparent 65%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+      transform: translateX(-120%);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 4px;
+    }
+    .card-front:hover .front-logo-wrap::after { transform: translateX(120%); }
+
+    .front-brand-wrap { position: relative; }
+    .front-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #F8F9F6;
+      letter-spacing: 1.2px;
+      position: relative;
+      z-index: 1;
+    }
+    .front-brand-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -4px -8px;
+      background: linear-gradient(115deg, transparent 0%, transparent 35%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.12) 55%, transparent 65%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+      transform: translateX(-150%);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+    }
+    .card-front:hover .front-brand-wrap::after { transform: translateX(150%); }
+
+    .front-line {
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #C4A962, transparent);
+    }
+    .front-tagline {
+      font-size: 7px;
+      color: rgba(248,249,246,0.55);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+    }
+    .front-zones {
+      font-size: 6.5px;
+      color: rgba(248,249,246,0.3);
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    /* VERSO */
+    .card-back {
+      background: #F8F9F6;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 24px;
+      position: relative;
+    }
+    .card-back::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #C4A962, #D9C48A, #C4A962);
+    }
+
+    .back-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .back-logo-small {
+      width: 32px;
+      opacity: 0.85;
+    }
+    .back-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      color: #1a3c34;
+    }
+    .back-title {
+      font-size: 8px;
+      color: #7D8B74;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+    }
+    .back-divider {
+      height: 1px;
+      background: #ECEEE8;
+    }
+    .back-infos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .back-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .back-info-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1a3c34;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .back-info-dot svg {
+      width: 10px;
+      height: 10px;
+      fill: white;
+    }
+    .back-info-text {
+      font-size: 11px;
+      color: #2C3029;
+      font-weight: 500;
+    }
+    .back-info-text.big {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a3c34;
+    }
+    .back-zones {
+      font-size: 7px;
+      color: #8A9184;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* Finitions */
+    .effects {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .effect {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .effect-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .swatch-mat {
+      background: #2d5a4e;
+      position: relative;
+    }
+    .swatch-mat::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='1.5' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+    .swatch-vernis {
+      background: linear-gradient(135deg, #2d5a4e 40%, #4a8a7a 50%, #2d5a4e 60%);
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.15);
+    }
+    .swatch-gold {
+      background: linear-gradient(135deg, #C4A962, #D9C48A, #C4A962);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.3);
+    }
+    .effect-text h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 3px;
+    }
+    .effect-text p {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.5;
+    }
+    .effect-text .price {
+      font-size: 11px;
+      color: #C4A962;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+    .tip {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* ============================================================
+       FLYER
+       ============================================================ */
+    .flyer-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .flyer {
+      width: 148mm;
+      height: 210mm;
+      background: #F8F9F6;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 4px;
+    }
+
+    .flyer-header {
+      background: linear-gradient(160deg, #1a3c34 0%, #2d5a4e 40%, #1a3c34 100%);
+      padding: 12mm 10mm 14mm;
+      text-align: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .flyer-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: #F8F9F6;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .flyer-logo {
+      width: 28mm;
+      margin: 0 auto 4mm;
+      display: block;
+    }
+    .flyer-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #F8F9F6;
+      letter-spacing: 0.06em;
+      margin-bottom: 3mm;
+    }
+    .flyer-gold-line {
+      width: 40mm;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, #C4A962, #D9C48A, #C4A962, transparent);
+      margin: 0 auto 3mm;
+    }
+    .flyer-tagline {
+      font-size: 13px;
+      color: rgba(248,249,246,0.75);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 500;
+    }
+
+    .flyer-body {
+      padding: 4mm 10mm 6mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .flyer-headline {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      color: #1a3c34;
+      text-align: center;
+      line-height: 1.45;
+      margin-bottom: 5mm;
+    }
+    .flyer-headline em {
+      color: #7D8B74;
+      font-style: italic;
+    }
+
+    .flyer-services {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-bottom: 5mm;
+    }
+    .flyer-service-row {
+      display: flex;
+      align-items: center;
+      gap: 4mm;
+      padding: 3mm 4mm;
+      background: white;
+      border-radius: 3mm;
+      border: 0.5px solid #ECEEE8;
+    }
+    .flyer-service-dot {
+      width: 8mm;
+      height: 8mm;
+      border-radius: 50%;
+      background: #1a3c34;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .flyer-service-dot svg {
+      width: 4.5mm;
+      height: 4.5mm;
+      fill: #C4A962;
+    }
+    .flyer-service-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a3c34;
+    }
+    .flyer-service-detail {
+      font-size: 13px;
+      color: #7D8B74;
+      margin-top: 0.5mm;
+    }
+
+    .flyer-cta {
+      background: linear-gradient(160deg, #1a3c34, #2d5a4e);
+      padding: 6mm;
+      text-align: center;
+      border-radius: 4mm;
+      margin-bottom: 4mm;
+    }
+    .flyer-cta-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      color: #F8F9F6;
+      margin-bottom: 2mm;
+    }
+    .flyer-cta-sub {
+      font-size: 12px;
+      color: rgba(248,249,246,0.55);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 3mm;
+      font-weight: 500;
+    }
+    .flyer-cta-phone {
+      font-size: 30px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 2mm;
+      line-height: 1;
+    }
+    .flyer-cta-web {
+      font-size: 18px;
+      font-weight: 600;
+      color: #C4A962;
+    }
+
+    .flyer-footer {
+      text-align: center;
+      padding-bottom: 2mm;
+    }
+    .flyer-zones {
+      font-size: 12px;
+      color: #8A9184;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .flyer-mention {
+      font-size: 11px;
+      color: #BFBFBF;
+      margin-top: 1.5mm;
+    }
+
+    /* Separator */
+    .sep {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #333, transparent);
+      margin: 0 auto 80px;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .cards-preview { flex-direction: column; align-items: center; gap: 32px; }
+      .card { width: 300px; height: 194px; }
+      .front-logo { width: 60px; }
+      .front-brand { font-size: 17px; }
+      .flyer { width: 100%; height: auto; min-height: 500px; }
+      .flyer-brand { font-size: 24px; }
+      .flyer-headline { font-size: 18px; }
+      .flyer-cta-phone { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Renovacieux — Supports imprimés</h1>
+    <p>Preview carte de visite + flyer cimetière</p>
+  </div>
+
+  <!-- ==================== CARTE DE VISITE ==================== -->
+  <div class="section">
+    <h2 class="section-title">Carte de visite</h2>
+    <p class="section-sub">Format 85 x 55mm — Passe la souris sur le recto pour voir l'effet vernis brillant</p>
+
+    <div class="cards-preview">
+      <!-- RECTO -->
+      <div class="card-wrap">
+        <div class="card-label">Recto</div>
+        <div class="card card-front">
+          <div class="front-logo-wrap">
+            <svg class="front-logo" viewBox="0 0 297.44 314.69" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <defs>
+                <linearGradient id="pg1" x1="240.25" y1="361.44" x2="104.74" y2="225.94" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+                <linearGradient id="pg2" x1="262.48" y1="335.64" x2="34.96" y2="204.28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+                <linearGradient id="pg3" x1="216.82" y1="325.43" x2="103.51" y2="212.12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+                <linearGradient id="pg4" x1="241.49" y1="314.96" x2="43.18" y2="200.46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+                <linearGradient id="pg5" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c4bc"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+                <linearGradient id="pg6" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".38" stop-color="#7e7972"/><stop offset="1" stop-color="#3a3a44"/></linearGradient>
+              </defs>
+              <g><polygon fill="url(#pg1)" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/><polygon fill="url(#pg2)" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/><polygon fill="#2a283d" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/></g>
+              <polygon fill="url(#pg3)" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/><polygon fill="url(#pg4)" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/><polygon fill="#2a283d" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+              <path fill="url(#pg5)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+              <path fill="#2a283d" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+              <g style="isolation:isolate"><g style="mix-blend-mode:multiply;opacity:.45"><path fill="#1d1d1b" d="M194.84,215.47c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.44-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.22,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.12,10.57,7.07,17.53,19.76,17.53,37.36,0,24.51-13.84,40.55-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM132.77,152.52c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.45,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/></g>
+              <path fill="url(#pg6)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/></g>
+            </svg>
+          </div>
+          <div class="front-brand-wrap"><span class="front-brand">Renovacieux</span></div>
+          <div class="front-line"></div>
+          <div class="front-tagline">NETTOYAGE & RÉNOVATION DE SÉPULTURES</div>
+          <div class="front-zones">PARIS · ÎLE-DE-FRANCE · CÔTE D'AZUR</div>
+        </div>
+      </div>
+
+      <!-- VERSO -->
+      <div class="card-wrap">
+        <div class="card-label">Verso</div>
+        <div class="card card-back">
+          <div class="back-top">
+            <svg class="back-logo-small" viewBox="0 0 297.44 314.69" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg1" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+                <linearGradient id="bg2" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".38" stop-color="#7e7972"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+              </defs>
+              <polygon fill="#bbb" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/><polygon fill="#bbb" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/><polygon fill="#666" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/>
+              <polygon fill="#bbb" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/><polygon fill="#bbb" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/><polygon fill="#666" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+              <path fill="url(#bg1)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+              <path fill="#555" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+              <path fill="url(#bg2)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+            </svg>
+            <div>
+              <div class="back-name">Dimitri</div>
+              <div class="back-title">FONDATEUR</div>
+            </div>
+          </div>
+          <div class="back-divider"></div>
+          <div class="back-infos">
+            <div class="back-info">
+              <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg></div>
+              <span class="back-info-text big">06 21 05 00 51</span>
+            </div>
+            <div class="back-info">
+              <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+              <span class="back-info-text">dimitri@renovacieux.com</span>
+            </div>
+            <div class="back-info">
+              <div class="back-info-dot"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 17.93A8 8 0 014 12c0-.34.03-.67.07-1h2.43v2h2v3h2v1.93zM17.93 13H16v-2h-2V9h-2V7.07A8 8 0 0120 12c0 .34-.03.67-.07 1z"/></svg></div>
+              <span class="back-info-text big">renovacieux.com</span>
+            </div>
+          </div>
+          <div class="back-zones">PARIS · ÎLE-DE-FRANCE · CÔTE D'AZUR</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finitions -->
+    <div class="effects">
+      <div class="effect">
+        <div class="effect-swatch swatch-mat"></div>
+        <div class="effect-text">
+          <h3>Pelliculage mat</h3>
+          <p>Toute la carte est mate et douce au toucher. Le fond vert sera velours.</p>
+          <div class="price">Inclus dans le prix de base</div>
+        </div>
+      </div>
+      <div class="effect">
+        <div class="effect-swatch swatch-vernis"></div>
+        <div class="effect-text">
+          <h3>Vernis sélectif (spot UV)</h3>
+          <p>Le logo R et "Renovacieux" brillent quand tu inclines la carte. Le reste reste mat. C'est l'effet que tu vois au hover.</p>
+          <div class="price">~+15-25€ pour 500 cartes</div>
+        </div>
+      </div>
+      <div class="effect">
+        <div class="effect-swatch swatch-gold"></div>
+        <div class="effect-text">
+          <h3>Option : dorure à chaud</h3>
+          <p>La ligne dorée en vraie dorure métallique. Brillante, luxe.</p>
+          <div class="price">~+30-50€ pour 500 cartes</div>
+        </div>
+      </div>
+    </div>
+    <p class="tip">Passe la souris sur le recto pour simuler l'effet vernis sélectif</p>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- ==================== FLYER ==================== -->
+  <div class="section">
+    <h2 class="section-title">Flyer cimetière</h2>
+    <p class="section-sub">Format A5 (148 x 210mm) — Texte gros pour personnes âgées</p>
+
+    <div class="flyer-container">
+      <div class="flyer">
+        <div class="flyer-header">
+          <svg class="flyer-logo" viewBox="0 0 297.44 314.69" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+              <linearGradient id="fl1" x1="240.25" y1="361.44" x2="104.74" y2="225.94" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+              <linearGradient id="fl2" x1="262.48" y1="335.64" x2="34.96" y2="204.28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+              <linearGradient id="fl3" x1="216.82" y1="325.43" x2="103.51" y2="212.12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+              <linearGradient id="fl4" x1="241.49" y1="314.96" x2="43.18" y2="200.46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#c8c4bc"/></linearGradient>
+              <linearGradient id="fl5" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c8c4bc"/><stop offset="1" stop-color="#e8e4dc"/></linearGradient>
+              <linearGradient id="fl6" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".38" stop-color="#7e7972"/><stop offset="1" stop-color="#3a3a44"/></linearGradient>
+            </defs>
+            <g>
+              <g>
+                <polygon fill="url(#fl1)" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/>
+                <polygon fill="url(#fl2)" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/>
+                <polygon fill="#2a283d" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/>
+              </g>
+              <polygon fill="url(#fl3)" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/>
+              <polygon fill="url(#fl4)" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/>
+              <polygon fill="#2a283d" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+              <path fill="url(#fl5)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+              <path fill="#2a283d" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+              <g style="isolation:isolate">
+                <g style="mix-blend-mode:multiply;opacity:.45"><path fill="#1d1d1b" d="M194.84,215.47c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.44-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.22,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.12,10.57,7.07,17.53,19.76,17.53,37.36,0,24.51-13.84,40.55-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM132.77,152.52c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.45,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/></g>
+                <path fill="url(#fl6)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+              </g>
+            </g>
+          </svg>
+          <div class="flyer-brand">Renovacieux</div>
+          <div class="flyer-gold-line"></div>
+          <div class="flyer-tagline">Nettoyage & Rénovation de Sépultures</div>
+        </div>
+
+        <div class="flyer-body">
+          <h2 class="flyer-headline">Préservez la mémoire<br>de vos proches<br><em>avec dignité</em></h2>
+
+          <div class="flyer-services">
+            <div class="flyer-service-row">
+              <div class="flyer-service-dot">
+                <svg viewBox="0 0 24 24"><path d="M17.66 11.2c-.23-.3-.51-.56-.77-.82-.67-.6-1.43-1.03-2.07-1.66C13.33 7.26 13 4.85 13.95 3c-.95.23-1.78.75-2.49 1.32-3.1 2.48-3.82 6.94-1.73 10.08.02.03.04.06.04.1 0 .1-.07.19-.17.21a.3.3 0 01-.26-.07c-1.81-1.37-2.2-3.68-1.73-5.67C6.2 10.5 5 12.83 5 15.13c0 4.15 3.23 7.55 7.2 7.87h.8c3.97-.32 7.2-3.72 7.2-7.87 0-1.57-.5-3.09-1.44-4.33l-1.1.4zM14.5 18.93c-.49.36-1.08.58-1.69.65h-.3c-.56-.05-1.12-.23-1.58-.54-.72-.49-1.15-1.32-1.13-2.2.02-.64.26-1.2.62-1.67.36.33.78.6 1.22.78.14.06.28.13.41.2.13.08.25.17.36.27.56.49.87 1.18.87 1.92 0 .21-.03.42-.08.62a.78.78 0 00.51-.17c.56-.45.84-1.17.72-1.88-.06-.31-.17-.6-.33-.87l-.06-.07c-.46-.62-1.06-1.11-1.56-1.69-.53-.62-.96-1.33-1.2-2.13-.2-.63-.25-1.26-.16-1.9.38 1.08 1.2 1.88 2.02 2.6l.15.13c.94.82 1.93 1.65 2.53 2.79.64 1.22.65 2.78-.32 3.85z"/></svg>
+              </div>
+              <div>
+                <div class="flyer-service-label">Nettoyage complet</div>
+                <div class="flyer-service-detail">Pierre, marbre, granit — Remise en état</div>
+              </div>
+            </div>
+            <div class="flyer-service-row">
+              <div class="flyer-service-dot">
+                <svg viewBox="0 0 24 24"><path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10h3v4h-3V5z"/></svg>
+              </div>
+              <div>
+                <div class="flyer-service-label">Rénovation & Dorure</div>
+                <div class="flyer-service-detail">Joints, lettres dorées, restauration</div>
+              </div>
+            </div>
+            <div class="flyer-service-row">
+              <div class="flyer-service-dot">
+                <svg viewBox="0 0 24 24"><path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.6 10.25c0 1.38 1.12 2.5 2.5 2.5.53 0 1.01-.16 1.42-.44l-.02.19c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5l-.02-.19c.4.28.89.44 1.42.44 1.38 0 2.5-1.12 2.5-2.5 0-1-.59-1.85-1.43-2.25.84-.4 1.43-1.25 1.43-2.25 0-1.38-1.12-2.5-2.5-2.5-.53 0-1.01.16-1.42.44l.02-.19C14.5 2.12 13.38 1 12 1S9.5 2.12 9.5 3.5l.02.19c-.4-.28-.89-.44-1.42-.44-1.38 0-2.5 1.12-2.5 2.5 0 1 .59 1.85 1.43 2.25-.84.4-1.43 1.25-1.43 2.25zM12 5.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8s1.12-2.5 2.5-2.5zM3 13c0 4.97 4.03 9 9 9-4.97 0-9-4.03-9-9z"/></svg>
+              </div>
+              <div>
+                <div class="flyer-service-label">Fleurissement</div>
+                <div class="flyer-service-detail">Fleurs fraîches ou artificielles</div>
+              </div>
+            </div>
+            <div class="flyer-service-row">
+              <div class="flyer-service-dot">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+              </div>
+              <div>
+                <div class="flyer-service-label">Entretien annuel</div>
+                <div class="flyer-service-detail">Formules 2 ou 4 passages par an</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flyer-cta">
+            <div class="flyer-cta-title">Devis gratuit</div>
+            <div class="flyer-cta-sub">Photos avant / après systématiques</div>
+            <div class="flyer-cta-phone">06 21 05 00 51</div>
+            <div class="flyer-cta-web">renovacieux.com</div>
+          </div>
+
+          <div class="flyer-footer">
+            <div class="flyer-zones">Paris · Île-de-France · Côte d'Azur</div>
+            <div class="flyer-mention">dimitri@renovacieux.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
