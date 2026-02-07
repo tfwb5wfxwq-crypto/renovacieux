@@ -2180,11 +2180,11 @@
     // Splash: first visit only
     (function() {
       const splash = document.getElementById('splash');
-      if (localStorage.getItem('rnv_visited')) {
+      if (sessionStorage.getItem('rnv_visited')) {
         splash.remove();
         return;
       }
-      localStorage.setItem('rnv_visited', '1');
+      sessionStorage.setItem('rnv_visited', '1');
       document.body.style.overflow = 'hidden';
       setTimeout(function() {
         splash.classList.add('hide');
