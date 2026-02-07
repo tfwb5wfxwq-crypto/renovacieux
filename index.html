@@ -93,7 +93,7 @@
     ]
   }
   </script>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 70'%3E%3Crect x='4' y='54' width='52' height='8' rx='1' fill='%23C5C0B8'/%3E%3Cpath d='M8 58 L8 22 Q8 8 30 8 Q52 8 52 22 L52 58 Z' fill='%23D8D4CD' stroke='%23C5C0B8' stroke-width='1'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%237D8B74'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 315'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='240' y1='361' x2='105' y2='226' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23989183'/%3E%3Cstop offset='1' stop-color='%23292d3c'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='262' y1='336' x2='35' y2='204' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23989183'/%3E%3Cstop offset='1' stop-color='%23292d3c'/%3E%3C/linearGradient%3E%3ClinearGradient id='g3' x1='131' y1='0' x2='131' y2='265' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23989183'/%3E%3Cstop offset='1' stop-color='%23292d3c'/%3E%3C/linearGradient%3E%3ClinearGradient id='g4' x1='190' y1='70' x2='85' y2='252' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23989183'/%3E%3Cstop offset='1' stop-color='%23292d3c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon fill='url(%23g1)' points='297 305 51 314 50 280 297 276'/%3E%3Cpolygon fill='url(%23g2)' points='0 264 51 285 297 275 251 256'/%3E%3Cpolygon fill='%232a283d' points='50 314 50 285 1 265 1 295'/%3E%3Cpath fill='url(%23g3)' d='M62 265L30 254l8-200s0-32 35-44c0 0 27-9 54-10 0 0 53-2 84 25 7 5 12 19 14 44l1 2 6 189-170 5z'/%3E%3Cpath fill='%232a283d' d='M127 0c-27 1-53 10-53 10-35 11-35 44-35 44L31 254l32 11h0l4-200S64 6 127 0z'/%3E%3Cpath fill='url(%23g4)' d='M193 216c7 7 16 15 25 11 1 0 2 0 1 1-5 14-16 13-16 13-9 0-23-4-34-22-10-14-11-32-19-47-5-9-9-11-22-10l-8 0c-1 0-1 1-1 1v44c0 24 3 31 22 33 1 0 1 1 1 1s0 1-1 1l-67 3c-1 0-1-1-1-1s0-1 1-1c20-4 22-11 22-35V93c0-24-3-30-22-32-1 0-1-1-1-2s1-2 2-2l64-3c19-1 31 1 41 8 11 7 18 20 18 37 0 25-14 41-33 51 0 0-1 0 0 1 1 6 10 42 28 62zM131 153c13-1 22-3 28-10 10-9 14-20 14-36 0-31-18-41-38-41-7 0-12 2-14 4-2 2-3 5-3 13v69c0 1 0 1 1 1l12-1z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -733,10 +733,10 @@
       position: relative;
     }
 
-    /* Gold shimmer separator animation */
-    @keyframes goldShimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
+    /* Gold shimmer separator - subtle glow pulse */
+    @keyframes goldPulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.7; }
     }
 
     .services::before {
@@ -746,11 +746,9 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
-      background-size: 200% 100%;
-      animation: goldShimmer 4s ease-in-out infinite;
-      opacity: 0.7;
-      box-shadow: 0 0 16px rgba(196, 169, 98, 0.3), 0 0 6px rgba(196, 169, 98, 0.2);
+      background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 95%);
+      animation: goldPulse 5s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(196, 169, 98, 0.15);
     }
 
     .container {
@@ -871,12 +869,10 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
-      background-size: 200% 100%;
-      animation: goldShimmer 4s ease-in-out infinite;
-      animation-delay: 0.5s;
-      opacity: 0.5;
-      box-shadow: 0 0 12px rgba(196, 169, 98, 0.2);
+      background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 95%);
+      animation: goldPulse 5s ease-in-out infinite;
+      animation-delay: 1s;
+      box-shadow: 0 0 8px rgba(196, 169, 98, 0.15);
     }
 
     .ba-grid {
@@ -1327,12 +1323,10 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
-      background-size: 200% 100%;
-      animation: goldShimmer 4s ease-in-out infinite;
-      animation-delay: 1s;
-      opacity: 0.5;
-      box-shadow: 0 0 12px rgba(196, 169, 98, 0.2);
+      background: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%);
+      animation: goldPulse 5s ease-in-out infinite;
+      animation-delay: 2s;
+      box-shadow: 0 0 6px rgba(196, 169, 98, 0.1);
     }
 
     .zone-grid {
@@ -1734,12 +1728,10 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
-      background-size: 200% 100%;
-      animation: goldShimmer 4s ease-in-out infinite;
-      animation-delay: 2s;
-      opacity: 0.6;
-      box-shadow: 0 0 16px rgba(196, 169, 98, 0.25);
+      background: linear-gradient(90deg, transparent 5%, var(--gold) 50%, transparent 95%);
+      animation: goldPulse 5s ease-in-out infinite;
+      animation-delay: 3s;
+      box-shadow: 0 0 8px rgba(196, 169, 98, 0.15);
     }
 
     .footer-grid-compact {
@@ -1771,10 +1763,7 @@
       overflow: visible;
     }
 
-    /* Footer logo animations (même que header) */
-    .footer-brand .r-letter {
-      animation: rPulseLoop 3s ease-in-out infinite;
-    }
+    /* Footer logo animations */
     .footer-brand .shine-rect {
       opacity: 0;
       animation: shineLoop 5s ease-in-out 1s infinite;
@@ -1886,6 +1875,16 @@
       .footer-links-row { flex-wrap: wrap; gap: 30px; }
 
       .zone-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Mini gallery: scroll hint */
+      .mini-gallery { position: relative; }
+      .mini-gallery-scroll {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .mini-thumb {
+        scroll-snap-align: start;
+      }
     }
 
     @media (max-width: 600px) {
@@ -1904,7 +1903,8 @@
       }
 
       .form-row { grid-template-columns: 1fr; }
-      .ba-slider { max-width: 100%; }
+      .ba-slider { max-width: 100%; aspect-ratio: 3/4; }
+      .ba-grid { gap: 40px; }
 
       .hero-buttons { flex-direction: column; }
       .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
@@ -1920,16 +1920,20 @@
         padding: 110px 20px 60px;
       }
       .hero-container { gap: 30px; }
-      .hero-title { font-size: clamp(28px, 7vw, 38px); }
+      .hero h1 { font-size: clamp(28px, 7vw, 38px); }
       .hero-text { font-size: 15px; }
       .hero-float-card { display: none; }
-      .hero-image-main { max-height: 280px; }
+      .hero-image-main { max-height: 300px; border-radius: 20px; aspect-ratio: 16/9; }
+      .hero-image-main img { object-position: center center; }
       .hero-gold-line { width: 40px; margin-bottom: 20px; }
 
-      .nav-logo-icon { height: 40px; }
-      nav.scrolled .nav-logo-icon { height: 34px; }
-      .nav-logo-text { font-size: 1rem; }
-      .nav-cta { padding: 8px 16px; font-size: 13px; }
+      /* Header mobile - logo plus gros */
+      nav { padding: 12px 16px; }
+      nav.scrolled { padding: 10px 16px; }
+      .nav-logo-icon { height: 48px; }
+      nav.scrolled .nav-logo-icon { height: 38px; }
+      .nav-logo-text { font-size: 1.1rem; }
+      .nav-cta { padding: 10px 20px; font-size: 13px; }
 
       .section-header { margin-bottom: 30px; }
       .section-title { font-size: clamp(22px, 5vw, 28px); }
@@ -1940,6 +1944,19 @@
 
       .pricing-card { padding: 28px 20px; }
       .pricing-card.featured { transform: none; }
+
+      /* Footer mobile - pas de logo SVG, juste texte */
+      .footer-brand svg { display: none; }
+      .footer-main { flex: 1; }
+
+      /* Contact details mobile */
+      .contact-details li { font-size: 14px; gap: 12px; padding: 14px 0; }
+      .contact-details li span { width: 38px; height: 38px; }
+      .contact-details li span svg { width: 18px; height: 18px; }
+
+      /* Mini gallery mobile - scroll avec indicateur */
+      .mini-thumb { flex: 0 0 130px; height: 95px; }
+      .mini-gallery-scroll { gap: 10px; }
       .pricing-card.featured:hover { transform: scale(1.01); }
 
       .zone-card-big { padding: 20px 16px; }
