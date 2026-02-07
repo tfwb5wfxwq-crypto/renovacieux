@@ -2162,6 +2162,9 @@
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_next" value="https://renovation-tombe.com/?success=1">
 
+          <!-- Honeypot antibot -->
+          <input type="text" name="_honey" style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;width:0;z-index:-1;tab-index:-1;" tabindex="-1" autocomplete="off">
+
           <div class="form-row">
             <div class="form-group">
               <label>Nom *</label>
@@ -2367,8 +2370,15 @@
     // Form validation
     const form = document.getElementById('contactForm');
 
+    const _formLoadTime = Date.now();
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      // Antibot: honeypot check
+      if (form.querySelector('[name="_honey"]').value) return;
+      // Antibot: reject if submitted in < 3 seconds
+      if (Date.now() - _formLoadTime < 3000) return;
 
       // Reset errors
       form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
