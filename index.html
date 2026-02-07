@@ -1533,92 +1533,117 @@
       animation: fadeInUp 0.3s ease;
     }
 
-    /* Success overlay - bien visible */
+    /* Success overlay */
     .form-success-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(26, 60, 52, 0.97);
+      background: linear-gradient(145deg, #0f2820 0%, #1a3c34 40%, #2d5a4e 100%);
       z-index: 9999;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       text-align: center;
       padding: 40px;
+      overflow: hidden;
     }
-
+    .form-success-overlay::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
     .form-success-overlay.show {
       display: flex;
-      animation: fadeIn 0.4s ease;
+      animation: successFadeIn 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .success-gold-line {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+      border-radius: 2px; margin-bottom: 32px;
+      animation: successSlideIn 0.6s ease 0.3s both;
     }
 
     .form-success-overlay .success-icon {
-      width: 100px;
-      height: 100px;
-      background: white;
+      width: 110px; height: 110px;
+      background: rgba(196,169,98,0.12);
+      border: 2px solid rgba(196,169,98,0.3);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 30px;
-      animation: scaleIn 0.5s ease 0.2s both;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px;
+      animation: successBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+      box-shadow: 0 0 40px rgba(196,169,98,0.15), 0 0 80px rgba(196,169,98,0.08);
     }
-
     .form-success-overlay .success-icon svg {
-      width: 50px;
-      height: 50px;
-      stroke: #1a3c34;
-      stroke-width: 3;
-      fill: none;
+      width: 48px; height: 48px;
+      stroke: var(--gold); stroke-width: 2.5; fill: none;
+    }
+    .form-success-overlay .success-icon svg path {
+      stroke-dasharray: 30; stroke-dashoffset: 30;
+      animation: successCheck 0.5s ease 0.6s forwards;
     }
 
     .form-success-overlay h3 {
-      color: white;
-      font-size: clamp(28px, 5vw, 42px);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      color: rgba(248,249,246,0.95);
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 400;
       margin-bottom: 16px;
-      animation: fadeInUp 0.5s ease 0.3s both;
+      animation: successSlideIn 0.6s ease 0.4s both;
     }
+    .form-success-overlay h3 em { font-style: italic; color: var(--gold); }
 
     .form-success-overlay p {
-      color: rgba(255,255,255,0.9);
-      font-size: clamp(16px, 2.5vw, 20px);
-      max-width: 500px;
-      line-height: 1.7;
-      animation: fadeInUp 0.5s ease 0.4s both;
+      color: rgba(248,249,246,0.6);
+      font-size: clamp(15px, 2.5vw, 18px);
+      max-width: 460px; line-height: 1.8;
+      animation: successSlideIn 0.6s ease 0.5s both;
     }
 
     .form-success-overlay .success-close {
       margin-top: 40px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: #1a3c34;
-      border: none;
-      padding: 16px 40px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: 600;
+      background: linear-gradient(135deg, rgba(196,169,98,0.95), rgba(217,196,138,1));
+      color: #1a3c34; border: 1px solid rgba(217,196,138,0.4);
+      padding: 16px 44px; border-radius: 30px;
+      font-size: 15px; font-weight: 700; font-family: 'Source Sans 3', sans-serif;
       cursor: pointer;
-      animation: fadeInUp 0.5s ease 0.5s both;
+      box-shadow: 0 8px 32px rgba(196,169,98,0.3);
+      animation: successSlideIn 0.6s ease 0.6s both;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-
     .form-success-overlay .success-close:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transform: scale(1.04);
+      box-shadow: 0 12px 40px rgba(196,169,98,0.4);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* Confettis dorés */
+    .success-confetti {
+      position: absolute; width: 8px; height: 8px;
+      background: var(--gold); border-radius: 2px;
+      opacity: 0; pointer-events: none;
+    }
+    .success-confetti:nth-child(odd) { background: var(--gold-light); border-radius: 50%; width: 6px; height: 6px; }
+    .form-success-overlay.show .success-confetti {
+      animation: confettiFall 2.5s ease-out 0.3s forwards;
     }
 
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.5); }
+    @keyframes successFadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes successBounce {
+      from { opacity: 0; transform: scale(0.3); }
       to { opacity: 1; transform: scale(1); }
     }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes successCheck {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes successSlideIn {
+      from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(calc(100vh + 50px)) rotate(720deg) scale(0.3); }
     }
 
     /* ===== FOOTER ===== */
@@ -2215,12 +2240,23 @@
 
   <!-- Success Overlay -->
   <div class="form-success-overlay" id="successOverlay">
+    <div class="success-confetti" style="left:10%;animation-delay:0.3s"></div>
+    <div class="success-confetti" style="left:20%;animation-delay:0.5s"></div>
+    <div class="success-confetti" style="left:35%;animation-delay:0.4s"></div>
+    <div class="success-confetti" style="left:50%;animation-delay:0.6s"></div>
+    <div class="success-confetti" style="left:65%;animation-delay:0.35s"></div>
+    <div class="success-confetti" style="left:80%;animation-delay:0.55s"></div>
+    <div class="success-confetti" style="left:90%;animation-delay:0.45s"></div>
+    <div class="success-confetti" style="left:5%;animation-delay:0.7s"></div>
+    <div class="success-confetti" style="left:45%;animation-delay:0.65s"></div>
+    <div class="success-confetti" style="left:75%;animation-delay:0.5s"></div>
+    <div class="success-gold-line"></div>
     <div class="success-icon">
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
-    <h3>Demande envoyée !</h3>
-    <p>Merci pour votre confiance. Nous vous recontacterons sous 24 heures pour discuter de votre projet.</p>
-    <button class="success-close" onclick="closeSuccessOverlay()">Fermer</button>
+    <h3>Demande <em>envoyée</em></h3>
+    <p>Merci pour votre confiance. Dimitri vous recontactera sous 24 heures pour discuter de votre projet.</p>
+    <button class="success-close" onclick="closeSuccessOverlay()">Retour au site</button>
   </div>
 
   <!-- Footer -->
@@ -2379,6 +2415,16 @@
       if (form.querySelector('[name="_honey"]').value) return;
       // Antibot: reject if submitted in < 3 seconds
       if (Date.now() - _formLoadTime < 3000) return;
+      // Antibot: rate limit - max 3 soumissions par heure
+      const rlKey = 'rnv_submissions';
+      const now = Date.now();
+      const subs = JSON.parse(localStorage.getItem(rlKey) || '[]').filter(t => now - t < 3600000);
+      if (subs.length >= 3) {
+        alert('Vous avez déjà envoyé plusieurs demandes. Veuillez réessayer dans une heure.');
+        return;
+      }
+      subs.push(now);
+      localStorage.setItem(rlKey, JSON.stringify(subs));
 
       // Reset errors
       form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
