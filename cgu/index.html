@@ -14,127 +14,344 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --cream: #F8F9F6;
+      --cream-dark: #ECEEE8;
       --primary: #7D8B74;
       --primary-dark: #5F6B57;
+      --gold: #C4A962;
+      --gold-light: #D9C48A;
       --text: #2C3029;
       --text-light: #5A6356;
+      --text-muted: #8A9184;
     }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Source Sans 3', sans-serif;
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
       background: var(--cream);
       color: var(--text);
       line-height: 1.8;
+      font-size: 16px;
     }
-    .container {
-      max-width: 800px;
+
+    /* Grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Header banner */
+    .cgu-header {
+      background: linear-gradient(145deg, #0f2820 0%, #1a3c34 30%, #2d5a4e 60%, #1a3c34 100%);
+      padding: 100px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cgu-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .cgu-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 95%);
+      opacity: 0.6;
+    }
+    .cgu-header-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 60px 24px;
-    }
-    h1 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 32px;
-      color: var(--primary-dark);
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      color: var(--text-light);
-      margin-bottom: 40px;
-      font-size: 14px;
-    }
-    h2 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 20px;
-      color: var(--primary);
-      margin-top: 40px;
-      margin-bottom: 16px;
-    }
-    p, li {
-      margin-bottom: 12px;
-      color: var(--text-light);
-    }
-    ul {
-      padding-left: 24px;
-    }
-    a {
-      color: var(--primary);
     }
     .back-link {
-      display: inline-block;
-      margin-bottom: 40px;
-      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(248,249,246,0.6);
       text-decoration: none;
       font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 32px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.3s;
     }
     .back-link:hover {
-      text-decoration: underline;
+      color: rgba(248,249,246,0.9);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .cgu-header h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 400;
+      color: rgba(248,249,246,0.95);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .cgu-header .gold-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+      margin: 0 auto 16px;
+      border-radius: 2px;
+    }
+    .cgu-header .subtitle {
+      color: rgba(248,249,246,0.45);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Content */
+    .cgu-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .cgu-section {
+      margin-bottom: 40px;
+      padding: 32px;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.03);
+      transition: all 0.3s ease;
+    }
+    .cgu-section:hover {
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 4px 24px rgba(26,60,52,0.06);
+    }
+
+    .cgu-section h2 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cgu-section h2 .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #1a3c34;
+      border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .cgu-section p {
+      margin-bottom: 12px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .cgu-section p:last-child {
+      margin-bottom: 0;
+    }
+    .cgu-section strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .cgu-section ul {
+      padding-left: 0;
+      list-style: none;
+      margin: 8px 0 12px;
+    }
+    .cgu-section li {
+      padding: 8px 0 8px 28px;
+      color: var(--text-light);
+      position: relative;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .cgu-section li:last-child {
+      border-bottom: none;
+    }
+    .cgu-section li::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 16px;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196,169,98,0.3);
+      transition: all 0.2s;
+    }
+    a:hover {
+      color: var(--primary-dark);
+      border-bottom-color: var(--primary-dark);
+    }
+
+    /* Contact highlight */
+    .cgu-contact {
+      background: linear-gradient(145deg, #0f2820 0%, #1a3c34 50%, #2d5a4e 100%);
+      border: 1px solid rgba(196,169,98,0.2);
+      color: rgba(248,249,246,0.9);
+    }
+    .cgu-contact:hover {
+      background: linear-gradient(145deg, #0f2820 0%, #1a3c34 50%, #2d5a4e 100%);
+    }
+    .cgu-contact h2 {
+      color: rgba(248,249,246,0.95);
+    }
+    .cgu-contact p {
+      color: rgba(248,249,246,0.6);
+    }
+    .cgu-contact a {
+      color: var(--gold-light);
+      border-bottom-color: rgba(217,196,138,0.3);
+    }
+    .cgu-contact a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* Footer mini */
+    .cgu-footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .cgu-header { padding: 80px 20px 48px; }
+      .cgu-content { padding: 32px 16px 60px; }
+      .cgu-section { padding: 24px 20px; margin-bottom: 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a href="/" class="back-link">← Retour au site</a>
 
-    <h1>Conditions Générales d'Utilisation</h1>
-    <p class="subtitle">Dernière mise à jour : Février 2026</p>
-
-    <h2>1. Mentions légales</h2>
-    <p><strong>Raison sociale :</strong> Renovacieux</p>
-    <p><strong>Statut :</strong> Auto-entrepreneur</p>
-    <p><strong>SIRET :</strong> À compléter</p>
-    <p><strong>Email :</strong> dimitri@renovacieux.com</p>
-    <p><strong>Zone :</strong> Île-de-France & Côte d'Azur</p>
-    <p>TVA non applicable, article 293B du CGI.</p>
-
-    <h2>2. Services proposés</h2>
-    <p>Renovacieux propose des services de :</p>
-    <ul>
-      <li>Nettoyage et entretien de sépultures</li>
-      <li>Rénovation de monuments funéraires</li>
-      <li>Fleurissement de tombes</li>
-      <li>Redorure de lettres</li>
-    </ul>
-    <p>Les prestations sont réalisées en Île-de-France et sur la Côte d'Azur.</p>
-
-    <h2>3. Devis et tarifs</h2>
-    <p>Un devis gratuit et personnalisé est établi avant toute intervention. Les tarifs indiqués sur le site sont donnés à titre indicatif et peuvent varier selon l'état de la sépulture, sa localisation et les travaux à réaliser.</p>
-    <p>Le devis est valable 30 jours à compter de son émission.</p>
-
-    <h2>4. Formules d'entretien</h2>
-    <p>Les formules d'entretien (Sérénité, Prestige) sont des engagements annuels renouvelés automatiquement par tacite reconduction.</p>
-    <p><strong>Renouvellement :</strong> Un email de rappel est envoyé 30 jours avant chaque renouvellement conformément à la loi Chatel.</p>
-    <p><strong>Résiliation :</strong> Vous pouvez résilier à tout moment par simple demande à dimitri@renovacieux.com. En cas de résiliation, vous conservez vos passages restants jusqu'à la fin de la période en cours. Aucun remboursement n'est effectué.</p>
-
-    <h2>5. Droit de rétractation</h2>
-    <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne peut être exercé pour les prestations de services pleinement exécutées avant la fin du délai de rétractation.</p>
-    <p>En procédant au paiement, vous demandez expressément l'exécution immédiate de la prestation et reconnaissez renoncer à votre droit de rétractation une fois la prestation réalisée.</p>
-
-    <h2>6. Paiement</h2>
-    <p>Le paiement s'effectue par carte bancaire via notre prestataire sécurisé Stripe. Les données bancaires ne sont jamais stockées sur nos serveurs.</p>
-
-    <h2>7. Protection des données personnelles</h2>
-    <p>Les informations collectées (nom, email, téléphone, adresse du cimetière) sont utilisées uniquement pour :</p>
-    <ul>
-      <li>Établir et envoyer les devis</li>
-      <li>Réaliser les prestations commandées</li>
-      <li>Envoyer les rappels de renouvellement</li>
-    </ul>
-    <p>Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales.</p>
-    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous à dimitri@renovacieux.com.</p>
-
-    <h2>8. Cookies</h2>
-    <p>Ce site n'utilise pas de cookies publicitaires. Seuls des cookies techniques nécessaires au fonctionnement du site peuvent être utilisés.</p>
-
-    <h2>9. Responsabilité</h2>
-    <p>Renovacieux s'engage à réaliser les prestations avec soin et professionnalisme. Des photos avant/après sont systématiquement envoyées.</p>
-    <p>En cas de dommage accidentel lors d'une intervention, Renovacieux s'engage à trouver une solution amiable avec le client.</p>
-
-    <h2>10. Litiges</h2>
-    <p>En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux français seront compétents.</p>
-    <p>Conformément à l'article L612-1 du Code de la consommation, vous pouvez recourir gratuitement au service de médiation MEDICYS : <a href="https://www.medicys.fr" target="_blank">www.medicys.fr</a></p>
-
-    <h2>11. Contact</h2>
-    <p>Pour toute question concernant ces conditions :</p>
-    <p>Email : <a href="mailto:dimitri@renovacieux.com">dimitri@renovacieux.com</a></p>
+  <div class="cgu-header">
+    <div class="cgu-header-content">
+      <a href="/" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Retour au site
+      </a>
+      <div class="gold-line"></div>
+      <h1>Conditions Générales d'Utilisation</h1>
+      <p class="subtitle">Dernière mise à jour : Février 2026</p>
+    </div>
   </div>
+
+  <div class="cgu-content">
+
+    <div class="cgu-section">
+      <h2><span class="section-num">1</span> Mentions légales</h2>
+      <p><strong>Raison sociale :</strong> Renovacieux</p>
+      <p><strong>Statut :</strong> Auto-entrepreneur</p>
+      <p><strong>SIRET :</strong> À compléter</p>
+      <p><strong>Email :</strong> <a href="mailto:dimitri@renovacieux.com">dimitri@renovacieux.com</a></p>
+      <p><strong>Zone :</strong> Île-de-France & Côte d'Azur</p>
+      <p>TVA non applicable, article 293B du CGI.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">2</span> Services proposés</h2>
+      <p>Renovacieux propose des services de :</p>
+      <ul>
+        <li>Nettoyage et entretien de sépultures</li>
+        <li>Rénovation de monuments funéraires</li>
+        <li>Fleurissement de tombes</li>
+        <li>Redorure de lettres</li>
+      </ul>
+      <p>Les prestations sont réalisées en Île-de-France et sur la Côte d'Azur.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">3</span> Devis et tarifs</h2>
+      <p>Un devis gratuit et personnalisé est établi avant toute intervention. Les tarifs indiqués sur le site sont donnés à titre indicatif et peuvent varier selon l'état de la sépulture, sa localisation et les travaux à réaliser.</p>
+      <p>Le devis est valable 30 jours à compter de son émission.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">4</span> Formules d'entretien</h2>
+      <p>Les formules d'entretien (Sérénité, Prestige) sont des engagements annuels renouvelés automatiquement par tacite reconduction.</p>
+      <p><strong>Renouvellement :</strong> Un email de rappel est envoyé 30 jours avant chaque renouvellement conformément à la loi Chatel.</p>
+      <p><strong>Résiliation :</strong> Vous pouvez résilier à tout moment par simple demande à <a href="mailto:dimitri@renovacieux.com">dimitri@renovacieux.com</a>. En cas de résiliation, vous conservez vos passages restants jusqu'à la fin de la période en cours. Aucun remboursement n'est effectué.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">5</span> Droit de rétractation</h2>
+      <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne peut être exercé pour les prestations de services pleinement exécutées avant la fin du délai de rétractation.</p>
+      <p>En procédant au paiement, vous demandez expressément l'exécution immédiate de la prestation et reconnaissez renoncer à votre droit de rétractation une fois la prestation réalisée.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">6</span> Paiement</h2>
+      <p>Le paiement s'effectue par carte bancaire via notre prestataire sécurisé Stripe. Les données bancaires ne sont jamais stockées sur nos serveurs.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">7</span> Protection des données personnelles</h2>
+      <p>Les informations collectées (nom, email, téléphone, adresse du cimetière) sont utilisées uniquement pour :</p>
+      <ul>
+        <li>Établir et envoyer les devis</li>
+        <li>Réaliser les prestations commandées</li>
+        <li>Envoyer les rappels de renouvellement</li>
+      </ul>
+      <p>Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales.</p>
+      <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous à <a href="mailto:dimitri@renovacieux.com">dimitri@renovacieux.com</a>.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">8</span> Cookies</h2>
+      <p>Ce site n'utilise pas de cookies publicitaires. Seuls des cookies techniques nécessaires au fonctionnement du site peuvent être utilisés.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">9</span> Responsabilité</h2>
+      <p>Renovacieux s'engage à réaliser les prestations avec soin et professionnalisme. Des photos avant/après sont systématiquement envoyées.</p>
+      <p>En cas de dommage accidentel lors d'une intervention, Renovacieux s'engage à trouver une solution amiable avec le client.</p>
+    </div>
+
+    <div class="cgu-section">
+      <h2><span class="section-num">10</span> Litiges</h2>
+      <p>En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux français seront compétents.</p>
+      <p>Conformément à l'article L612-1 du Code de la consommation, vous pouvez recourir gratuitement au service de médiation MEDICYS : <a href="https://www.medicys.fr" target="_blank">www.medicys.fr</a></p>
+    </div>
+
+    <div class="cgu-section cgu-contact">
+      <h2><span class="section-num">11</span> Contact</h2>
+      <p>Pour toute question concernant ces conditions :</p>
+      <p><strong style="color: rgba(248,249,246,0.8);">Email :</strong> <a href="mailto:dimitri@renovacieux.com">dimitri@renovacieux.com</a></p>
+    </div>
+
+  </div>
+
+  <div class="cgu-footer">Renovacieux &copy; 2026</div>
+
 </body>
 </html>

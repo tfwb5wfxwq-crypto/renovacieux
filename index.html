@@ -260,23 +260,13 @@
       animation: baseReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
     }
 
-    /* --- R letter: glow pulse en boucle (bien visible) --- */
+    /* --- R letter: subtle opacity breathe --- */
     .nav-logo-icon .r-letter {
-      animation: rGlow 2s ease-in-out 1s both, rPulseLoop 3s ease-in-out 3s infinite;
-    }
-
-    @keyframes rPulseLoop {
-      0%, 100% { filter: drop-shadow(0 0 0px rgba(196, 169, 98, 0)) brightness(1); }
-      50% { filter: drop-shadow(0 0 10px rgba(196, 169, 98, 0.6)) brightness(1.15); }
+      animation: rFadeIn 1.2s ease-out 0.8s both;
     }
 
     nav.scrolled .nav-logo-icon .r-letter {
-      animation: rPulseLoopDark 3s ease-in-out infinite;
-    }
-
-    @keyframes rPulseLoopDark {
-      0%, 100% { filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0)) brightness(1); }
-      50% { filter: drop-shadow(0 0 8px rgba(152, 145, 131, 0.5)) brightness(1.1); }
+      animation: none;
     }
 
     /* --- Shine sweep en boucle toutes les 4s --- */
@@ -304,10 +294,9 @@
       60% { opacity: 1; filter: saturate(0.5) brightness(0.85); }
       100% { opacity: 1; filter: saturate(1) brightness(1); }
     }
-    @keyframes rGlow {
-      0% { filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0)); }
-      50% { filter: drop-shadow(0 0 12px rgba(196, 169, 98, 0.8)); }
-      100% { filter: drop-shadow(0 0 0px rgba(152, 145, 131, 0)); }
+    @keyframes rFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
     @keyframes shinePass {
       0% { opacity: 0; transform: translateX(-100px); }
@@ -315,15 +304,12 @@
       100% { opacity: 0; transform: translateX(320px); }
     }
 
-    /* --- Hover: shine + R glow amplifiés --- */
+    /* --- Hover: shine sweep only --- */
     .nav-logo:hover .nav-logo-icon {
-      filter: drop-shadow(0 2px 12px rgba(196, 169, 98, 0.3)) brightness(1.35);
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.25)) brightness(1.2);
     }
     .nav-logo:hover .nav-logo-icon .shine-rect {
       animation: hoverShine 0.8s ease-in-out both;
-    }
-    .nav-logo:hover .nav-logo-icon .r-letter {
-      animation: rGlow 1s ease-in-out both;
     }
     @keyframes hoverShine {
       0% { opacity: 0; transform: translateX(-100px); }
@@ -600,11 +586,70 @@
     }
 
     .hero-image-main img {
-      width: 110%;
-      height: 110%;
+      width: 120%;
+      height: 120%;
       object-fit: cover;
       object-position: center 20%;
-      margin: -5%;
+      margin: -10%;
+      animation: kenBurns 20s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    /* Cinematic light sweep over photo */
+    .hero-image-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(255,255,255,0.06) 42%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.06) 58%,
+        transparent 70%,
+        transparent 100%
+      );
+      background-size: 300% 100%;
+      animation: photoLightSweep 8s ease-in-out 2s infinite;
+      pointer-events: none;
+    }
+
+    /* Vignette pulse for depth */
+    .hero-image-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: radial-gradient(ellipse 70% 60% at 50% 45%, transparent 40%, rgba(0,0,0,0.25) 100%);
+      animation: vignettePulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes kenBurns {
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+      33% {
+        transform: scale(1.05) translate(-1%, -1%);
+      }
+      66% {
+        transform: scale(1.03) translate(1%, -0.5%);
+      }
+      100% {
+        transform: scale(1.07) translate(-0.5%, -1.5%);
+      }
+    }
+
+    @keyframes photoLightSweep {
+      0%, 70% { background-position: 150% center; }
+      100% { background-position: -50% center; }
+    }
+
+    @keyframes vignettePulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
     }
 
     .hero-image-placeholder {
@@ -688,6 +733,12 @@
       position: relative;
     }
 
+    /* Gold shimmer separator animation */
+    @keyframes goldShimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
     .services::before {
       content: '';
       position: absolute;
@@ -695,9 +746,11 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 95%);
-      opacity: 0.6;
-      box-shadow: 0 0 12px rgba(196, 169, 98, 0.25), 0 0 4px rgba(196, 169, 98, 0.15);
+      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
+      background-size: 200% 100%;
+      animation: goldShimmer 4s ease-in-out infinite;
+      opacity: 0.7;
+      box-shadow: 0 0 16px rgba(196, 169, 98, 0.3), 0 0 6px rgba(196, 169, 98, 0.2);
     }
 
     .container {
@@ -1257,9 +1310,13 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%);
-      opacity: 0.3;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
+      background-size: 200% 100%;
+      animation: goldShimmer 4s ease-in-out infinite;
+      animation-delay: 1s;
+      opacity: 0.5;
+      box-shadow: 0 0 12px rgba(196, 169, 98, 0.2);
     }
 
     .zone-grid {
@@ -1661,8 +1718,12 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 5%, var(--gold) 50%, transparent 95%);
-      opacity: 0.5;
+      background: linear-gradient(90deg, transparent 5%, rgba(196,169,98,0.15) 15%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, rgba(196,169,98,0.15) 85%, transparent 95%);
+      background-size: 200% 100%;
+      animation: goldShimmer 4s ease-in-out infinite;
+      animation-delay: 2s;
+      opacity: 0.6;
+      box-shadow: 0 0 16px rgba(196, 169, 98, 0.25);
     }
 
     .footer-grid-compact {
@@ -1878,9 +1939,136 @@
 
       .mini-thumb { width: 80px; height: 80px; }
     }
+    /* ===== SPLASH SCREEN ===== */
+    .splash {
+      position: fixed; inset: 0; z-index: 99999;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: linear-gradient(145deg, #0a1f18 0%, #0f2820 25%, #1a3c34 50%, #2d5a4e 75%, #1a3c34 100%);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+      overflow: hidden;
+    }
+    .splash::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .splash::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 45% at 50% 42%, rgba(196,169,98,0.04) 0%, transparent 40%, rgba(0,0,0,0.4) 100%);
+      pointer-events: none;
+    }
+    .splash.hide {
+      opacity: 0; transform: scale(1.08);
+      pointer-events: none;
+    }
+    .splash-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      padding: 0 30px;
+    }
+    .splash-logo {
+      height: clamp(160px, 30vw, 220px); width: auto;
+      filter: drop-shadow(0 8px 40px rgba(0,0,0,0.5)) drop-shadow(0 0 60px rgba(196,169,98,0.15)) brightness(1.3);
+      opacity: 0; transform: scale(0.5) translateY(30px);
+      animation: splashLogoIn 1.4s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;
+    }
+    .splash-logo .r-letter {
+      opacity: 0;
+      animation: rFadeIn 1.5s ease-out 1s forwards;
+    }
+    .splash-logo .shine-rect {
+      opacity: 0;
+      animation: splashShine 2s ease-in-out 1.5s forwards;
+    }
+    .splash-gold-line {
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+      border-radius: 2px; margin: 32px 0 28px;
+      animation: splashLineGrow 1s cubic-bezier(0.16,1,0.3,1) 1.2s forwards;
+      box-shadow: 0 0 20px rgba(196,169,98,0.4), 0 0 40px rgba(196,169,98,0.1);
+    }
+    .splash-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(36px, 8vw, 64px);
+      font-weight: 400; letter-spacing: 0.06em;
+      color: rgba(248,249,246,0.97);
+      text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+      opacity: 0; transform: translateY(25px);
+      animation: splashFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 1.4s forwards;
+    }
+    .splash-subtitle {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(13px, 2.5vw, 17px);
+      font-weight: 400; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 18px;
+      text-shadow: 0 0 20px rgba(196,169,98,0.3);
+      opacity: 0; transform: translateY(16px);
+      animation: splashFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 1.7s forwards;
+    }
+
+    @keyframes splashLogoIn {
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+@keyframes splashShine {
+      0% { opacity: 0; transform: translateX(-120px); }
+      40% { opacity: 0.8; }
+      100% { opacity: 0; transform: translateX(350px); }
+    }
+    @keyframes splashLineGrow {
+      from { width: 0; } to { width: 100px; }
+    }
+    @keyframes splashFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Splash Screen (first visit only) -->
+  <div class="splash" id="splash">
+    <div class="splash-content">
+      <svg class="splash-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 297.44 314.69">
+        <defs>
+          <linearGradient id="sg1" x1="240.25" y1="361.44" x2="104.74" y2="225.94" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="sg2" x1="262.48" y1="335.64" x2="34.96" y2="204.28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="sg5" x1="131.41" y1=".26" x2="131.41" y2="265.24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="sg6" x1="189.79" y1="69.62" x2="84.59" y2="251.83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#989183"/><stop offset=".15" stop-color="#918a7e"/><stop offset=".38" stop-color="#7e7972"/><stop offset=".64" stop-color="#5f5d5e"/><stop offset=".93" stop-color="#343743"/><stop offset="1" stop-color="#292d3c"/></linearGradient>
+          <linearGradient id="sgShine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="white" stop-opacity="0"/><stop offset="0.4" stop-color="white" stop-opacity="0.5"/><stop offset="0.6" stop-color="white" stop-opacity="0.5"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+          <clipPath id="sgClip"><path d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/></clipPath>
+        </defs>
+        <g><polygon fill="url(#sg1)" points="296.74 304.94 51.22 314.42 50.25 280.42 296.74 275.93"/><polygon fill="url(#sg2)" points=".19 264.49 50.75 284.67 297.24 275.42 296.92 275.28 251.1 256.08"/><polygon fill="#2a283d" points="50.25 314.22 50.25 285.01 .69 265.23 .69 294.65"/></g>
+        <polygon fill="url(#sg1)" points="272.28 269.96 51.1 279.32 47.53 268.09 272.28 261.29"/><polygon fill="url(#sg2)" points="11.89 254.65 50.75 269.06 272.78 260.77 272.51 260.69 226.64 246.02"/><polygon fill="#2a283d" points="50.25 279.12 50.25 269.4 12.39 255.37 12.39 264.91"/>
+        <path fill="url(#sg5)" d="M62.07,265.24l-31.69-10.91,7.91-200.38s.15-32.16,34.87-43.59c0,0,26.71-9.39,54.12-10.08,0,0,53.26-1.5,84.46,24.52,7.06,5.45,11.7,19.46,14.32,43.79.08.77.14,1.55.16,2.32l6.23,188.62-170.38,5.72Z"/>
+        <path fill="#2a283d" d="M126.56.26c-27.41.69-53.4,10.1-53.4,10.1-34.72,11.43-34.87,43.59-34.87,43.59l-7.91,200.38,31.69,10.91h.03l4.16-200.12S64.45,6.02,126.56.26Z"/>
+        <path class="r-letter" fill="url(#sg6)" d="M193.42,215.52c6.58,7.29,16.25,15.33,24.95,10.89.8-.41,1.65.33,1.34,1.17-5.25,14.23-16.37,13.35-16.37,13.35-8.62.18-23.04-4.06-34.38-21.51-9.54-14.34-11.06-32.43-19.31-46.81-5.16-9.02-8.51-10.62-21.65-10.11l-8.05.31c-.54.02-.97.47-.97,1.01v44.24c0,24.06,2.74,31.21,22.43,32.91.58.05,1.02.58,1.02,1.23h0c0,.7-.51,1.29-1.14,1.32l-66.51,2.47c-.65.02-1.17-.54-1.17-1.26h0c0-.66.45-1.24,1.04-1.34,20.41-3.45,22.16-10.42,22.16-34.48v-114.84c0-23.92-2.71-29.83-21.87-31.73-.76-.07-1.33-.76-1.33-1.62h0c0-.93.68-1.71,1.51-1.75l64.22-2.63c18.82-.77,31.45,1.31,41.24,8.11,10.57,7.07,17.53,19.76,17.53,37.35,0,24.51-13.84,40.54-32.57,50.54-.4.21-.62.66-.52,1.1,1.27,5.59,9.98,41.68,28.4,62.07ZM131.35,152.58c13.4-.52,21.91-3.16,28.36-9.46,10.05-8.75,14.18-20.44,14.18-36.01,0-30.84-18.3-41.34-38.15-40.53-7.48.3-11.86,1.63-13.66,3.44-2.32,2.11-3.09,5.02-3.09,12.51v69.58c0,.54.43.95.97.93l11.4-.44Z"/>
+        <rect class="shine-rect" clip-path="url(#sgClip)" x="-60" y="0" width="80" height="280" fill="url(#sgShine)" transform="rotate(-15 100 140)"/>
+      </svg>
+      <div class="splash-gold-line"></div>
+      <div class="splash-title">Renovacieux</div>
+      <div class="splash-subtitle">Le respect de vos proches</div>
+    </div>
+  </div>
+
+  <script>
+    // Splash: first visit only
+    (function() {
+      const splash = document.getElementById('splash');
+      if (localStorage.getItem('rnv_visited')) {
+        splash.remove();
+        return;
+      }
+      localStorage.setItem('rnv_visited', '1');
+      document.body.style.overflow = 'hidden';
+      setTimeout(function() {
+        splash.classList.add('hide');
+        document.body.style.overflow = '';
+        setTimeout(function() { splash.remove(); }, 900);
+      }, 3800);
+    })();
+  </script>
 
   <!-- Navigation -->
   <nav id="navbar">
