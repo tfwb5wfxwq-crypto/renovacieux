@@ -1912,9 +1912,18 @@
       }
 
       .form-row { grid-template-columns: 1fr; }
-      .ba-slider { max-width: 100%; aspect-ratio: 4/5; max-height: 380px; }
+      .ba-slider {
+        max-width: 280px;
+        margin: 0 auto;
+        aspect-ratio: 3/4;
+        border-radius: 16px;
+      }
       .ba-grid { gap: 30px; }
-      .before-after { padding: 60px 20px; }
+      .before-after { padding: 50px 20px; }
+      .ba-content { text-align: center; }
+      .ba-content .section-tag { margin: 0 auto; }
+      .ba-content h2 { font-size: clamp(22px, 5vw, 28px); }
+      .ba-content p { font-size: 14px; }
 
       .hero-buttons { flex-direction: column; }
       .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
