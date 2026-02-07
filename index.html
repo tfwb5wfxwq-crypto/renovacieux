@@ -1955,9 +1955,22 @@
       .pricing-card { padding: 28px 20px; }
       .pricing-card.featured { transform: none; }
 
-      /* Footer mobile - pas de logo SVG, juste texte */
-      .footer-brand svg { display: none; }
+      /* Footer mobile - tout centré */
+      .footer-grid-compact {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+      }
       .footer-main { flex: 1; }
+      .footer-brand { justify-content: center; }
+      .footer-brand svg { height: 28px; }
+      .footer-contact-inline { align-items: center; }
+      .footer-links-row {
+        justify-content: center;
+        gap: 40px;
+      }
+      .footer-bottom { text-align: center; }
 
       /* Contact details mobile */
       .contact-details li { font-size: 14px; gap: 12px; padding: 14px 0; }
